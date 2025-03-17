@@ -31,11 +31,7 @@ class UserTest {
         testUser.setUserId(TestHelper.badId);
         String expectedErrorMessage = "User ID must be greater than 0.";
 
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        List<String> errorMessages = new ArrayList<>();
-        for (ConstraintViolation<User> violation : violations) {
-            errorMessages.add(violation.getMessage());
-        }
+        List<String> errorMessages = getErrorMessages(user);
 
         assertTrue(errorMessages.contains(expectedErrorMessage));
     }
@@ -136,11 +132,7 @@ class UserTest {
         testUser.setPassword("");
         String expectedErrorMessage = "Customer password is required.";
 
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        List<String> errorMessages = new ArrayList<>();
-        for (ConstraintViolation<User> violation : violations) {
-            errorMessages.add(violation.getMessage());
-        }
+        List<String> errorMessages = getErrorMessages(user);
 
         assertTrue(errorMessages.contains(expectedErrorMessage));
     }
@@ -150,11 +142,7 @@ class UserTest {
         testUser.setPassword(null);
         String expectedErrorMessage = "Customer password is required.";
 
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        List<String> errorMessages = new ArrayList<>();
-        for (ConstraintViolation<User> violation : violations) {
-            errorMessages.add(violation.getMessage());
-        }
+        List<String> errorMessages = getErrorMessages(user);
 
         assertTrue(errorMessages.contains(expectedErrorMessage));
     }
@@ -164,11 +152,7 @@ class UserTest {
         testUser.setPassword(TestHelper.badFormatPasswordNoCaps);
         String expectedErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one special character, and one number.";
 
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        List<String> errorMessages = new ArrayList<>();
-        for (ConstraintViolation<User> violation : violations) {
-            errorMessages.add(violation.getMessage());
-        }
+        List<String> errorMessages = getErrorMessages(user);
 
         assertTrue(errorMessages.contains(expectedErrorMessage));
     }
@@ -178,11 +162,7 @@ class UserTest {
         testUser.setPassword(TestHelper.badFormatPasswordNoSpecial);
         String expectedErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one special character, and one number.";
 
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        List<String> errorMessages = new ArrayList<>();
-        for (ConstraintViolation<User> violation : violations) {
-            errorMessages.add(violation.getMessage());
-        }
+        List<String> errorMessages = getErrorMessages(user);
 
         assertTrue(errorMessages.contains(expectedErrorMessage));
     }
@@ -192,11 +172,7 @@ class UserTest {
         testUser.setPassword(TestHelper.badFormatPasswordNoNumber);
         String expectedErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one special character, and one number.";
 
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        List<String> errorMessages = new ArrayList<>();
-        for (ConstraintViolation<User> violation : violations) {
-            errorMessages.add(violation.getMessage());
-        }
+        List<String> errorMessages = getErrorMessages(user);
 
         assertTrue(errorMessages.contains(expectedErrorMessage));
     }
@@ -206,11 +182,7 @@ class UserTest {
         testUser.setPassword(TestHelper.badFormatPasswordNoLowers);
         String expectedErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one special character, and one number.";
 
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        List<String> errorMessages = new ArrayList<>();
-        for (ConstraintViolation<User> violation : violations) {
-            errorMessages.add(violation.getMessage());
-        }
+        List<String> errorMessages = getErrorMessages(user);
 
         assertTrue(errorMessages.contains(expectedErrorMessage));
     }
@@ -220,11 +192,7 @@ class UserTest {
         testUser.setPassword(TestHelper.badFormatPasswordShort);
         String expectedErrorMessage = "Password must be at least 8 characters long.";
 
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        List<String> errorMessages = new ArrayList<>();
-        for (ConstraintViolation<User> violation : violations) {
-            errorMessages.add(violation.getMessage());
-        }
+        List<String> errorMessages = getErrorMessages(user);
 
         assertTrue(errorMessages.contains(expectedErrorMessage));
     }
@@ -235,5 +203,14 @@ class UserTest {
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         assertTrue(violations.isEmpty());
+    }
+
+    private List<String> getErrorMessages(User user){
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        List<String> errorMessages = new ArrayList<>();
+        for (ConstraintViolation<User> violation : violations) {
+            errorMessages.add(violation.getMessage());
+        }
+        return errorMessages;
     }
 }
