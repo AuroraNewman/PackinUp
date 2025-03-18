@@ -21,8 +21,11 @@ class UserJdbcClientRepositoryTest {
     }
     @Test
     void findById() {
-        User user = repository.findById(1);
+        User actual = repository.findById(TestHelper.existingUser.getUserId());
 
+        assertNotNull(actual);
+        assertEquals(1, actual.getUserId());
+        assertEquals(actual, TestHelper.existingUser);
     }
 
     @Test
@@ -31,18 +34,10 @@ class UserJdbcClientRepositoryTest {
 
     @Test
     void create() {
-        User user = new User();
-        user.setUsername(TestHelper.goodUsername);
-        user.setEmail(TestHelper.goodEmail);
-        user.setPassword(TestHelper.goodPassword);
-
-        User actual = repository.create(user);
-//        User user = repository.create(new User(TestHelper.goodUsername, TestHelper.goodEmail, TestHelper.goodPassword));
+       User actual = repository.create(TestHelper.goodUser);
 
         assertNotNull(actual);
         assertEquals(4, actual.getUserId());
-        //TODO
-        //assertEquals actual, repository.findById(4);
     }
 
     @Test

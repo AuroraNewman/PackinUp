@@ -18,4 +18,5 @@ public class TestHelper {
     public static String goodPassword = "Password1!";
 
     public static User goodUser = new User(goodId, goodUsername, goodEmail, goodPassword);
+    public static User existingUser = new User(1, "Bernie", "Bernie@rubiber.com", "verygoodpassword");
 }

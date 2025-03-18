@@ -1,5 +1,6 @@
 package learn.data;
 
+import learn.data.Mappers.UserMapper;
 import learn.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -9,6 +10,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserJdbcClientRepository implements UserRepository{
+    private final String SELECT = """
+            select user_id, username, email, `password`
+            from users
+            """;
     private JdbcClient jdbcClient;
 
     public UserJdbcClientRepository(JdbcClient jdbcClient) {
@@ -17,7 +22,11 @@ public class UserJdbcClientRepository implements UserRepository{
 
     @Override
     public User findById(int userId) {
-        return null;
+        final String sql = SELECT + " where user_id = :user_id;";
+        return jdbcClient.sql(sql)
+                .param("user_id", userId)
+                .query(new UserMapper())
+                .optional().orElse(null);
     }
 
     @Override
