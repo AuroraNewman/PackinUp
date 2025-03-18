@@ -39,7 +39,7 @@ class UserTest {
     void longUsernameShouldFail() {
         User user = testUser;
         testUser.setUsername(TestHelper.tooLongUsername);
-        String expectedErrorMessage = "Customer username must be fewer than 50 characters.";
+        String expectedErrorMessage = "Username must be fewer than 50 characters.";
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);List<String> errorMessages = new ArrayList<>();
         for (ConstraintViolation<User> violation : violations) {
@@ -52,7 +52,7 @@ class UserTest {
     void blankUsernameShouldFail(){
         User user = testUser;
         testUser.setUsername("");
-        String expectedErrorMessage = "Customer username is required.";
+        String expectedErrorMessage = "Username is required.";
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);List<String> errorMessages = new ArrayList<>();
         for (ConstraintViolation<User> violation : violations) {
@@ -65,7 +65,7 @@ class UserTest {
     void nullUsernameShouldFail(){
         User user = testUser;
         testUser.setUsername(null);
-        String expectedErrorMessage = "Customer username is required.";
+        String expectedErrorMessage = "Username is required.";
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);List<String> errorMessages = new ArrayList<>();
         for (ConstraintViolation<User> violation : violations) {
@@ -78,7 +78,7 @@ class UserTest {
     void longEmailShouldFail(){
         User user = testUser;
         testUser.setEmail(TestHelper.tooLongEmail);
-        String expectedErrorMessage = "Customer email must be fewer than 100 characters.";
+        String expectedErrorMessage = "Email must be fewer than 100 characters.";
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);List<String> errorMessages = new ArrayList<>();
         for (ConstraintViolation<User> violation : violations) {
@@ -91,7 +91,7 @@ class UserTest {
     void blankEmailShouldFail(){
         User user = testUser;
         testUser.setEmail("");
-        String expectedErrorMessage = "Customer email is required.";
+        String expectedErrorMessage = "Email is required.";
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);List<String> errorMessages = new ArrayList<>();
         for (ConstraintViolation<User> violation : violations) {
@@ -104,7 +104,7 @@ class UserTest {
     void nullEmailShouldFail(){
         User user = testUser;
         testUser.setEmail(null);
-        String expectedErrorMessage = "Customer email is required.";
+        String expectedErrorMessage = "Email is required.";
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);List<String> errorMessages = new ArrayList<>();
         for (ConstraintViolation<User> violation : violations) {
@@ -117,7 +117,7 @@ class UserTest {
     void badFormatEmailShouldFail(){
         User user = testUser;
         testUser.setEmail(TestHelper.badFormatEmail);
-        String expectedErrorMessage = "Customer email must be a valid email address.";
+        String expectedErrorMessage = "Email must be a valid email address.";
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);List<String> errorMessages = new ArrayList<>();
         for (ConstraintViolation<User> violation : violations) {
@@ -130,7 +130,7 @@ class UserTest {
     void blankPasswordShouldFail(){
         User user = testUser;
         testUser.setPassword("");
-        String expectedErrorMessage = "Customer password is required.";
+        String expectedErrorMessage = "Password is required.";
 
         List<String> errorMessages = getErrorMessages(user);
 
@@ -140,7 +140,7 @@ class UserTest {
     void nullPasswordShouldFail(){
         User user = testUser;
         testUser.setPassword(null);
-        String expectedErrorMessage = "Customer password is required.";
+        String expectedErrorMessage = "Password is required.";
 
         List<String> errorMessages = getErrorMessages(user);
 

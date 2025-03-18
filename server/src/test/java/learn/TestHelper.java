@@ -14,7 +14,7 @@ public class TestHelper {
     public static String badFormatPasswordNoSpecial = "Password1";
     public static String badFormatPasswordNoNumber = "Password!";
     public static String badFormatPasswordNoLowers = "PASSWORD1!";
-    public static String badFormatPasswordShort = "P1!";
+    public static String badFormatPasswordShort = "Pa1!";
     public static String goodPassword = "Password1!";
 
     public static User goodUser = new User(goodId, goodUsername, goodEmail, goodPassword);

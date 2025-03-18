@@ -7,18 +7,18 @@ import java.util.Objects;
 public class User {
     @Min(value = 0, message = "User ID must be greater than 0.")
     private int userId;
-    @Size(max = 50, message = "Customer username must be fewer than 50 characters.")
-    @NotBlank(message = "Customer username is required.")
-    @NotNull(message = "Customer username is required.")
+    @Size(max = 50, message = "Username must be fewer than 50 characters.")
+    @NotBlank(message = "Username is required.")
+    @NotNull(message = "Username is required.")
     private String username;
-    @Size(max = 100, message = "Customer email must be fewer than 100 characters.")
-    @NotBlank(message = "Customer email is required.")
-    @NotNull(message = "Customer email is required.")
-    @Email(message = "Customer email must be a valid email address.")
+    @Size(max = 100, message = "Email must be fewer than 100 characters.")
+    @NotBlank(message = "Email is required.")
+    @NotNull(message = "Email is required.")
+    @Email(message = "Email must be a valid email address.")
     private String email;
     @Size(min = 8, message = "Password must be at least 8 characters long.")
-    @NotBlank(message = "Customer password is required.")
-    @NotNull(message = "Customer password is required.")
+    @NotBlank(message = "Password is required.")
+    @NotNull(message = "Password is required.")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$", message = "Password must contain at least one uppercase letter, one lowercase letter, one special character, and one number.")
     private String password;
 
