@@ -16,8 +16,8 @@ begin
     alter table users auto_increment = 1;
 
     insert into users(user_id, username, email, `password`) values
-            (1, 'Bernie', 'Bernie@rubiber.com', 'verygoodpassword'),
-            (2, 'Bianca', 'Bianca@rubiber.com', 'verygoodpassword'),
-            (3, 'Rufus', 'rufus@rubiber.com', 'verygoodpassword');
+            (1, 'Bernie', 'Bernie@rubiber.com', 'veryg00dPassword!'),
+            (2, 'Bianca', 'Bianca@rubiber.com', 'veryg00dPassword!'),
+            (3, 'Rufus', 'rufus@rubiber.com', 'veryg00dPassword!');
 end //
 delimiter ;

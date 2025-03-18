@@ -277,9 +277,71 @@ class UserServiceTest {
             assertTrue(actual.getErrorMessages().contains("Password must be at least 8 characters long."));
         }
     }
+    @Nested
+    public class UpdateTests {
+        @Test
+        void shouldUpdateUsername() {
+            User toUpdate = new User(
+                    TestHelper.existingUser.getUserId(),
+                    TestHelper.goodUsername,
+                    TestHelper.existingUser.getEmail(),
+                    TestHelper.existingUser.getPassword()
+            );
+            Result<User> expected = new Result<>();
+            expected.setPayload(toUpdate);
+            when(repository.updateUsername(toUpdate)).thenReturn(true);
 
-    @Test
-    void updateUsername() {
+            Result<User> actual = service.updateUsername(toUpdate);
+
+            assertEquals(expected, actual);
+            assertEquals(toUpdate, actual.getPayload());
+        }
+        @Test
+        void shouldNotUpdateWhenUserIsNull() {
+            Result<User> actual = service.updateUsername(null);
+
+            assertFalse(actual.isSuccess());
+            assertTrue(actual.getErrorMessages().contains("User is required."));
+        }
+        @Test
+        void shouldNotUpdateLongUsername(){
+            User toUpdate = new User(
+                    TestHelper.existingUser.getUserId(),
+                    TestHelper.tooLongUsername,
+                    TestHelper.existingUser.getEmail(),
+                    TestHelper.existingUser.getPassword()
+            );
+            Result<User> actual = service.updateUsername(toUpdate);
+
+            assertFalse(actual.isSuccess());
+            assertTrue(actual.getErrorMessages().contains("Username must be fewer than 50 characters."));
+        }
+        @Test
+        void shouldNotUpdateBlankUsername(){
+            User toUpdate = new User(
+                    TestHelper.existingUser.getUserId(),
+                    "",
+                    TestHelper.existingUser.getEmail(),
+                    TestHelper.existingUser.getPassword()
+            );
+            Result<User> actual = service.updateUsername(toUpdate);
+
+            assertFalse(actual.isSuccess());
+            assertTrue(actual.getErrorMessages().contains("Username is required."));
+        }
+        @Test
+        void shouldNotUpdateNullUsername(){
+            User toUpdate = new User(
+                    TestHelper.existingUser.getUserId(),
+                    null,
+                    TestHelper.existingUser.getEmail(),
+                    TestHelper.existingUser.getPassword()
+            );
+            Result<User> actual = service.updateUsername(toUpdate);
+
+            assertFalse(actual.isSuccess());
+            assertTrue(actual.getErrorMessages().contains("Username is required."));
+        }
     }
 
     @Test

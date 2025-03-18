@@ -69,12 +69,23 @@ public class UserService {
         return result;
 
     }
-    public boolean updateUsername(User user, String username) {
-        return false;
+    public Result<User> updateUsername(User user) {
+        Result<User> result = validate(user);
+
+        if (!result.isSuccess()){
+            return result;
+        }
+        boolean updated = repository.updateUsername(user);
+        if (!updated) {
+            result.addErrorMessage("User could not be updated.", ResultType.INVALID);
+        } else {
+            result.setPayload(user);
+        }
+        return result;
     }
 
-    public boolean delete(int userId) {
-        return false;
+    public Result<User> delete(int userId) {
+        return null;
     }
     private Result<User> validate(User user) {
         Result<User> result = new Result<>();
