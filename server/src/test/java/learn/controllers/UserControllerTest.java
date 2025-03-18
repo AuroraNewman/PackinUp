@@ -43,7 +43,7 @@ class UserControllerTest {
     @BeforeEach
     void setUp(){
         testUser = new User(1, TestHelper.goodUsername, TestHelper.goodEmail, TestHelper.goodPassword);
-        testAddUser = new User(0, TestHelper.goodUsername, TestHelper.goodEmail, TestHelper.goodPassword);
+        testAddUser = new User(TestHelper.goodUsername, TestHelper.goodEmail, TestHelper.goodPassword);
     }
 
     /**
