@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/packinup/user")
@@ -32,5 +34,25 @@ public class UserController {
         } else {
             return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
         }
+    }
+    @PostMapping("/login")
+    private ResponseEntity<Object> login(@RequestBody @Valid User user, BindingResult bindingResult) {
+        return null;
+    }
+    @PutMapping("/{userId}")
+    private ResponseEntity<Object> updateUsername(@PathVariable int userId, @RequestBody User user) {
+        //look up existing user with userId
+        //set the existing user with the new username
+        //update user with new username through service
+        return null;
+
+    }
+    @DeleteMapping("/{userId}")
+    private ResponseEntity<Object> delete(@PathVariable int userId) {
+        Result<Void> result = service.delete(userId);
+        if (result.isSuccess()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.NOT_FOUND);
     }
 }
