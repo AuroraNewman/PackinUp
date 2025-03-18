@@ -59,11 +59,23 @@ public class UserJdbcClientRepository implements UserRepository{
 
     @Override
     public boolean updateUsername(User user, String username) {
-        return false;
+        final String sql = """
+                update users
+                set username = :username
+                where user_id = :user_id;
+                """;
+        return jdbcClient.sql(sql)
+                .param("username", username)
+                .param("user_id", user.getUserId())
+                .update() > 0;
+
     }
 
     @Override
     public boolean delete(int userId) {
-        return false;
+        final String sql = "delete from users where user_id = :user_id;";
+        return jdbcClient.sql(sql)
+                .param("user_id", userId)
+                .update() > 0;
     }
 }

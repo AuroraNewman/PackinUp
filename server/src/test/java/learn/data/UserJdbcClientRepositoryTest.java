@@ -47,9 +47,17 @@ class UserJdbcClientRepositoryTest {
 
     @Test
     void updateUsername() {
+        boolean actual = repository.updateUsername(TestHelper.existingUser, "Bernard");
+
+        assertTrue(actual);
+        assertEquals("Bernard", repository.findById(TestHelper.existingUser.getUserId()).getUsername());
     }
 
     @Test
     void delete() {
+        boolean actual = repository.delete(TestHelper.existingUser.getUserId());
+
+        assertTrue(actual);
+        assertNull(repository.findById(TestHelper.existingUser.getUserId()));
     }
 }
