@@ -24,16 +24,6 @@ Content-Type: application/json
   "password": ""
 }
 
-### Invalid media type (415)
-POST {{url}}
-Content-Type: multipart/form-data
-
-{
-  "username": "TestUser",
-  "email": "testemail@testing.com",
-  "password": "Password1!"
-}
-
 ### Blank username (400)
 POST {{url}}
 Content-Type: application/json

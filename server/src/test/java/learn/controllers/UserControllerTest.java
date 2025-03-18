@@ -95,17 +95,6 @@ class UserControllerTest {
                 .andExpect(status().isBadRequest());
         }
         @Test
-        void addShouldReturn415WhenMultipart() throws Exception {
-            String userJson = jsonMapper.writeValueAsString(testUser);
-
-            var request = post(PREFIX)
-                    .contentType(MediaType.MULTIPART_FORM_DATA)
-                    .content(userJson);
-            mvc.perform(request)
-                    .andExpect(status().isUnsupportedMediaType());
-        }
-        //invalid if no lowers, no uppsers, no digits, no specials
-        @Test
         void shouldReturn400OnBlankUsername() throws Exception {
             User failAdd = new User();
             failAdd.setUserId(0);

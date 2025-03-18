@@ -4,11 +4,11 @@ import jakarta.validation.constraints.Min;
 
 import java.util.Objects;
 
-public class UserForDeletion {
+public class UserWithIdOnly {
     @Min(value = 0, message = "User ID must be greater than 0.")
     private int userId;
 
-    public UserForDeletion(int userId) {
+    public UserWithIdOnly(int userId) {
         this.userId = userId;
     }
 
@@ -23,7 +23,7 @@ public class UserForDeletion {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        UserForDeletion that = (UserForDeletion) o;
+        UserWithIdOnly that = (UserWithIdOnly) o;
         return getUserId() == that.getUserId();
     }
 

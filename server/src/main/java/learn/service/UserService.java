@@ -5,12 +5,11 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import learn.data.UserRepository;
-import learn.data_transfer_objects.UserForDeletion;
+import learn.data_transfer_objects.UserWithIdOnly;
 import learn.data_transfer_objects.UserToFindByEmail;
 import learn.models.User;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -22,7 +21,7 @@ public class UserService {
         this.repository = repository;
     }
     public Result<User> findById(int userId) {
-        Result<User> result = validate(new UserForDeletion(userId));
+        Result<User> result = validate(new UserWithIdOnly(userId));
         if (!result.isSuccess()){
             return result;
         }
@@ -85,7 +84,7 @@ public class UserService {
     public Result<Void> delete(int userId) {
         Result<Void> result = new Result<>();
 
-        Boolean deleted = false;
+        boolean deleted = false;
 
         if (userId <= 0) {
             result.addErrorMessage("User id must be greater than 0.", ResultType.INVALID);
