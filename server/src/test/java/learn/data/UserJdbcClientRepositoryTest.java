@@ -30,6 +30,11 @@ class UserJdbcClientRepositoryTest {
 
     @Test
     void findByEmail() {
+        User actual = repository.findByEmail(TestHelper.existingUser.getEmail());
+
+        assertNotNull(actual);
+        assertEquals(1, actual.getUserId());
+        assertEquals(actual, TestHelper.existingUser);
     }
 
     @Test

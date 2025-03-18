@@ -31,7 +31,11 @@ public class UserJdbcClientRepository implements UserRepository{
 
     @Override
     public User findByEmail(String email) {
-        return null;
+        final String sql = SELECT + " where email = :email;";
+        return jdbcClient.sql(sql)
+                .param("email", email)
+                .query(new UserMapper())
+                .optional().orElse(null);
     }
 
     @Override
