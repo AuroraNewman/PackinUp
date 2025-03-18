@@ -5,9 +5,12 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import learn.data.UserRepository;
+import learn.data_transfer_objects.UserForDeletion;
+import learn.data_transfer_objects.UserToFindByEmail;
 import learn.models.User;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -19,16 +22,14 @@ public class UserService {
         this.repository = repository;
     }
     public Result<User> findById(int userId) {
-        Result<User> result = new Result<>();
-        //todo ask pete how to change to use with validation
-        if (userId <= 0) {
-            result.addErrorMessage("User id must be greater than 0.", ResultType.INVALID);
+        Result<User> result = validate(new UserForDeletion(userId));
+        if (!result.isSuccess()){
             return result;
         }
+
         User foundUser = repository.findById(userId);
 
         if (foundUser == null) {
-            //todo ask pete how to change to use with validation
             result.addErrorMessage("User not found.", ResultType.NOT_FOUND);
         } else {
             result.setPayload(foundUser);
@@ -36,15 +37,12 @@ public class UserService {
         return result;
     }
     public Result<User> findByEmail(String email) {
-        Result<User> result = new Result<>();
-        if (email == null || email.isBlank()) {
-            //todo ask pete how to change to use with validation
-            result.addErrorMessage("Email is required.", ResultType.INVALID);
+        Result<User> result = validate(new UserToFindByEmail(email));
+        if (!result.isSuccess()){
             return result;
         }
 
         User foundUser = repository.findByEmail(email);
-        //todo ask pete how to change to use with validation
         if (foundUser == null) {
             result.addErrorMessage("User not found.", ResultType.NOT_FOUND);
         } else {
@@ -84,8 +82,8 @@ public class UserService {
         return result;
     }
 
-    public Result<Boolean> delete(int userId) {
-        Result<Boolean> result = new Result<>();
+    public Result<Void> delete(int userId) {
+        Result<Void> result = new Result<>();
 
         Boolean deleted = false;
 
@@ -97,16 +95,13 @@ public class UserService {
         }
         if (!deleted) {
             result.addErrorMessage("User not found.", ResultType.NOT_FOUND);
-        } else {
-            result.setPayload(deleted);
         }
         return result;
     }
-    private Result<User> validate(User user) {
+    private Result<User> validate(Object object) {
         Result<User> result = new Result<>();
 
-        if (user == null){
-            //todo ask pete how to change to use with validation
+        if (object == null){
             result.addErrorMessage("User is required.", ResultType.INVALID);
             return result;
         }
@@ -114,9 +109,10 @@ public class UserService {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
 
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        Set<ConstraintViolation<Object>> violations = validator.validate(object);
+
         if (!violations.isEmpty()) {
-            for (ConstraintViolation<User> violation : violations) {
+            for (ConstraintViolation<Object> violation : violations) {
                 result.addErrorMessage(violation.getMessage(), ResultType.INVALID);
             }
         }

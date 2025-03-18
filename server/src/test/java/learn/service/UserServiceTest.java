@@ -47,7 +47,7 @@ class UserServiceTest {
         @Test
         void shouldNotFindByInvalidId() {
             Result<User> expected = new Result<>();
-            expected.addErrorMessage("User id must be greater than 0.", ResultType.INVALID);
+            expected.addErrorMessage("User ID must be greater than 0.", ResultType.INVALID);
 
             Result<User> actual = service.findById(-1);
 
@@ -68,11 +68,12 @@ class UserServiceTest {
 
         @Test
         void shouldNotFindByMissingEmail() {
+            String missingEmail = "absentemail@notthere.com";
             Result<User> expected = new Result<>();
             expected.addErrorMessage("User not found.", ResultType.NOT_FOUND);
-            when(repository.findByEmail(TestHelper.tooLongEmail)).thenReturn(null);
+            when(repository.findByEmail(missingEmail)).thenReturn(null);
 
-            Result<User> actual = service.findByEmail(TestHelper.tooLongEmail);
+            Result<User> actual = service.findByEmail(missingEmail);
 
             assertEquals(expected, actual);
         }
@@ -348,31 +349,29 @@ class UserServiceTest {
     public class DeleteTests {
         @Test
         void shouldDelete() {
-            Result<Boolean> expected = new Result<>();
-            expected.setPayload(true);
+            Result<Void> expected = new Result<>();
             when(repository.delete(TestHelper.existingUser.getUserId())).thenReturn(true);
 
-            Result<Boolean> actual = service.delete(TestHelper.existingUser.getUserId());
+            Result<Void> actual = service.delete(TestHelper.existingUser.getUserId());
 
             assertEquals(expected, actual);
-            assertTrue(actual.getPayload());
         }
         @Test
         void shouldNotDeleteInvalidId(){
-            Result<Boolean> expected = new Result<>();
+            Result<Void> expected = new Result<>();
             expected.addErrorMessage("User id must be greater than 0.", ResultType.INVALID);
 
-            Result<Boolean> actual = service.delete(TestHelper.badId);
+            Result<Void> actual = service.delete(TestHelper.badId);
 
             assertEquals(expected, actual);
         }
         @Test
         void shouldNotDeleteMissingId(){
-            Result<Boolean> expected = new Result<>();
+            Result<Void> expected = new Result<>();
             expected.addErrorMessage("User not found.", ResultType.NOT_FOUND);
             when(repository.delete(-1 * TestHelper.badId)).thenReturn(false);
 
-            Result<Boolean> actual = service.delete(-1 * TestHelper.badId);
+            Result<Void> actual = service.delete(-1 * TestHelper.badId);
 
             assertEquals(expected, actual);
         }
