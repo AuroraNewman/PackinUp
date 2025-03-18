@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -36,11 +35,11 @@ public class UserController {
         }
     }
     @PostMapping("/login")
-    private ResponseEntity<Object> login(@RequestBody @Valid User user, BindingResult bindingResult) {
+    public ResponseEntity<Object> login(@RequestBody @Valid User user, BindingResult bindingResult) {
         return null;
     }
     @PutMapping("/{userId}")
-    private ResponseEntity<Object> updateUsername(@PathVariable int userId, @RequestBody User user) {
+    public ResponseEntity<Object> updateUsername(@PathVariable int userId, @RequestBody User user) {
         //look up existing user with userId
         //set the existing user with the new username
         //update user with new username through service
@@ -48,7 +47,7 @@ public class UserController {
 
     }
     @DeleteMapping("/{userId}")
-    private ResponseEntity<Object> delete(@PathVariable int userId) {
+    public ResponseEntity<Object> delete(@PathVariable int userId) {
         Result<Void> result = service.delete(userId);
         if (result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
