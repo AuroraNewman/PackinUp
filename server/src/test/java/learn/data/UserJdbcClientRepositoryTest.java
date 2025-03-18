@@ -61,10 +61,14 @@ class UserJdbcClientRepositoryTest {
 
     @Test
     void updateUsername() {
-        boolean actual = repository.updateUsername(TestHelper.existingUser, "Bernard");
+        User toUpdate = new User(TestHelper.existingUser.getUserId(), "Bernard", TestHelper.existingUser.getEmail(), TestHelper.existingUser.getPassword());
+
+        boolean actual = repository.updateUsername(toUpdate);
+        User updatedUser = repository.findById(TestHelper.existingUser.getUserId());
 
         assertTrue(actual);
-        assertEquals("Bernard", repository.findById(TestHelper.existingUser.getUserId()).getUsername());
+        assertEquals("Bernard", updatedUser.getUsername());
+        assertEquals(toUpdate, updatedUser);
     }
 
     @Test
@@ -75,7 +79,7 @@ class UserJdbcClientRepositoryTest {
         failUser.setPassword(TestHelper.goodPassword);
         failUser.setEmail(TestHelper.goodEmail);
 
-        boolean actual = repository.updateUsername(failUser, "Bernard");
+        boolean actual = repository.updateUsername(failUser);
 
         assertFalse(actual);
     }

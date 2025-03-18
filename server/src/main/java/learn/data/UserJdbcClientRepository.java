@@ -58,14 +58,14 @@ public class UserJdbcClientRepository implements UserRepository{
     }
 
     @Override
-    public boolean updateUsername(User user, String username) {
+    public boolean updateUsername(User user) {
         final String sql = """
                 update users
                 set username = :username
                 where user_id = :user_id;
                 """;
         return jdbcClient.sql(sql)
-                .param("username", username)
+                .param("username", user.getUsername())
                 .param("user_id", user.getUserId())
                 .update() > 0;
 

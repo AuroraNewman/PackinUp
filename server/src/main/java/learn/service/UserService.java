@@ -18,11 +18,39 @@ public class UserService {
     public UserService(UserRepository repository) {
         this.repository = repository;
     }
-    public User findById(int userId) {
-        return null;
+    public Result<User> findById(int userId) {
+        Result<User> result = new Result<>();
+        //todo ask pete how to change to use with validation
+        if (userId <= 0) {
+            result.addErrorMessage("User id must be greater than 0.", ResultType.INVALID);
+            return result;
+        }
+        User foundUser = repository.findById(userId);
+
+        if (foundUser == null) {
+            //todo ask pete how to change to use with validation
+            result.addErrorMessage("User not found.", ResultType.NOT_FOUND);
+        } else {
+            result.setPayload(foundUser);
+        }
+        return result;
     }
-    public User findByEmail(String email) {
-        return null;
+    public Result<User> findByEmail(String email) {
+        Result<User> result = new Result<>();
+        if (email == null || email.isBlank()) {
+            //todo ask pete how to change to use with validation
+            result.addErrorMessage("Email is required.", ResultType.INVALID);
+            return result;
+        }
+
+        User foundUser = repository.findByEmail(email);
+        //todo ask pete how to change to use with validation
+        if (foundUser == null) {
+            result.addErrorMessage("User not found.", ResultType.NOT_FOUND);
+        } else {
+            result.setPayload(foundUser);
+        }
+        return result;
     }
     public Result<User> create(User user) {
         Result<User> result = validate(user);
@@ -52,6 +80,7 @@ public class UserService {
         Result<User> result = new Result<>();
 
         if (user == null){
+            //todo ask pete how to change to use with validation
             result.addErrorMessage("User is required.", ResultType.INVALID);
             return result;
         }

@@ -19,13 +19,63 @@ class UserServiceTest {
 
     @MockBean
     UserRepository repository;
+    @Nested
+    public class FindTests {
+        @Test
+        void findById() {
+            Result<User> expected = new Result<>();
+            expected.setPayload(TestHelper.existingUser);
+            when(repository.findById(TestHelper.existingUser.getUserId())).thenReturn(TestHelper.existingUser);
 
-    @Test
-    void findById() {
-    }
+            Result<User> actual = service.findById(TestHelper.existingUser.getUserId());
 
-    @Test
-    void findByEmail() {
+            assertEquals(expected, actual);
+            assertEquals(TestHelper.existingUser, actual.getPayload());
+        }
+
+        @Test
+        void shouldNotFindByMissingId() {
+            Result<User> expected = new Result<>();
+            expected.addErrorMessage("User not found.", ResultType.NOT_FOUND);
+            when(repository.findById(TestHelper.badId)).thenReturn(null);
+
+            Result<User> actual = service.findById(999);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void shouldNotFindByInvalidId() {
+            Result<User> expected = new Result<>();
+            expected.addErrorMessage("User id must be greater than 0.", ResultType.INVALID);
+
+            Result<User> actual = service.findById(-1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void findByEmail() {
+            Result<User> expected = new Result<>();
+            expected.setPayload(TestHelper.existingUser);
+            when(repository.findByEmail(TestHelper.existingUser.getEmail())).thenReturn(TestHelper.existingUser);
+
+            Result<User> actual = service.findByEmail(TestHelper.existingUser.getEmail());
+
+            assertEquals(expected, actual);
+            assertEquals(TestHelper.existingUser, actual.getPayload());
+        }
+
+        @Test
+        void shouldNotFindByMissingEmail() {
+            Result<User> expected = new Result<>();
+            expected.addErrorMessage("User not found.", ResultType.NOT_FOUND);
+            when(repository.findByEmail(TestHelper.tooLongEmail)).thenReturn(null);
+
+            Result<User> actual = service.findByEmail(TestHelper.tooLongEmail);
+
+            assertEquals(expected, actual);
+        }
     }
     @Nested
     public class CreateTests {
