@@ -1,8 +1,7 @@
 package learn.data;
 
-import learn.data.Mappers.UserMapper;
+import learn.data.mappers.UserMapper;
 import learn.models.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
