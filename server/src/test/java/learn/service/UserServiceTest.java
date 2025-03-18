@@ -344,7 +344,37 @@ class UserServiceTest {
         }
     }
 
-    @Test
-    void delete() {
+    @Nested
+    public class DeleteTests {
+        @Test
+        void shouldDelete() {
+            Result<Boolean> expected = new Result<>();
+            expected.setPayload(true);
+            when(repository.delete(TestHelper.existingUser.getUserId())).thenReturn(true);
+
+            Result<Boolean> actual = service.delete(TestHelper.existingUser.getUserId());
+
+            assertEquals(expected, actual);
+            assertTrue(actual.getPayload());
+        }
+        @Test
+        void shouldNotDeleteInvalidId(){
+            Result<Boolean> expected = new Result<>();
+            expected.addErrorMessage("User id must be greater than 0.", ResultType.INVALID);
+
+            Result<Boolean> actual = service.delete(TestHelper.badId);
+
+            assertEquals(expected, actual);
+        }
+        @Test
+        void shouldNotDeleteMissingId(){
+            Result<Boolean> expected = new Result<>();
+            expected.addErrorMessage("User not found.", ResultType.NOT_FOUND);
+            when(repository.delete(-1 * TestHelper.badId)).thenReturn(false);
+
+            Result<Boolean> actual = service.delete(-1 * TestHelper.badId);
+
+            assertEquals(expected, actual);
+        }
     }
 }

@@ -84,8 +84,23 @@ public class UserService {
         return result;
     }
 
-    public Result<User> delete(int userId) {
-        return null;
+    public Result<Boolean> delete(int userId) {
+        Result<Boolean> result = new Result<>();
+
+        Boolean deleted = false;
+
+        if (userId <= 0) {
+            result.addErrorMessage("User id must be greater than 0.", ResultType.INVALID);
+            return result;
+        } else {
+            deleted = repository.delete(userId);
+        }
+        if (!deleted) {
+            result.addErrorMessage("User not found.", ResultType.NOT_FOUND);
+        } else {
+            result.setPayload(deleted);
+        }
+        return result;
     }
     private Result<User> validate(User user) {
         Result<User> result = new Result<>();
