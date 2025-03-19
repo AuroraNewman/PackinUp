@@ -43,6 +43,19 @@ const RegisterForm = () => {
             setError('Password must contain at least one special character');
             return;
         }
+        fetch('http://localhost:8080/api/packinup/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: user.username,
+                email: user.email,
+                password: user.password
+            }) 
+            // NB for future self: if this had been the same as made above, could use {user} instead of all this
+
+        })
         navigate('/');
         setError('');
     }
