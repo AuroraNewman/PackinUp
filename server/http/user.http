@@ -155,7 +155,7 @@ Content-Type: application/json
   "password": "Password1!"
 }
 
-### incorrect password (401)
+### incorrect password for existing user (401)
 POST {{url}}/login
 Content-Type: application/json
 
