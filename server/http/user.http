@@ -1,0 +1,125 @@
+@url = http://localhost:8080/api/packinup/user
+
+### Successful create (201)
+POST {{url}}
+Content-Type: application/json
+
+{
+  "username": "TestUser",
+  "email": "testemail@testing.com",
+  "password": "Password1!"
+}
+
+### Empty request body (400)
+POST {{url}}
+Content-Type: application/json
+
+### Invalid empty user (400)
+POST {{url}}
+Content-Type: application/json
+
+{
+  "username": "",
+  "email": "",
+  "password": ""
+}
+
+### Blank username (400)
+POST {{url}}
+Content-Type: application/json
+
+{
+  "username": "",
+  "email": "testemail@testing.com",
+  "password": "Password1!"
+}
+
+### Too long username (400)
+POST {{url}}
+Content-Type: application/json
+
+{
+  "username": "When you know who you are; when your mission is clear and you burn with the inner fire of unbreakable will, no cold can touch your heart, no deluge can dampen your purpose. You know that you are alive.",
+  "email": "testemail@testing.com",
+  "password": "Password1!"
+}
+
+### Too long email (400)
+POST {{url}}
+Content-Type: application/json
+
+{
+  "username": "TestUser",
+  "email": "TaumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahuIsARealPlaceInNewZealand@testing.com",
+  "password": "Password1!"
+}
+
+### Blank email (400)
+POST {{url}}
+Content-Type: application/json
+
+{
+  "username": "TestUser",
+  "email": "",
+  "password": "Password1!"
+}
+
+### Blank password (400)
+POST {{url}}
+Content-Type: application/json
+
+{
+  "username": "TestUser",
+  "email": "testemail@testing.com",
+  "password": ""
+}
+
+### Password no uppercase (400)
+POST {{url}}
+Content-Type: application/json
+
+{
+  "username": "TestUser",
+  "email": "testemail@testing.com",
+  "password": "password1!"
+}
+
+### Password no lowercase (400)
+POST {{url}}
+Content-Type: application/json
+
+{
+  "username": "TestUser",
+  "email": "testemail@testing.com",
+  "password": "PASSWORD1!"
+}
+
+### Password no number (400)
+POST {{url}}
+Content-Type: application/json
+
+{
+  "username": "TestUser",
+  "email": "testemail@testing.com",
+  "password": "Password!"
+}
+
+### Password no special character (400)
+POST {{url}}
+Content-Type: application/json
+
+{
+  "username": "TestUser",
+  "email": "testemail@testing.com",
+  "password": "Password1"
+}
+
+### Password too short (400)
+POST {{url}}
+Content-Type: application/json
+
+{
+  "username": "TestUser",
+  "email": "testemail@testing.com",
+  "password": "Pa1!"
+}

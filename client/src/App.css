@@ -1,0 +1,25 @@
+.nav-link.active{
+    text-decoration: underline;
+}
+
+.navbar {
+    background-color: #e0eafb;
+    /* e0eafb
+    c1d5f8
+    b2caf6
+    */
+    /* width: 100vw; */
+}  
+
+  body, html {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* * {
+    border: 1px solid red;
+  } */
+  
+  main {
+    width: 100vw;
+  }
