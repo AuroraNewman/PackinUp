@@ -56,13 +56,20 @@ const RegisterForm = () => {
             // NB for future self: if this had been the same as made above, could use {user} instead of all this
 
         })
-        navigate('/');
+        .then(response => {
+            if (response.status >= 200 && response.status < 300) {
+                navigate('/');
+            } else {
+                response.json().then(fetchedErrors => setError(fetchedErrors));
+            }
+        })
+        // navigate('/');
         setError('');
     }
 
     return (
         <>
-            <div className="row w-100">
+            <div className="row">
                 <div className="flex d-flex">
                     <div className="col-3"></div>
                     <div className="col-6">
