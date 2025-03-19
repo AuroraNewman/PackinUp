@@ -38,17 +38,19 @@ public class UserJdbcClientRepository implements UserRepository{
     }
 
     @Override
-    public User create(User user) {
+    public User create(User user) throws DuplicateEmailException {
+        int rowsAffected = 0;
         final String sql = """
                 insert into users (username, email, `password`)
                 values (:username, :email, :`password`);
                 """;
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        int rowsAffected = jdbcClient.sql(sql)
-                .param("username", user.getUsername())
-                .param("email", user.getEmail())
-                .param("`password`", user.getPassword())
-                .update(keyHolder, "user_id");
+            rowsAffected = jdbcClient.sql(sql)
+                    .param("username", user.getUsername())
+                    .param("email", user.getEmail())
+                    .param("`password`", user.getPassword())
+                    .update(keyHolder, "user_id");
+
         if (rowsAffected <= 0) {
             return null;
         }
