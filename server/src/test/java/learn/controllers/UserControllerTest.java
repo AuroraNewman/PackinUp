@@ -274,6 +274,24 @@ class UserControllerTest {
                             .content(jsonMapper.writeValueAsString(failAdd)))
                     .andExpect(status().isBadRequest());
         }
+        @Test
+        void shouldReturn400OnDuplicateUsername() throws Exception{
+            User failAdd = new User();
+            failAdd.setUserId(0);
+            failAdd.setUsername(TestHelper.goodUsername);
+            failAdd.setEmail(TestHelper.existingUser.getEmail());
+            failAdd.setPassword(TestHelper.goodPassword);
+
+            Result<User> expectedResult = new Result<>();
+            expectedResult.addErrorMessage("Email already exists.", ResultType.INVALID);
+
+            when(service.create(failAdd)).thenReturn(expectedResult);
+
+            mvc.perform(MockMvcRequestBuilders.post(PREFIX)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonMapper.writeValueAsString(failAdd)))
+                    .andExpect(status().isBadRequest());
+        }
     }
 
     @Test

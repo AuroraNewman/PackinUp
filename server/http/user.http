@@ -123,3 +123,13 @@ Content-Type: application/json
   "email": "testemail@testing.com",
   "password": "Pa1!"
 }
+
+### duplicate email
+POST {{url}}
+Content-Type: application/json
+
+{
+  "username": "TestUser",
+  "email": "Bernie@rubiber.com",
+    "password": "Password1!"
+}
