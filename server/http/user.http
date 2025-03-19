@@ -133,3 +133,33 @@ Content-Type: application/json
   "email": "Bernie@rubiber.com",
     "password": "Password1!"
 }
+
+
+### login requests
+
+### Successful login (200)
+POST {{url}}/login
+Content-Type: application/json
+
+{
+  "email": "testemail@testing.com",
+  "password": "Password1!"
+}
+
+### nonexistent email (404)
+POST {{url}}/login
+Content-Type: application/json
+
+{
+  "email": "doesnotexist@dev10.com",
+  "password": "Password1!"
+}
+
+### incorrect password (401)
+POST {{url}}/login
+Content-Type: application/json
+
+{
+  "email": "testemail@testing.com",
+  "password": "Incorrect5password!"
+}

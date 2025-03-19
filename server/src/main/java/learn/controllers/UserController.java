@@ -1,8 +1,10 @@
 package learn.controllers;
 
 import jakarta.validation.Valid;
+import learn.data_transfer_objects.UserForLogin;
 import learn.models.User;
 import learn.service.Result;
+import learn.service.ResultType;
 import learn.service.UserService;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -39,8 +41,21 @@ public class UserController {
         }
     }
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody @Valid User user, BindingResult bindingResult) {
-        return null;
+    public ResponseEntity<Object> login(@RequestBody @Valid UserForLogin user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(extractDefaultMessageFromBindingResult(bindingResult), HttpStatus.BAD_REQUEST);
+        }
+        Result<User> result = service.findByEmail(user.getEmail());
+
+        if (result.getResultType() == ResultType.NOT_FOUND) {
+            return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.NOT_FOUND);
+        }
+
+        if (result.getPayload().getPassword().equals(user.getPassword())) {
+            return new ResponseEntity<>(result.getPayload(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(List.of("Email and password do not match"), HttpStatus.UNAUTHORIZED);
+        }
     }
     @PutMapping("/{userId}")
     public ResponseEntity<Object> updateUsername(@PathVariable int userId, @RequestBody User user) {
