@@ -33,6 +33,6 @@ public class TestHelper {
         return new TripType(goodId, goodVarCharString, goodVarCharString);
     }
     public static Template makeTestTemplate() {
-        return new Template(goodId, goodVarCharString, goodVarCharString, makeTestTripType(), makeTestUser());
+        return new Template(goodId, goodVarCharString, goodVarCharString, existingTripType, existingUser);
     }
 }
