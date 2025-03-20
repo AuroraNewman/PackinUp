@@ -64,9 +64,12 @@ const UserForm = ({ mode, setLoggedInUser }) => {
         })
             .then(response => {
                 if (response.status >= 200 && response.status < 300) {
-                    response.json().then(fetchedUser => setLoggedInUser(fetchedUser));
-                    // setLoggedInUser(user);
-                    navigate('/');
+                    response.json().then(fetchedUser => {
+                        setLoggedInUser(fetchedUser)
+                        localStorage.setItem("loggedInUser", JSON.stringify(fetchedUser))
+                        navigate('/');
+                    });
+
                 } else {
                     response.json().then(fetchedErrors => setError(fetchedErrors));
                 }
@@ -106,7 +109,6 @@ const UserForm = ({ mode, setLoggedInUser }) => {
                                 </div>
                                 : null}
                             <button type="submit" className="btn btn-primary">Submit</button>
-
                         </form>
                     </div>
                     <div className="col-3"></div>

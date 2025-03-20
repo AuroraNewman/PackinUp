@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css'
 import NavBar from './components/NavBar';
@@ -10,7 +10,14 @@ const App = () => {
 
   const [loggedInUser, setLoggedInUser] = useState(null);
 
-  // const navigate = useNavigate();
+  useEffect(() => {
+    
+    if (localStorage.getItem("loggedInUser")) {
+      setLoggedInUser(JSON.parse(localStorage.getItem("loggedInUser")));
+    }
+  }, [])
+
+  //  const navigate = useNavigate();
     
   return (    
       <Router>
