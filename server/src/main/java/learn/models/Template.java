@@ -13,11 +13,9 @@ public class Template {
 
     @Size (min = 1, max = 50, message = "Template name must be between 1 and 50 characters.")
     @NotBlank(message = "Template name is required.")
-    @NotNull(message = "Template name is required.")
     private String templateName;
 
     @NotBlank(message = "Template description is required.")
-    @NotNull(message = "Template description is required.")
     private String templateDescription;
 
     private TripType templateTripType;
