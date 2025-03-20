@@ -70,10 +70,7 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<Object> delete(@PathVariable int userId) {
         Result<Void> result = service.delete(userId);
-        if (result.isSuccess()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.NOT_FOUND);
+        return null;
     }
     private List<String> extractDefaultMessageFromBindingResult(BindingResult bindingResult) {
         return bindingResult.getAllErrors().stream()
