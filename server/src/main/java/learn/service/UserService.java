@@ -4,11 +4,11 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import learn.data.DuplicateFieldException;
 import learn.data.UserRepository;
 import learn.data_transfer_objects.UserWithIdOnly;
 import learn.data_transfer_objects.UserToFindByEmail;
 import learn.models.User;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -21,6 +21,7 @@ public class UserService {
     public UserService(UserRepository repository) {
         this.repository = repository;
     }
+    private final String DUPLICATE_EMAIL_ERROR = "Email already exists.";
     public Result<User> findById(int userId) {
         Result<User> result = validate(new UserWithIdOnly(userId));
         if (!result.isSuccess()){
@@ -53,7 +54,7 @@ public class UserService {
     public Result<User> create(User user) {
         Result<User> result = validate(user);
         if (user != null && repository.findByEmail(user.getEmail()) != null) {
-            result.addErrorMessage("Email already exists.", ResultType.INVALID);
+            result.addErrorMessage(DUPLICATE_EMAIL_ERROR, ResultType.INVALID);
         }
         if (!result.isSuccess()){
             return result;
@@ -61,8 +62,8 @@ public class UserService {
         User addedUser = new User();
         try {
             addedUser = repository.create(user);
-        } catch (DuplicateFieldException e){
-            result.addErrorMessage("Email already exists.", ResultType.INVALID);
+        } catch (DuplicateKeyException e){
+            result.addErrorMessage(DUPLICATE_EMAIL_ERROR, ResultType.INVALID);
         }
 
         if (addedUser == null) {

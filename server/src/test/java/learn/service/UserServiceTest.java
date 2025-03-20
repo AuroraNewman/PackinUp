@@ -1,7 +1,6 @@
 package learn.service;
 
 import learn.TestHelper;
-import learn.data.DuplicateFieldException;
 import learn.data.UserRepository;
 import learn.models.User;
 import org.junit.jupiter.api.Nested;
@@ -9,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DuplicateKeyException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -285,7 +285,7 @@ class UserServiceTest {
                     TestHelper.existingUser.getEmail(),
                     TestHelper.goodUser.getPassword()
             );
-            when(repository.create(toCreate)).thenThrow(DuplicateFieldException.class);
+            when(repository.create(toCreate)).thenThrow(DuplicateKeyException.class);
             Result<User> actual = service.create(toCreate);
 
             assertFalse(actual.isSuccess());

@@ -2,6 +2,7 @@ package learn.data;
 
 import learn.data.mappers.UserMapper;
 import learn.models.User;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -38,7 +39,7 @@ public class UserJdbcClientRepository implements UserRepository{
     }
 
     @Override
-    public User create(User user) throws DuplicateFieldException {
+    public User create(User user) throws DuplicateKeyException {
         int rowsAffected = 0;
         final String sql = """
                 insert into users (username, email, `password`)
