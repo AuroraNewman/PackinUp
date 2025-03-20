@@ -4,6 +4,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import learn.data.DuplicateEmailException;
 import learn.data.UserRepository;
 import learn.data_transfer_objects.UserWithIdOnly;
 import learn.data_transfer_objects.UserToFindByEmail;
@@ -51,12 +52,18 @@ public class UserService {
     }
     public Result<User> create(User user) {
         Result<User> result = validate(user);
-
+        if (user != null && repository.findByEmail(user.getEmail()) != null) {
+            result.addErrorMessage("Email already exists.", ResultType.INVALID);
+        }
         if (!result.isSuccess()){
             return result;
         }
-
-        User addedUser = repository.create(user);
+        User addedUser = new User();
+        try {
+            addedUser = repository.create(user);
+        } catch (DuplicateEmailException e){
+            result.addErrorMessage("Email already exists.", ResultType.INVALID);
+        }
 
         if (addedUser == null) {
             result.addErrorMessage("User could not be created.", ResultType.INVALID);

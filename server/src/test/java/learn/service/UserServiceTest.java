@@ -1,6 +1,7 @@
 package learn.service;
 
 import learn.TestHelper;
+import learn.data.DuplicateEmailException;
 import learn.data.UserRepository;
 import learn.models.User;
 import org.junit.jupiter.api.Nested;
@@ -276,6 +277,34 @@ class UserServiceTest {
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Password must be at least 8 characters long."));
+        }
+        @Test
+        void shouldNotCreateDuplicateEmailUserUseError(){
+            User toCreate = new User(
+                    TestHelper.goodUser.getUsername(),
+                    TestHelper.existingUser.getEmail(),
+                    TestHelper.goodUser.getPassword()
+            );
+            when(repository.create(toCreate)).thenThrow(DuplicateEmailException.class);
+            Result<User> actual = service.create(toCreate);
+
+            assertFalse(actual.isSuccess());
+            assertTrue(actual.getErrorMessages().contains("Email already exists."));
+
+        }
+        @Test
+        void shouldNotCreateDuplicateEmailUserUseRepoCheck(){
+            User toCreate = new User(
+                    TestHelper.goodUser.getUsername(),
+                    TestHelper.existingUser.getEmail(),
+                    TestHelper.goodUser.getPassword()
+            );
+            when(repository.findByEmail(toCreate.getEmail())).thenReturn(TestHelper.existingUser);
+            Result<User> actual = service.create(toCreate);
+
+            assertFalse(actual.isSuccess());
+            assertTrue(actual.getErrorMessages().contains("Email already exists."));
+
         }
     }
     @Nested

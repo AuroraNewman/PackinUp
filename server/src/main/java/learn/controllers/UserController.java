@@ -1,8 +1,13 @@
 package learn.controllers;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import jakarta.validation.Valid;
+import learn.data_transfer_objects.UserForLogin;
 import learn.models.User;
 import learn.service.Result;
+import learn.service.ResultType;
 import learn.service.UserService;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -32,15 +37,27 @@ public class UserController {
         Result<User> result = service.create(user);
 
         if (result.isSuccess()) {
-//            Map<String, String> output = createJwtFromUser(result.getPayload());
-            return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
+            return new ResponseEntity<>(createJwtFromUser(result.getPayload()), HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
         }
     }
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody @Valid User user, BindingResult bindingResult) {
-        return null;
+    public ResponseEntity<Object> login(@RequestBody @Valid UserForLogin user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(extractDefaultMessageFromBindingResult(bindingResult), HttpStatus.BAD_REQUEST);
+        }
+        Result<User> result = service.findByEmail(user.getEmail());
+
+        if (result.getResultType() == ResultType.NOT_FOUND) {
+            return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.NOT_FOUND);
+        }
+
+        if (result.getPayload().getPassword().equals(user.getPassword())) {
+            return new ResponseEntity<>(createJwtFromUser(result.getPayload()), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(List.of("Email and password do not match"), HttpStatus.UNAUTHORIZED);
+        }
     }
     @PutMapping("/{userId}")
     public ResponseEntity<Object> updateUsername(@PathVariable int userId, @RequestBody User user) {
@@ -62,5 +79,14 @@ public class UserController {
         return bindingResult.getAllErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
+    }
+    private Map<String, String> createJwtFromUser(User user) {
+        String jwt = Jwts.builder()
+                .claim("email", user.getEmail())
+                .claim("username", user.getUsername())
+                .claim("userId", user.getUserId())
+                .signWith(Keys.secretKeyFor(SignatureAlgorithm.HS256))
+                .compact();
+        return Map.of("jwt", jwt);
     }
 }

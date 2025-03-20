@@ -274,10 +274,74 @@ class UserControllerTest {
                             .content(jsonMapper.writeValueAsString(failAdd)))
                     .andExpect(status().isBadRequest());
         }
+        @Test
+        void shouldReturn400OnDuplicateUsername() throws Exception{
+            User failAdd = new User();
+            failAdd.setUserId(0);
+            failAdd.setUsername(TestHelper.goodUsername);
+            failAdd.setEmail(TestHelper.existingUser.getEmail());
+            failAdd.setPassword(TestHelper.goodPassword);
+
+            Result<User> expectedResult = new Result<>();
+            expectedResult.addErrorMessage("Email already exists.", ResultType.INVALID);
+
+            when(service.create(failAdd)).thenReturn(expectedResult);
+
+            mvc.perform(MockMvcRequestBuilders.post(PREFIX)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonMapper.writeValueAsString(failAdd)))
+                    .andExpect(status().isBadRequest());
+        }
     }
 
-    @Test
-    void login() {
+    @Nested
+    public class LoginTests {
+        @Test
+        void shouldLogin() throws Exception {
+            User loginUser = TestHelper.existingUser;
+            Result<User> expectedResult = new Result<>();
+            expectedResult.setPayload(loginUser);
+            when(service.findByEmail(loginUser.getEmail())).thenReturn(expectedResult);
+
+            mvc.perform(MockMvcRequestBuilders.post(PREFIX + "/login")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(jsonMapper.writeValueAsString(loginUser)))
+                    .andExpect(MockMvcResultMatchers.status().isOk());
+        }
+        @Test
+        void shouldFailToLoginNonexistentEmail() throws Exception{
+            User failLogin = new User();
+            failLogin.setUserId(0);
+            failLogin.setUsername(TestHelper.existingUser.getUsername());
+            failLogin.setEmail("emaildoesntexist@dev10.com");
+            failLogin.setPassword(TestHelper.existingUser.getPassword());
+
+            Result<User> expectedResult = new Result<>();
+            expectedResult.addErrorMessage("Email not found.", ResultType.NOT_FOUND);
+            when(service.findByEmail(failLogin.getEmail())).thenReturn(expectedResult);
+
+            mvc.perform(MockMvcRequestBuilders.post(PREFIX + "/login")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(jsonMapper.writeValueAsString(failLogin)))
+                    .andExpect(MockMvcResultMatchers.status().isNotFound());
+        }
+        @Test
+        void shouldFailToLoginBadPassword() throws Exception{
+            User failLogin = new User();
+            failLogin.setUserId(0);
+            failLogin.setUsername(TestHelper.existingUser.getUsername());
+            failLogin.setEmail(TestHelper.existingUser.getEmail());
+            failLogin.setPassword(TestHelper.goodPassword);
+
+            Result<User> expectedResult = new Result<>();
+            expectedResult.addErrorMessage("Email and password do not match.", ResultType.NOT_FOUND);
+            when(service.findByEmail(failLogin.getEmail())).thenReturn(expectedResult);
+
+            mvc.perform(MockMvcRequestBuilders.post(PREFIX + "/login")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonMapper.writeValueAsString(failLogin)))
+                    .andExpect(MockMvcResultMatchers.status().isNotFound());
+        }
     }
 
     @Test
