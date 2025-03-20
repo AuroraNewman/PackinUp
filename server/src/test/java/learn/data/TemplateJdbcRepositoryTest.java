@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,6 +49,14 @@ class TemplateJdbcRepositoryTest {
 
         assertNotNull(actual);
         assertEquals(expected, actual);
+    }
+    @Test
+    void shouldNotCreateDuplicateName(){
+        Template beforeAdd = testTemplate;
+        beforeAdd.setTemplateId(0);
+        beforeAdd.setTemplateName(TestHelper.existingTemplate.getTemplateName());
+
+        assertThrows(DuplicateKeyException.class, () -> repository.create(beforeAdd));
     }
 
 }

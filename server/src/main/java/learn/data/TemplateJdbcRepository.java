@@ -2,6 +2,7 @@ package learn.data;
 
 import learn.data.mappers.TemplateMapper;
 import learn.models.Template;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -43,19 +44,20 @@ public class TemplateJdbcRepository implements TemplateRepository{
     }
 
     @Override
-    public Template create(Template template) throws DuplicateFieldException{
+    public Template create(Template template) throws DuplicateKeyException{
         int rowsAffected = 0;
         final String sql = """
                 insert into templates(template_name, template_description, template_trip_type_id, template_user_id)
                 values(:template_name, :template_description, :template_trip_type_id, :template_user_id);
                 """;
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        rowsAffected = jdbcClient.sql(sql)
-                .param("template_name", template.getTemplateName())
-                .param("template_description", template.getTemplateDescription())
-                .param("template_user_id", template.getTemplateUser().getUserId())
-                .param("template_trip_type_id", template.getTemplateTripType().getTripTypeId())
-                .update(keyHolder, "template_id");
+            rowsAffected = jdbcClient.sql(sql)
+                    .param("template_name", template.getTemplateName())
+                    .param("template_description", template.getTemplateDescription())
+                    .param("template_user_id", template.getTemplateUser().getUserId())
+                    .param("template_trip_type_id", template.getTemplateTripType().getTripTypeId())
+                    .update(keyHolder, "template_id");
+
         if (rowsAffected <= 0) {
             return null;
         }
