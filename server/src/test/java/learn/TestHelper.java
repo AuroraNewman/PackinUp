@@ -5,6 +5,8 @@ import learn.models.User;
 public class TestHelper {
     public static int badId = -999;
     public static int goodId = 1;
+    public static String goodVarCharString = "TestString";
+// User data
     public static String tooLongUsername = "When you know who you are; when your mission is clear and you burn with the inner fire of unbreakable will, no cold can touch your heart, no deluge can dampen your purpose. You know that you are alive.";
     public static String goodUsername = "TestUser";
     public static String badFormatEmail = "testuser@";
@@ -19,4 +21,9 @@ public class TestHelper {
 
     public static User goodUser = new User(goodId, goodUsername, goodEmail, goodPassword);
     public static User existingUser = new User(1, "Bernie", "Bernie@rubiber.com", "veryg00dPassword!");
+
+//    trip type data
+    public static String tooLongTripTypeName = "When you know who you are; when your mission is clear and you burn with the inner fire of unbreakable will, no cold can touch your heart, no deluge can dampen your purpose. You know that you are alive.";
+    public static String goodTripTypeName = "TestTripType";
+    public static String badFormatTripType = "TestTripType!";
 }
