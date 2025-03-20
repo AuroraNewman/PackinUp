@@ -5,7 +5,6 @@ import logo from '../assets/logo.png';
 const NavBar = ({ loggedInUser, setLoggedInUser }) => {
     return (
         <>
-
             <nav className="navbar fixed-top navbar-expand-sm navbar-light">
                 <NavLink className='navbar-brand' to='/'>
                     <img src={logo} alt='Packin Up Logo' width='60' />

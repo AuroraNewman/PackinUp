@@ -86,7 +86,7 @@ const UserForm = ({ mode, setLoggedInUser }) => {
                     <div className="col-6">
                         <h4>{mode === 'login' ? 'Log in' : 'Register'}</h4>
                         {error && <div className="alert alert-danger" role="alert">{error}</div>}
-                        <label htmlFor="user-form">{mode === 'login' ? 'Log in' : 'Register'}</label>
+                        <label htmlFor="user-form"></label>
                         <form onSubmit={handleSubmit}>
                             {mode === 'register' ?
                                 <div className="form-group">
