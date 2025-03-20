@@ -3,6 +3,6 @@ package learn.data;
 import learn.models.Template;
 
 public interface TemplateRepository {
-    Template findById(int templateId);
+    Template findByName(String templateName);
     Template create(Template template);
 }

@@ -1,5 +1,6 @@
 package learn.data;
 
+import learn.data.mappers.TemplateMapper;
 import learn.models.Template;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -33,12 +34,16 @@ public class TemplateJdbcRepository implements TemplateRepository{
     }
 
     @Override
-    public Template findById(int templateId) {
-        return null;
+    public Template findByName(String templateName) {
+        final String sql = SELECT + " where t.template_name = ?;";
+        return jdbcClient.sql(sql)
+                .param(templateName)
+                .query(new TemplateMapper())
+                .optional().orElse(null);
     }
 
     @Override
-    public Template create(Template template) {
+    public Template create(Template template) throws DuplicateFieldException{
         int rowsAffected = 0;
         final String sql = """
                 insert into templates(template_name, template_description, template_trip_type_id, template_user_id)

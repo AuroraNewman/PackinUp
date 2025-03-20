@@ -23,7 +23,19 @@ class TemplateJdbcRepositoryTest {
     }
 
     @Test
-    void findById() {
+    void shouldFindByName() {
+        Template expected = TestHelper.existingTemplate;
+
+        Template actual = repository.findByName(TestHelper.existingTemplate.getTemplateName());
+
+        assertNotNull(actual);
+        assertEquals(expected, actual);
+    }
+    @Test
+    void shouldNotFindByMissingName() {
+        Template actual = repository.findByName("Missing Name");
+
+        assertNull(actual);
     }
 
     @Test
