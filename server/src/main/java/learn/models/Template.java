@@ -20,22 +20,27 @@ public class Template {
     @NotNull(message = "Template description is required.")
     private String templateDescription;
 
-    private TripType tripType;
+    private TripType templateTripType;
+
+    @NotNull(message = "User is required.")
+    private User templateUser;
 
     public Template() {
     }
 
-    public Template(String templateName, String templateDescription, TripType tripType) {
+    public Template(String templateName, String templateDescription, TripType templateTripType, User templateUser) {
         this.templateName = templateName;
         this.templateDescription = templateDescription;
-        this.tripType = tripType;
+        this.templateTripType = templateTripType;
+        this.templateUser = templateUser;
     }
 
-    public Template(int templateId, String templateName, String templateDescription, TripType tripType) {
+    public Template(int templateId, String templateName, String templateDescription, TripType templateTripType, User templateUser) {
         this.templateId = templateId;
         this.templateName = templateName;
         this.templateDescription = templateDescription;
-        this.tripType = tripType;
+        this.templateTripType = templateTripType;
+        this.templateUser = templateUser;
     }
 
     public int getTemplateId() {
@@ -62,23 +67,31 @@ public class Template {
         this.templateDescription = templateDescription;
     }
 
-    public TripType getTripType() {
-        return tripType;
+    public TripType getTemplateTripType() {
+        return templateTripType;
     }
 
-    public void setTripType(TripType tripType) {
-        this.tripType = tripType;
+    public void setTemplateTripType(TripType templateTripType) {
+        this.templateTripType = templateTripType;
+    }
+
+    public User getTemplateUser() {
+        return templateUser;
+    }
+
+    public void setTemplateUser(User templateUser) {
+        this.templateUser = templateUser;
     }
 
     @Override
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
         Template template = (Template) object;
-        return getTemplateId() == template.getTemplateId() && Objects.equals(getTemplateName(), template.getTemplateName()) && Objects.equals(getTemplateDescription(), template.getTemplateDescription()) && Objects.equals(getTripType(), template.getTripType());
+        return getTemplateId() == template.getTemplateId() && Objects.equals(getTemplateName(), template.getTemplateName()) && Objects.equals(getTemplateDescription(), template.getTemplateDescription()) && Objects.equals(getTemplateTripType(), template.getTemplateTripType()) && Objects.equals(getTemplateUser(), template.getTemplateUser());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTemplateId(), getTemplateName(), getTemplateDescription(), getTripType());
+        return Objects.hash(getTemplateId(), getTemplateName(), getTemplateDescription(), getTemplateTripType(), getTemplateUser());
     }
 }

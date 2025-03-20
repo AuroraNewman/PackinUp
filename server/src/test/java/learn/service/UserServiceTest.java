@@ -1,7 +1,7 @@
 package learn.service;
 
 import learn.TestHelper;
-import learn.data.DuplicateEmailException;
+import learn.data.DuplicateFieldException;
 import learn.data.UserRepository;
 import learn.models.User;
 import org.junit.jupiter.api.Nested;
@@ -285,7 +285,7 @@ class UserServiceTest {
                     TestHelper.existingUser.getEmail(),
                     TestHelper.goodUser.getPassword()
             );
-            when(repository.create(toCreate)).thenThrow(DuplicateEmailException.class);
+            when(repository.create(toCreate)).thenThrow(DuplicateFieldException.class);
             Result<User> actual = service.create(toCreate);
 
             assertFalse(actual.isSuccess());

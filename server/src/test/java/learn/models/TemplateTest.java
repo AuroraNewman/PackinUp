@@ -17,7 +17,7 @@ class TemplateTest {
     @BeforeEach
     void setUp() {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
-        testTemplate = new Template(TestHelper.goodId, TestHelper.goodVarCharString, TestHelper.goodVarCharString, TestHelper.goodTripType);
+        testTemplate = new Template(TestHelper.goodId, TestHelper.goodVarCharString, TestHelper.goodVarCharString, TestHelper.goodTripType, TestHelper.goodUser);
     }
     @Test
     void nonPositiveTemplateIdIsInvalid() {
@@ -65,9 +65,21 @@ class TemplateTest {
     @Test
     void nullTemplateDescriptionInvalid() {
         testTemplate.setTemplateDescription(null);
-        String expectedErrorMessage = "Template Description is required.";
+        String expectedErrorMessage = "Template description is required.";
 
         List<String> errorMessages = getErrorMessages(testTemplate);
+
+        assertTrue(errorMessages.contains(expectedErrorMessage));
+    }
+
+    @Test
+    void nullUserInvalid() {
+        testTemplate.setTemplateUser(null);
+        String expectedErrorMessage = "User is required.";
+
+        List<String> errorMessages = getErrorMessages(testTemplate);
+
+        assertTrue(errorMessages.contains(expectedErrorMessage));
     }
 
 

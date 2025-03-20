@@ -38,7 +38,7 @@ public class UserJdbcClientRepository implements UserRepository{
     }
 
     @Override
-    public User create(User user) throws DuplicateEmailException {
+    public User create(User user) throws DuplicateFieldException {
         int rowsAffected = 0;
         final String sql = """
                 insert into users (username, email, `password`)

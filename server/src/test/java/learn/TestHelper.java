@@ -28,5 +28,5 @@ public class TestHelper {
     public static TripType goodTripType = new TripType(goodId, goodVarCharString, goodVarCharString);
 
 //    template data
-    public static Template goodTemplate = new Template(goodId, goodVarCharString, goodVarCharString, goodTripType);
+    public static Template goodTemplate = new Template(goodId, goodVarCharString, goodVarCharString, goodTripType, goodUser);
 }
