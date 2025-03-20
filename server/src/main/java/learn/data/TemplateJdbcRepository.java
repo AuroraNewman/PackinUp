@@ -55,6 +55,6 @@ public class TemplateJdbcRepository implements TemplateRepository{
             return null;
         }
         template.setTemplateId(keyHolder.getKey().intValue());
-        return null;
+        return template;
     }
 }

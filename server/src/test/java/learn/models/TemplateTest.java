@@ -62,7 +62,7 @@ class TemplateTest {
 
         assertTrue(errorMessages.contains(expectedErrorMessage));
     }
-    
+
     @Test
     void nullTemplateDescriptionInvalid() {
         testTemplate.setTemplateDescription(null);
