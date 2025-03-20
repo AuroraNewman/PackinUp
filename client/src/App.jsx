@@ -27,7 +27,7 @@ const App = () => {
           <NavBar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
           <main>
             {/* todo: only display welcome on landing page */}
-            <h1>{loggedInUser !== null ? <h1>Welcome, {loggedInUser.username}</h1> : null}</h1>
+            {loggedInUser !== null ? <h1>Welcome, {loggedInUser.username}</h1> : null}
             <Routes>
               <Route path="/" />
               {/* must be logged out */}

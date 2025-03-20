@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const UserForm = ({ mode, setLoggedInUser }) => {
 
@@ -48,25 +49,25 @@ const UserForm = ({ mode, setLoggedInUser }) => {
             }
         }
 
-        { mode === 'login' ? url = url + "/login" : null }
+        // if (mode === 'login') {
+        //     url = url + "/login";
+        // }
+        mode === 'login' && (url = url + "/login");
         fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                ...(mode === 'register' ? { username: user.username } : {}),
-                email: user.email,
-                password: user.password
-            })
-            // NB for future self: if this had been the same as made above, could use {user} instead of all this
+            body: JSON.stringify(user)
 
         })
             .then(response => {
                 if (response.status >= 200 && response.status < 300) {
                     response.json().then(fetchedUser => {
-                        setLoggedInUser(fetchedUser)
-                        localStorage.setItem("loggedInUser", JSON.stringify(fetchedUser))
+                        const user = jwtDecode(fetchedUser.jwt);
+                        user.jwt = fetchedUser.jwt;
+                        setLoggedInUser(user)
+                        localStorage.setItem("loggedInUser", JSON.stringify(user))
                         navigate('/');
                     });
 
@@ -74,7 +75,6 @@ const UserForm = ({ mode, setLoggedInUser }) => {
                     response.json().then(fetchedErrors => setError(fetchedErrors));
                 }
             })
-        // navigate('/');
         setError('');
     }
 

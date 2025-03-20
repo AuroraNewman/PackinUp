@@ -1,5 +1,8 @@
 package learn.controllers;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import jakarta.validation.Valid;
 import learn.data_transfer_objects.UserForLogin;
 import learn.models.User;
@@ -34,8 +37,7 @@ public class UserController {
         Result<User> result = service.create(user);
 
         if (result.isSuccess()) {
-//            Map<String, String> output = createJwtFromUser(result.getPayload());
-            return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
+            return new ResponseEntity<>(createJwtFromUser(result.getPayload()), HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
         }
@@ -52,7 +54,7 @@ public class UserController {
         }
 
         if (result.getPayload().getPassword().equals(user.getPassword())) {
-            return new ResponseEntity<>(result.getPayload(), HttpStatus.OK);
+            return new ResponseEntity<>(createJwtFromUser(result.getPayload()), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(List.of("Email and password do not match"), HttpStatus.UNAUTHORIZED);
         }
@@ -77,5 +79,14 @@ public class UserController {
         return bindingResult.getAllErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
+    }
+    private Map<String, String> createJwtFromUser(User user) {
+        String jwt = Jwts.builder()
+                .claim("email", user.getEmail())
+                .claim("username", user.getUsername())
+                .claim("userId", user.getUserId())
+                .signWith(Keys.secretKeyFor(SignatureAlgorithm.HS256))
+                .compact();
+        return Map.of("jwt", jwt);
     }
 }

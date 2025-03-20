@@ -25,16 +25,7 @@ const NavBar = ({ loggedInUser, setLoggedInUser }) => {
                                 <NavLink to='/login' className={(arg) => { return (arg.isActive) ? 'nav-link active' : 'nav-link' }} >Log In</NavLink>
                             </>
                             :
-                            <>
-                                <ul>
-                                    <li className="nav-item">
-                                        <button className={(arg) => (arg.isActive) ? 'nav-link active' : 'nav-link'} onClick={() => {
-                                            setLoggedInUser(null)
-                                            localStorage.clear('loggedInUser')
-                                        }}>Log Out</button>
-                                    </li>
-                                </ul>
-
+                            <>                                
                                 <NavLink to='/logout' className={(arg) => (arg.isActive) ? 'nav-link active' : 'nav-link'}
                                     onClick={() => {
                                         setLoggedInUser(null)
