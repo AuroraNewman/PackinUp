@@ -31,7 +31,7 @@ const NavBar = ({ loggedInUser, setLoggedInUser }) => {
                                     <li className="nav-item">
                                         <button className={(arg) => (arg.isActive) ? 'nav-link active' : 'nav-link'} onClick={() => {
                                             setLoggedInUser(null)
-                                            localStorage.clear("loggedInUser")
+                                            localStorage.clear('loggedInUser')
                                         }}>Log Out</button>
                                     </li>
                                 </ul>
@@ -39,7 +39,7 @@ const NavBar = ({ loggedInUser, setLoggedInUser }) => {
                                 <NavLink to='/logout' className={(arg) => (arg.isActive) ? 'nav-link active' : 'nav-link'}
                                     onClick={() => {
                                         setLoggedInUser(null)
-                                        localStorage.clear("loggedInUser")
+                                        localStorage.clear('loggedInUser')
                                         navigate('/register');
                                     }} >Log Out</NavLink>
                             </>
