@@ -20,7 +20,7 @@ class TemplateJdbcRepositoryTest {
     @BeforeEach
     void setup() {
         client.sql("call set_known_good_state();").update();
-        testTemplate = new Template(TestHelper.goodId, TestHelper.goodVarCharString, TestHelper.goodVarCharString, TestHelper.goodTripType, TestHelper.goodUser);
+        testTemplate = TestHelper.makeTestTemplate();
     }
 
     @Test
@@ -43,7 +43,8 @@ class TemplateJdbcRepositoryTest {
     void shouldCreate() {
         Template beforeAdd = testTemplate;
         beforeAdd.setTemplateId(0);
-        Template expected = new Template(4, TestHelper.goodTemplate.getTemplateName(), TestHelper.goodTemplate.getTemplateDescription(), TestHelper.goodTemplate.getTemplateTripType(), TestHelper.goodTemplate.getTemplateUser());
+        Template expected = TestHelper.makeTestTemplate();
+        expected.setTemplateId(4);
 
         Template actual = repository.create(beforeAdd);
 

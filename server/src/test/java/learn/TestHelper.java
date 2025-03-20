@@ -21,14 +21,18 @@ public class TestHelper {
     public static String badFormatPasswordShort = "Pa1!";
     public static String goodPassword = "Password1!";
 
-    public static User goodUser = new User(goodId, goodUsername, goodEmail, goodPassword);
+
     public static User existingUser = new User(1, "Bernie", "Bernie@rubiber.com", "veryg00dPassword!");
-
-//    trip type data
-    public static TripType goodTripType = new TripType(goodId, goodVarCharString, goodVarCharString);
     public static TripType existingTripType = new TripType(1, "General", "Not specified");
-
-//    template data
-    public static Template goodTemplate = new Template(goodId, goodVarCharString, goodVarCharString, goodTripType, goodUser);
     public static Template existingTemplate = new Template(1, "General", "Not specified", existingTripType, existingUser);
+
+    public static User makeTestUser() {
+        return new User(goodId, goodUsername, goodEmail, goodPassword);
+    }
+    public static TripType makeTestTripType() {
+        return new TripType(goodId, goodVarCharString, goodVarCharString);
+    }
+    public static Template makeTestTemplate() {
+        return new Template(goodId, goodVarCharString, goodVarCharString, makeTestTripType(), makeTestUser());
+    }
 }

@@ -17,7 +17,7 @@ class TemplateTest {
     @BeforeEach
     void setUp() {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
-        testTemplate = new Template(TestHelper.goodId, TestHelper.goodVarCharString, TestHelper.goodVarCharString, TestHelper.goodTripType, TestHelper.goodUser);
+        testTemplate = TestHelper.makeTestTemplate();
     }
     @Test
     void nonPositiveTemplateIdIsInvalid() {
