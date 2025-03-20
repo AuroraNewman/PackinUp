@@ -31,7 +31,7 @@ class TripTypeTest {
     }
     @Test
     void tooLongTripTypeNameInvalid(){
-        testTripType.setTripTypeName(TestHelper.tooLongTripTypeName);
+        testTripType.setTripTypeName(TestHelper.tooLongVarCharString);
         String expectedErrorMessage = "Trip Type Name must be between 1 and 50 characters.";
 
         List<String> errorMessages = getErrorMessages(testTripType);

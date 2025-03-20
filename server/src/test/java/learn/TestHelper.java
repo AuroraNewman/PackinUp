@@ -1,13 +1,15 @@
 package learn;
 
+import learn.models.Template;
+import learn.models.TripType;
 import learn.models.User;
 
 public class TestHelper {
     public static int badId = -999;
     public static int goodId = 1;
     public static String goodVarCharString = "TestString";
+    public static String tooLongVarCharString = "When you know who you are; when your mission is clear and you burn with the inner fire of unbreakable will, no cold can touch your heart, no deluge can dampen your purpose. You know that you are alive.";
 // User data
-    public static String tooLongUsername = "When you know who you are; when your mission is clear and you burn with the inner fire of unbreakable will, no cold can touch your heart, no deluge can dampen your purpose. You know that you are alive.";
     public static String goodUsername = "TestUser";
     public static String badFormatEmail = "testuser@";
     public static String goodEmail = "testemail@testing.com";
@@ -23,7 +25,8 @@ public class TestHelper {
     public static User existingUser = new User(1, "Bernie", "Bernie@rubiber.com", "veryg00dPassword!");
 
 //    trip type data
-    public static String tooLongTripTypeName = "When you know who you are; when your mission is clear and you burn with the inner fire of unbreakable will, no cold can touch your heart, no deluge can dampen your purpose. You know that you are alive.";
-    public static String goodTripTypeName = "TestTripType";
-    public static String badFormatTripType = "TestTripType!";
+    public static TripType goodTripType = new TripType(goodId, goodVarCharString, goodVarCharString);
+
+//    template data
+    public static Template goodTemplate = new Template(goodId, goodVarCharString, goodVarCharString, goodTripType);
 }

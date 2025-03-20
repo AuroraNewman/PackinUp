@@ -112,7 +112,7 @@ class UserServiceTest {
         @Test
         void shouldNotCreateLongUsername(){
             User toCreate = new User(
-                    TestHelper.tooLongUsername,
+                    TestHelper.tooLongVarCharString,
                     TestHelper.goodUser.getEmail(),
                     TestHelper.goodUser.getPassword()
             );
@@ -337,7 +337,7 @@ class UserServiceTest {
         void shouldNotUpdateLongUsername(){
             User toUpdate = new User(
                     TestHelper.existingUser.getUserId(),
-                    TestHelper.tooLongUsername,
+                    TestHelper.tooLongVarCharString,
                     TestHelper.existingUser.getEmail(),
                     TestHelper.existingUser.getPassword()
             );

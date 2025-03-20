@@ -116,7 +116,7 @@ class UserControllerTest {
         void shouldReturn400OnLongUsername() throws Exception {
             User failAdd = new User();
             failAdd.setUserId(0);
-            failAdd.setUsername(TestHelper.tooLongUsername);
+            failAdd.setUsername(TestHelper.tooLongVarCharString);
             failAdd.setEmail(TestHelper.goodEmail);
             failAdd.setPassword(TestHelper.goodPassword);
 
