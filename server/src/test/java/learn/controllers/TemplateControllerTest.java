@@ -1,11 +1,13 @@
 package learn.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import learn.TestHelper;
-import learn.data_transfer_objects.IncomingPackingList;
-import learn.models.PackingList;
+import learn.data_transfer_objects.IncomingTemplate;
+import learn.models.Template;
+import learn.models.User;
 import learn.service.Result;
-import learn.service.PackingListService;
+import learn.service.TemplateService;
 import learn.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -30,7 +32,7 @@ class TemplateControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    private PackingListService service;
+    private TemplateService service;
 
     @Autowired
     private ObjectMapper jsonMapper;
@@ -42,11 +44,11 @@ class TemplateControllerTest {
     private SecretSigningKey secretSigningKey;
 
     private final String PREFIX = "/api/packinup/template";
-    private PackingList testPackingList;
-    private IncomingPackingList testAddTemplate;
+    private Template testTemplate;
+    private IncomingTemplate testAddTemplate;
     @BeforeEach
     void setUp(){
-        testPackingList = TestHelper.makeTestTemplate();
+        testTemplate = TestHelper.makeTestTemplate();
         testAddTemplate = TestHelper.makeTestAddTemplate();
     }
 
@@ -66,11 +68,11 @@ class TemplateControllerTest {
             MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(PREFIX)
                     .contentType(MediaType.APPLICATION_JSON);
 
-            IncomingPackingList beforeAdd = testAddTemplate;
-            PackingList serviceAdd = TestHelper.makeTestTemplate();
+            IncomingTemplate beforeAdd = testAddTemplate;
+            Template serviceAdd = TestHelper.makeTestTemplate();
             serviceAdd.setTemplateId(0);
-            PackingList afterAdd = TestHelper.makeTestTemplate();
-            Result<PackingList> expectedResult = new Result<>();
+            Template afterAdd = TestHelper.makeTestTemplate();
+            Result<Template> expectedResult = new Result<>();
             expectedResult.setPayload(afterAdd);
 
             String templateJson = jsonMapper.writeValueAsString(beforeAdd);

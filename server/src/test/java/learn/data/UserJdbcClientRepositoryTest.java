@@ -3,7 +3,6 @@ package learn.data;
 import learn.TestHelper;
 import learn.models.User;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,40 +22,36 @@ class UserJdbcClientRepositoryTest {
         client.sql("call set_known_good_state();").update();
         testUser = new User(TestHelper.goodId, TestHelper.goodUsername, TestHelper.goodEmail, TestHelper.goodPassword);
     }
-    @Nested
-    public class FindTests {
-        @Test
-        void findById() {
-            User actual = repository.findById(TestHelper.existingUser.getUserId());
+    @Test
+    void findById() {
+        User actual = repository.findById(TestHelper.existingUser.getUserId());
 
-            assertNotNull(actual);
-            assertEquals(1, actual.getUserId());
-            assertEquals(actual, TestHelper.existingUser);
-        }
+        assertNotNull(actual);
+        assertEquals(1, actual.getUserId());
+        assertEquals(actual, TestHelper.existingUser);
+    }
 
-        @Test
-        void failToFindBadId() {
-            User actual = repository.findById(TestHelper.badId);
+    @Test
+    void failToFindBadId(){
+        User actual = repository.findById(TestHelper.badId);
 
-            assertNull(actual);
-        }
+        assertNull(actual);
+    }
 
-        @Test
-        void findByEmail() {
-            User actual = repository.findByEmail(TestHelper.existingUser.getEmail());
+    @Test
+    void findByEmail() {
+        User actual = repository.findByEmail(TestHelper.existingUser.getEmail());
 
-            assertNotNull(actual);
-            assertEquals(1, actual.getUserId());
-            assertEquals(actual, TestHelper.existingUser);
-        }
+        assertNotNull(actual);
+        assertEquals(1, actual.getUserId());
+        assertEquals(actual, TestHelper.existingUser);
+    }
 
-        @Test
-        void failToFindByEmailBadEmail() {
-            User actual = repository.findByEmail(TestHelper.tooLongEmail);
+    @Test
+    void failToFindByEmailBadEmail(){
+        User actual = repository.findByEmail(TestHelper.tooLongEmail);
 
-            assertNull(actual);
-        }
-
+        assertNull(actual);
     }
 
     @Test

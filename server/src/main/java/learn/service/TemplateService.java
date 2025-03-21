@@ -3,8 +3,8 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import learn.data.PackingListRepository;
-import learn.models.PackingList;
+import learn.data.TemplateRepository;
+import learn.models.Template;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
@@ -12,50 +12,45 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class PackingListService {
-    private PackingListRepository repository;
+public class TemplateService {
+    private TemplateRepository repository;
 
-    public PackingListService(PackingListRepository repository) {
+    public TemplateService(TemplateRepository repository) {
         this.repository = repository;
     }
     private final String DUPLICATE_NAME_ERROR = "Template name already exists.";
 
-    public Result<List<PackingList>> findAllListsByUserId(int userId) {
-        Result<List<PackingList>> result = new Result<>();
-        result.setPayload(repository.findAllListsByUserId(userId));
+    public Result<List<Template>> findByUserId(int userId) {
+        Result<List<Template>> result = new Result<>();
+        result.setPayload(repository.findByUserId(userId));
         return result;
     }
-    public Result<List<PackingList>> findAllTemplatesByUserId(int userId) {
-        Result<List<PackingList>> result = new Result<>();
-        result.setPayload(repository.findAllTemplatesByUserId(userId));
-        return result;
-    }
-    public Result<PackingList> create(PackingList packingList){
-        Result<PackingList> result = validate(packingList);
-       if (packingList != null && repository.findByName(packingList.getTemplateName()) != null){
+    public Result<Template> create(Template template){
+        Result<Template> result = validate(template);
+       if (template != null && repository.findByName(template.getTemplateName()) != null){
               result.addErrorMessage(DUPLICATE_NAME_ERROR, ResultType.INVALID);
        }
         if (!result.isSuccess()){
             return result;
         }
-        PackingList addedPackingList = new PackingList();
+        Template addedTemplate = new Template();
         try {
-            addedPackingList = repository.create(packingList);
+            addedTemplate = repository.create(template);
         } catch (DuplicateKeyException e) {
             result.addErrorMessage(DUPLICATE_NAME_ERROR, ResultType.INVALID);
             return result;
         }
-        if (addedPackingList == null) {
+        if (addedTemplate == null) {
             result.addErrorMessage("Template could not be created.", ResultType.INVALID);
         } else {
-            result.setPayload(addedPackingList);
+            result.setPayload(addedTemplate);
         }
         return result;
     }
-    private Result<PackingList> validate(PackingList packingList) {
-        Result<PackingList> result = new Result<>();
+    private Result<Template> validate(Template template) {
+        Result<Template> result = new Result<>();
 
-        if (packingList == null){
+        if (template == null){
             result.addErrorMessage("Template is required.", ResultType.INVALID);
             return result;
         }
@@ -63,7 +58,7 @@ public class PackingListService {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
 
-        Set<ConstraintViolation<Object>> violations = validator.validate(packingList);
+        Set<ConstraintViolation<Object>> violations = validator.validate(template);
 
         if (!violations.isEmpty()) {
             for (ConstraintViolation<Object> violation : violations) {

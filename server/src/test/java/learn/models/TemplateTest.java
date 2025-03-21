@@ -11,81 +11,81 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PackingListTest {
+class TemplateTest {
     private Validator validator;
-    private static PackingList testPackingList;
+    private static Template testTemplate;
     @BeforeEach
     void setUp() {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
-        testPackingList = TestHelper.makeTestTemplate();
+        testTemplate = TestHelper.makeTestTemplate();
     }
     @Test
     void nonPositiveTemplateIdIsInvalid() {
-        testPackingList.setTemplateId(TestHelper.badId);
+        testTemplate.setTemplateId(TestHelper.badId);
         String expectedErrorMessage = "Template ID must be greater than 0.";
 
-        List<String> errorMessages = getErrorMessages(testPackingList);
+        List<String> errorMessages = getErrorMessages(testTemplate);
 
         assertTrue(errorMessages.contains(expectedErrorMessage));
     }
     @Test
     void tooLongTemplateNameInvalid(){
-        testPackingList.setTemplateName(TestHelper.tooLongVarCharString);
+        testTemplate.setTemplateName(TestHelper.tooLongVarCharString);
         String expectedErrorMessage = "Template name must be between 1 and 50 characters.";
 
-        List<String> errorMessages = getErrorMessages(testPackingList);
+        List<String> errorMessages = getErrorMessages(testTemplate);
 
         assertTrue(errorMessages.contains(expectedErrorMessage));
     }
     @Test
     void blankTemplateNameInvalid(){
-        testPackingList.setTemplateName(" ");
+        testTemplate.setTemplateName(" ");
         String expectedErrorMessage = "Template name is required.";
 
-        List<String> errorMessages = getErrorMessages(testPackingList);
+        List<String> errorMessages = getErrorMessages(testTemplate);
 
         assertTrue(errorMessages.contains(expectedErrorMessage));
     }
     @Test
     void nullTemplateNameInvalid() {
-        testPackingList.setTemplateName(null);
+        testTemplate.setTemplateName(null);
         String expectedErrorMessage = "Template name is required.";
 
-        List<String> errorMessages = getErrorMessages(testPackingList);
+        List<String> errorMessages = getErrorMessages(testTemplate);
     }
 
     void blankTemplateDescriptionInvalid(){
-        testPackingList.setTemplateDescription(" ");
+        testTemplate.setTemplateDescription(" ");
         String expectedErrorMessage = "Template Description is required.";
 
-        List<String> errorMessages = getErrorMessages(testPackingList);
+        List<String> errorMessages = getErrorMessages(testTemplate);
 
         assertTrue(errorMessages.contains(expectedErrorMessage));
     }
 
     @Test
     void nullTemplateDescriptionInvalid() {
-        testPackingList.setTemplateDescription(null);
+        testTemplate.setTemplateDescription(null);
         String expectedErrorMessage = "Template description is required.";
 
-        List<String> errorMessages = getErrorMessages(testPackingList);
+        List<String> errorMessages = getErrorMessages(testTemplate);
 
         assertTrue(errorMessages.contains(expectedErrorMessage));
     }
 
     @Test
     void nullUserInvalid() {
-        testPackingList.setTemplateUser(null);
+        testTemplate.setTemplateUser(null);
         String expectedErrorMessage = "User is required.";
 
-        List<String> errorMessages = getErrorMessages(testPackingList);
+        List<String> errorMessages = getErrorMessages(testTemplate);
 
         assertTrue(errorMessages.contains(expectedErrorMessage));
     }
 
 
-    private List<String> getErrorMessages(PackingList packingList) {
-        return validator.validate(packingList).stream()
+    private List<String> getErrorMessages(Template template) {
+        return validator.validate(template).stream()
                 .map(violation -> violation.getMessage())
                 .collect(Collectors.toList());
     }

@@ -4,12 +4,12 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import jakarta.validation.Valid;
-import learn.data_transfer_objects.IncomingPackingList;
-import learn.models.PackingList;
+import learn.data_transfer_objects.IncomingTemplate;
+import learn.models.Template;
 import learn.models.TripType;
 import learn.models.User;
 import learn.service.Result;
-import learn.service.PackingListService;
+import learn.service.TemplateService;
 import learn.service.TripTypeService;
 import learn.service.UserService;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -26,12 +26,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/packinup/template")
 public class TemplateController {
-    private final PackingListService service;
+    private final TemplateService service;
     private final SecretSigningKey secretSigningKey;
     private final UserService userService;
     private final TripTypeService tripTypeService;
 
-    public TemplateController(PackingListService service, SecretSigningKey secretSigningKey, UserService userService, TripTypeService tripTypeService) {
+    public TemplateController(TemplateService service, SecretSigningKey secretSigningKey, UserService userService, TripTypeService tripTypeService) {
         this.service = service;
         this.secretSigningKey = secretSigningKey;
         this.userService = userService;
@@ -39,12 +39,12 @@ public class TemplateController {
     }
 
     @GetMapping
-    ResponseEntity<Object> findAllListsByUserId(@RequestHeader Map<String, String> headers) {
+    ResponseEntity<Object> findByUserId(@RequestHeader Map<String, String> headers) {
         Integer userId = getUserIdFromHeaders(headers);
         if (userId == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        Result<List<PackingList>> templatesResult = service.findAllListsByUserId(userId);
+        Result<List<Template>> templatesResult = service.findByUserId(userId);
 
         if (!templatesResult.isSuccess()){
             return new ResponseEntity<>(templatesResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
@@ -54,7 +54,7 @@ public class TemplateController {
     }
 
     @PostMapping
-    ResponseEntity<Object> create(@RequestBody @Valid IncomingPackingList incomingPackingList, @RequestHeader Map<String, String> headers, BindingResult bindingResult) {
+    ResponseEntity<Object> create(@RequestBody @Valid IncomingTemplate incomingTemplate, @RequestHeader Map<String, String> headers, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(extractDefaultMessageFromBindingResult(bindingResult), HttpStatus.BAD_REQUEST);
         }
@@ -63,12 +63,12 @@ public class TemplateController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         Result<User> foundUserResult = userService.findById(userId);
-        PackingList packingList = constructTemplate(incomingPackingList, foundUserResult.getPayload());
-        if (!foundUserResult.isSuccess() || packingList == null) {
+        Template template = constructTemplate(incomingTemplate, foundUserResult.getPayload());
+        if (!foundUserResult.isSuccess() || template == null) {
             return new ResponseEntity<>(foundUserResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
         }
 
-        Result<PackingList> result = service.create(packingList);
+        Result<Template> result = service.create(template);
 
         if (!result.isSuccess()) {
             return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
@@ -97,25 +97,24 @@ public class TemplateController {
         }
     }
 
-        private PackingList constructTemplate(IncomingPackingList incomingPackingList, User user) {
+        private Template constructTemplate(IncomingTemplate incomingTemplate, User user) {
 
-        PackingList packingList = new PackingList();
-        packingList.setTemplateName(incomingPackingList.getTemplateName());
-        packingList.setTemplateDescription(incomingPackingList.getTemplateDescription());
-        packingList.setReusable(incomingPackingList.isReusable());
-        packingList.setTemplateUser(user);
-        TripType templateTripType = findTripTypeFromIncomingTemplate(incomingPackingList);
+        Template template = new Template();
+        template.setTemplateName(incomingTemplate.getTemplateName());
+        template.setTemplateDescription(incomingTemplate.getTemplateDescription());
+        template.setTemplateUser(user);
+        TripType templateTripType = findTripTypeFromIncomingTemplate(incomingTemplate);
         if (templateTripType == null) {
             return null;
         } else {
-            packingList.setTemplateTripType(templateTripType);
+            template.setTemplateTripType(templateTripType);
         }
 
-        return packingList;
+        return template;
         }
 
-        private TripType findTripTypeFromIncomingTemplate(IncomingPackingList incomingPackingList) {
-            Result<TripType> tripType = tripTypeService.findById(incomingPackingList.getTemplateTripTypeId());
+        private TripType findTripTypeFromIncomingTemplate(IncomingTemplate incomingTemplate) {
+            Result<TripType> tripType = tripTypeService.findById(incomingTemplate.getTemplateTripTypeId());
             if (!tripType.isSuccess()) {
                 return null;
             } else {

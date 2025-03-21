@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 
 import java.util.Objects;
 
-public class PackingList {
+public class Template {
     @PositiveOrZero(message = "Template ID must be greater than 0.")
     private int templateId;
 
@@ -22,10 +22,10 @@ public class PackingList {
     @NotNull(message = "User is required.")
     private User templateUser;
 
-    public PackingList() {
+    public Template() {
     }
 
-    public PackingList(String templateName, String templateDescription, boolean reusable, TripType templateTripType, User templateUser) {
+    public Template(String templateName, String templateDescription, boolean reusable, TripType templateTripType, User templateUser) {
         this.templateName = templateName;
         this.templateDescription = templateDescription;
         this.reusable = reusable;
@@ -33,7 +33,7 @@ public class PackingList {
         this.templateUser = templateUser;
     }
 
-    public PackingList(int templateId, String templateName, String templateDescription, boolean reusable, TripType templateTripType, User templateUser) {
+    public Template(int templateId, String templateName, String templateDescription, boolean reusable, TripType templateTripType, User templateUser) {
         this.templateId = templateId;
         this.templateName = templateName;
         this.templateDescription = templateDescription;
@@ -93,8 +93,8 @@ public class PackingList {
     @Override
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
-        PackingList packingList = (PackingList) object;
-        return getTemplateId() == packingList.getTemplateId() && isReusable() == packingList.isReusable() && Objects.equals(getTemplateName(), packingList.getTemplateName()) && Objects.equals(getTemplateDescription(), packingList.getTemplateDescription()) && Objects.equals(getTemplateTripType(), packingList.getTemplateTripType()) && Objects.equals(getTemplateUser(), packingList.getTemplateUser());
+        Template template = (Template) object;
+        return getTemplateId() == template.getTemplateId() && isReusable() == template.isReusable() && Objects.equals(getTemplateName(), template.getTemplateName()) && Objects.equals(getTemplateDescription(), template.getTemplateDescription()) && Objects.equals(getTemplateTripType(), template.getTemplateTripType()) && Objects.equals(getTemplateUser(), template.getTemplateUser());
     }
 
     @Override

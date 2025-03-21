@@ -1,7 +1,7 @@
 package learn;
 
-import learn.data_transfer_objects.IncomingPackingList;
-import learn.models.PackingList;
+import learn.data_transfer_objects.IncomingTemplate;
+import learn.models.Template;
 import learn.models.TripType;
 import learn.models.User;
 
@@ -24,7 +24,7 @@ public class TestHelper {
 
     public static User existingUser = new User(1, "Bernie", "Bernie@rubiber.com", "veryg00dPassword!");
     public static TripType existingTripType = new TripType(1, "General", "Not specified");
-    public static PackingList existingPackingList = new PackingList(1, "General", "Not specified", true, existingTripType, existingUser);
+    public static Template existingTemplate = new Template(1, "General", "Not specified", true, existingTripType, existingUser);
 
     public static User makeTestUser() {
         return new User(goodId, goodUsername, goodEmail, goodPassword);
@@ -32,10 +32,10 @@ public class TestHelper {
     public static TripType makeTestTripType() {
         return new TripType(goodId, goodVarCharString, goodVarCharString);
     }
-    public static PackingList makeTestTemplate() {
-        return new PackingList(goodId, goodVarCharString, goodVarCharString, false, existingTripType, existingUser);
+    public static Template makeTestTemplate() {
+        return new Template(goodId, goodVarCharString, goodVarCharString, false, existingTripType, existingUser);
     }
-    public static IncomingPackingList makeTestAddTemplate(){
-        return new IncomingPackingList(goodVarCharString, goodVarCharString, true, existingTripType.getTripTypeId());
+    public static IncomingTemplate makeTestAddTemplate(){
+        return new IncomingTemplate(goodVarCharString, goodVarCharString, existingTripType.getTripTypeId());
     }
 }
