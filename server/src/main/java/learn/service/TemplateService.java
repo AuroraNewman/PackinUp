@@ -8,6 +8,7 @@ import learn.models.Template;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -19,6 +20,11 @@ public class TemplateService {
     }
     private final String DUPLICATE_NAME_ERROR = "Template name already exists.";
 
+    public Result<List<Template>> findByUserId(int userId) {
+        Result<List<Template>> result = new Result<>();
+        result.setPayload(repository.findByUserId(userId));
+        return result;
+    }
     public Result<Template> create(Template template){
         Result<Template> result = validate(template);
        if (template != null && repository.findByName(template.getTemplateName()) != null){

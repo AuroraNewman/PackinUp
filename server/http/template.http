@@ -1,5 +1,10 @@
 @url = http://localhost:8080/api/packinup/template
 
+###
+get {{url}}
+Authorization: 1
+Content-Type: application/json
+
 ### Successful create (201)
 post {{url}}
 Content-Type: application/json

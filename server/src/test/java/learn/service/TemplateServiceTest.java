@@ -29,6 +29,10 @@ class TemplateServiceTest {
         testTemplate = TestHelper.makeTestTemplate();
     }
     @Nested
+    public class FindTests {
+
+    }
+    @Nested
     public class CreateTests {
         @Test
         void shouldCreate() {

@@ -33,6 +33,21 @@ public class TemplateController {
         this.userService = userService;
     }
 
+    @GetMapping
+    ResponseEntity<Object> findByUserId(@RequestHeader Map<String, String> headers) {
+        Integer userId = getUserIdFromHeaders(headers);
+        if (userId == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        Result<List<Template>> templatesResult = service.findByUserId(userId);
+
+        if (!templatesResult.isSuccess()){
+            return new ResponseEntity<>(templatesResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(templatesResult.getPayload(), HttpStatus.OK);
+        }
+    }
+
     @PostMapping
     ResponseEntity<Object> create(@RequestBody @Valid Template template, @RequestHeader Map<String, String> headers, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
