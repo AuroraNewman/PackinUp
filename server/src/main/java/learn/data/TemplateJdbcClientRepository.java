@@ -18,6 +18,7 @@ public class TemplateJdbcClientRepository implements TemplateRepository{
                 t.template_name,
                 t.template_reusable,
                 t.template_description,
+                t.template_reusable ,
                 t.template_user_id,
                 tt.trip_type_id,
                 tt.trip_type_name,
@@ -29,7 +30,8 @@ public class TemplateJdbcClientRepository implements TemplateRepository{
             from templates t
             inner join trip_types tt on t.template_trip_type_id = tt.trip_type_id
             inner join users u on t.template_user_id = u.user_id
-           """;
+            """;
+
 
     private JdbcClient jdbcClient;
 
@@ -47,8 +49,17 @@ public class TemplateJdbcClientRepository implements TemplateRepository{
     }
 
     @Override
-    public List<Template> findByUserId(int userId) {
-        final String sql = SELECT + " where t.template_user_id = ?;";
+    public List<Template> findAllListsByUserId(int userId) {
+            final String sql = SELECT + " where t.template_user_id = ?;";
+            return jdbcClient.sql(sql)
+                    .param(userId)
+                    .query(new TemplateMapper())
+                    .list();
+        }
+
+    @Override
+    public List<Template> findAllTemplatesByUserId(int userId) {
+        final String sql = SELECT + " where t.template_user_id = ? and t.template_reusable = true;";
         return jdbcClient.sql(sql)
                 .param(userId)
                 .query(new TemplateMapper())

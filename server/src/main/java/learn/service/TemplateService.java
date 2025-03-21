@@ -20,9 +20,14 @@ public class TemplateService {
     }
     private final String DUPLICATE_NAME_ERROR = "Template name already exists.";
 
-    public Result<List<Template>> findByUserId(int userId) {
+    public Result<List<Template>> findAllListsByUserId(int userId) {
         Result<List<Template>> result = new Result<>();
-        result.setPayload(repository.findByUserId(userId));
+        result.setPayload(repository.findAllListsByUserId(userId));
+        return result;
+    }
+    public Result<List<Template>> findAllTemplatesByUserId(int userId) {
+        Result<List<Template>> result = new Result<>();
+        result.setPayload(repository.findAllTemplatesByUserId(userId));
         return result;
     }
     public Result<Template> create(Template template){

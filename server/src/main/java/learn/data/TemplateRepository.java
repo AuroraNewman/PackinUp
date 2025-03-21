@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface TemplateRepository {
     Template findByName(String templateName);
-    List<Template> findByUserId(int userId);
+    List<Template> findAllListsByUserId(int userId);
+    List<Template> findAllTemplatesByUserId(int userId);
     Template create(Template template);
 }

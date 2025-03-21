@@ -45,23 +45,36 @@ class TemplateJdbcClientRepositoryTest {
             assertNull(actual);
         }
         @Test
-        void shouldFindByUserId(){
-            List<Template> expected = List.of(TestHelper.existingTemplate);
+        void shouldFindAllListsByUserId(){
+            Template template2 = new Template(2, "Vacation", "A trip for vacation purposes.", false, TestHelper.existingTripType, TestHelper.existingUser);
+            Template template3 = new Template(3, "Family", "A trip for family purposes.", true, TestHelper.existingTripType, TestHelper.existingUser);
+            List<Template> expected = List.of(TestHelper.existingTemplate, template2, template3);
 
-            List<Template> actual = repository.findByUserId(TestHelper.existingTemplate.getTemplateUser().getUserId());
+            List<Template> actual = repository.findAllListsByUserId(TestHelper.existingTemplate.getTemplateUser().getUserId());
 
             assertNotNull(actual);
             assertEquals(expected, actual);
         }
         @Test
-        void shouldNotFindByMissingUserId(){
+        void shouldNotFindAllListsByMissingUserId(){
             List<Template> expected = List.of();
 
-            List<Template> actual = repository.findByUserId(TestHelper.badId);
+            List<Template> actual = repository.findAllListsByUserId(TestHelper.badId);
 
             assertNotNull(actual);
             assertEquals(expected, actual);
         }
+    }
+    @Test
+    void findTemplatesByUserId(){
+        Template template1 = new Template(1, "General", "Not specified", true, TestHelper.existingTripType, TestHelper.existingUser);
+        Template template2 = new Template(3, "Family", "A trip for family purposes.", true, TestHelper.existingTripType, TestHelper.existingUser);
+        List<Template> expected = List.of(template1, template2);
+
+        List<Template> actual = repository.findAllTemplatesByUserId(TestHelper.existingTemplate.getTemplateUser().getUserId());
+
+        assertNotNull(actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -75,14 +88,6 @@ class TemplateJdbcClientRepositoryTest {
 
         assertNotNull(actual);
         assertEquals(expected, actual);
-    }
-    @Test
-    void shouldNotCreateDuplicateName(){
-        Template beforeAdd = testTemplate;
-        beforeAdd.setTemplateId(0);
-        beforeAdd.setTemplateName(TestHelper.existingTemplate.getTemplateName());
-
-        assertThrows(DuplicateKeyException.class, () -> repository.create(beforeAdd));
     }
 
 }

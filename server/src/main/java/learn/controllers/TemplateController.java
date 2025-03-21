@@ -39,12 +39,12 @@ public class TemplateController {
     }
 
     @GetMapping
-    ResponseEntity<Object> findByUserId(@RequestHeader Map<String, String> headers) {
+    ResponseEntity<Object> findAllListsByUserId(@RequestHeader Map<String, String> headers) {
         Integer userId = getUserIdFromHeaders(headers);
         if (userId == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        Result<List<Template>> templatesResult = service.findByUserId(userId);
+        Result<List<Template>> templatesResult = service.findAllListsByUserId(userId);
 
         if (!templatesResult.isSuccess()){
             return new ResponseEntity<>(templatesResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
@@ -102,6 +102,7 @@ public class TemplateController {
         Template template = new Template();
         template.setTemplateName(incomingTemplate.getTemplateName());
         template.setTemplateDescription(incomingTemplate.getTemplateDescription());
+        template.setReusable(incomingTemplate.isReusable());
         template.setTemplateUser(user);
         TripType templateTripType = findTripTypeFromIncomingTemplate(incomingTemplate);
         if (templateTripType == null) {
