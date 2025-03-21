@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TripTypeMapper implements RowMapper {
+public class TripTypeMapper implements RowMapper<TripType> {
     @Override
     public TripType mapRow(ResultSet rs, int rowNum) throws SQLException {
         TripType tripType = new TripType();

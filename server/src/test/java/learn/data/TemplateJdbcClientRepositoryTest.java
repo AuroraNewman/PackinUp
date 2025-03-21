@@ -14,11 +14,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-class TemplateJdbcRepositoryTest {
+class TemplateJdbcClientRepositoryTest {
     @Autowired
     JdbcClient client;
     @Autowired
-    TemplateJdbcRepository repository;
+    TemplateJdbcClientRepository repository;
     private Template testTemplate;
     @BeforeEach
     void setup() {
