@@ -17,15 +17,15 @@ private String templateName;
     @NotBlank(message = "Template description is required.")
     private String templateDescription;
 
-    private TripType templateTripType;
+    private int templateTripTypeId;
 
     public IncomingTemplate() {
     }
 
-    public IncomingTemplate(String templateName, String templateDescription, TripType templateTripType) {
+    public IncomingTemplate(String templateName, String templateDescription, int templateTripTypeId) {
         this.templateName = templateName;
         this.templateDescription = templateDescription;
-        this.templateTripType = templateTripType;
+        this.templateTripTypeId = templateTripTypeId;
     }
 
     public String getTemplateName() {
@@ -44,23 +44,23 @@ private String templateName;
         this.templateDescription = templateDescription;
     }
 
-    public TripType getTemplateTripType() {
-        return templateTripType;
+    public int getTemplateTripTypeId() {
+        return templateTripTypeId;
     }
 
-    public void setTemplateTripType(TripType templateTripType) {
-        this.templateTripType = templateTripType;
+    public void setTemplateTripTypeId(int templateTripTypeId) {
+        this.templateTripTypeId = templateTripTypeId;
     }
 
     @Override
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
         IncomingTemplate that = (IncomingTemplate) object;
-        return Objects.equals(getTemplateName(), that.getTemplateName()) && Objects.equals(getTemplateDescription(), that.getTemplateDescription()) && Objects.equals(getTemplateTripType(), that.getTemplateTripType());
+        return getTemplateTripTypeId() == that.getTemplateTripTypeId() && Objects.equals(getTemplateName(), that.getTemplateName()) && Objects.equals(getTemplateDescription(), that.getTemplateDescription());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTemplateName(), getTemplateDescription(), getTemplateTripType());
+        return Objects.hash(getTemplateName(), getTemplateDescription(), getTemplateTripTypeId());
     }
 }
