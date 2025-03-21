@@ -1,5 +1,6 @@
 package learn;
 
+import learn.data_transfer_objects.IncomingTemplate;
 import learn.models.Template;
 import learn.models.TripType;
 import learn.models.User;
@@ -21,7 +22,6 @@ public class TestHelper {
     public static String badFormatPasswordShort = "Pa1!";
     public static String goodPassword = "Password1!";
 
-
     public static User existingUser = new User(1, "Bernie", "Bernie@rubiber.com", "veryg00dPassword!");
     public static TripType existingTripType = new TripType(1, "General", "Not specified");
     public static Template existingTemplate = new Template(1, "General", "Not specified", existingTripType, existingUser);
@@ -34,5 +34,8 @@ public class TestHelper {
     }
     public static Template makeTestTemplate() {
         return new Template(goodId, goodVarCharString, goodVarCharString, existingTripType, existingUser);
+    }
+    public static IncomingTemplate makeTestAddTemplate(){
+        return new IncomingTemplate(goodVarCharString, goodVarCharString, existingTripType.getTripTypeId());
     }
 }
