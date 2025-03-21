@@ -5,7 +5,7 @@ import java.util.Objects;
 
 
 public class User {
-    @Min(value = 0, message = "User ID must be greater than 0.")
+    @PositiveOrZero(message = "User ID must be greater than 0.")
     private int userId;
 
     @Size(max = 50, message = "Username must be fewer than 50 characters.")

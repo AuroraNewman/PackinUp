@@ -1,14 +1,11 @@
 package learn.models;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.Objects;
 
 public class TripType {
-    @Min(value = 0, message = "Trip Type ID must be greater than or equal to 0.")
+    @PositiveOrZero(message = "Trip Type ID must be greater than or equal to 0.")
     private int tripTypeId;
 
     @Size(min = 1, max = 50, message = "Trip Type Name must be between 1 and 50 characters.")

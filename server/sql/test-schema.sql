@@ -19,6 +19,7 @@ create table templates (
     template_id int primary key auto_increment,
     template_name varchar(50) unique,
     template_description text,
+    template_reusable boolean,
     template_trip_type_id int,
     foreign key (template_trip_type_id) references trip_types(trip_type_id) on delete cascade,
     template_user_id int,
@@ -45,10 +46,10 @@ begin
             (2, 'Vacation', 'A trip for vacation purposes.'),
             (3, 'Family', 'A trip for family purposes.');
 
-    insert into templates(template_id, template_name, template_description, template_trip_type_id, template_user_id) values
-            (1, 'General', 'Not specified', 1, 1),
-            (2, 'Vacation', 'A trip for vacation purposes.', 2, 2),
-            (3, 'Family', 'A trip for family purposes.', 3, 3);
+    insert into templates(template_id, template_name, template_description, template_reusable, template_trip_type_id, template_user_id) values
+            (1, 'General', 'Not specified', true, 1, 1),
+            (2, 'Vacation', 'A trip for vacation purposes.', false, 2, 2),
+            (3, 'Family', 'A trip for family purposes.', true, 3, 3);
 
 end //
 delimiter ;

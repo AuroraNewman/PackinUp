@@ -1,11 +1,12 @@
 package learn.data_transfer_objects;
 
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.util.Objects;
 
 public class UserWithIdOnly {
-    @Min(value = 0, message = "User ID must be greater than 0.")
+    @PositiveOrZero(message = "User ID must be greater than 0.")
     private int userId;
 
     public UserWithIdOnly(int userId) {
