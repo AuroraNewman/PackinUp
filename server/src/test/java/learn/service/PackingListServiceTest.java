@@ -1,10 +1,8 @@
 package learn.service;
 
-import jakarta.validation.constraints.NotNull;
 import learn.TestHelper;
-import learn.data.TemplateRepository;
-import learn.data.UserRepository;
-import learn.models.Template;
+import learn.data.PackingListRepository;
+import learn.models.PackingList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,16 +15,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-class TemplateServiceTest {
+class PackingListServiceTest {
     @Autowired
-    TemplateService service;
+    PackingListService service;
 
     @MockBean
-    TemplateRepository repository;
-    private Template testTemplate;
+    PackingListRepository repository;
+    private PackingList testPackingList;
     @BeforeEach
     void setup() {
-        testTemplate = TestHelper.makeTestTemplate();
+        testPackingList = TestHelper.makeTestTemplate();
     }
     @Nested
     public class FindTests {
@@ -36,15 +34,15 @@ class TemplateServiceTest {
     public class CreateTests {
         @Test
         void shouldCreate() {
-            Template beforeAdd = testTemplate;
+            PackingList beforeAdd = testPackingList;
             beforeAdd.setTemplateId(0);
-            Template afterAdd = testTemplate;
-            Result<Template> expected = new Result<>();
+            PackingList afterAdd = testPackingList;
+            Result<PackingList> expected = new Result<>();
             expected.setPayload(afterAdd);
 
             when(repository.create(beforeAdd)).thenReturn(afterAdd);
 
-            Result<Template> actual = service.create(beforeAdd);
+            Result<PackingList> actual = service.create(beforeAdd);
 
             assertEquals(expected, actual);
             assertEquals(afterAdd, actual.getPayload());
@@ -52,81 +50,81 @@ class TemplateServiceTest {
         }
         @Test
         void shouldNotCreateWhenTemplateIsNull() {
-            Result<Template> expected = new Result<>();
+            Result<PackingList> expected = new Result<>();
             expected.addErrorMessage("Template is required.", ResultType.INVALID);
 
-            Result<Template> actual = service.create(null);
+            Result<PackingList> actual = service.create(null);
 
             assertEquals(expected, actual);
         }
         @Test
         void shouldNotCreateWhenTemplateNameTooLong(){
-            Template failAdd = testTemplate;
+            PackingList failAdd = testPackingList;
             failAdd.setTemplateName(TestHelper.tooLongVarCharString);
-            Result<Template> expected = new Result<>();
+            Result<PackingList> expected = new Result<>();
             expected.addErrorMessage("Template name must be between 1 and 50 characters.", ResultType.INVALID);
 
-            Result<Template> actual = service.create(failAdd);
+            Result<PackingList> actual = service.create(failAdd);
 
             assertEquals(expected, actual);
         }
         @Test
         void shouldNotCreateWhenTemplateNameIsNull() {
-            Template failAdd = testTemplate;
+            PackingList failAdd = testPackingList;
             failAdd.setTemplateName(null);
-            Result<Template> expected = new Result<>();
+            Result<PackingList> expected = new Result<>();
             expected.addErrorMessage("Template name is required.", ResultType.INVALID);
 
-            Result<Template> actual = service.create(failAdd);
+            Result<PackingList> actual = service.create(failAdd);
 
             assertEquals(expected, actual);
         }
         @Test
         void shouldNotCreateWhenTemplateNameIsBlank() {
-            Template failAdd = testTemplate;
+            PackingList failAdd = testPackingList;
             failAdd.setTemplateName(" ");
             failAdd.setTemplateId(0);
-            Result<Template> expected = new Result<>();
+            Result<PackingList> expected = new Result<>();
             expected.addErrorMessage("Template name is required.", ResultType.INVALID);
 
-            Result<Template> actual = service.create(failAdd);
+            Result<PackingList> actual = service.create(failAdd);
 
             assertEquals(expected, actual);
         }
 
         @Test
         void shouldNotCreateWhenTemplateDescriptionIsNull() {
-            Template failAdd = testTemplate;
+            PackingList failAdd = testPackingList;
             failAdd.setTemplateDescription(null);
-            Result<Template> expected = new Result<>();
+            Result<PackingList> expected = new Result<>();
             expected.addErrorMessage("Template description is required.", ResultType.INVALID);
 
-            Result<Template> actual = service.create(failAdd);
+            Result<PackingList> actual = service.create(failAdd);
 
             assertEquals(expected, actual);
         }
         @Test
         void shouldNotCreateWhenTemplateUserIsNull() {
-            Template failAdd = testTemplate;
+            PackingList failAdd = testPackingList;
             failAdd.setTemplateUser(null);
-            Result<Template> expected = new Result<>();
+            Result<PackingList> expected = new Result<>();
             expected.addErrorMessage("User is required.", ResultType.INVALID);
 
-            Result<Template> actual = service.create(failAdd);
+            Result<PackingList> actual = service.create(failAdd);
 
             assertEquals(expected, actual);
         }
 
         @Test
         void shouldNotCreateWhenTemplateNameAlreadyExists() {
-            Template failAdd = testTemplate;
-            failAdd.setTemplateName(TestHelper.existingTemplate.getTemplateName());
-            Result<Template> expected = new Result<>();
+            PackingList failAdd = testPackingList;
+            failAdd.setTemplateName(TestHelper.existingPackingList.getTemplateName());
+            Result<PackingList> expected = new Result<>();
             expected.addErrorMessage("Template name already exists.", ResultType.INVALID);
 
             when(repository.create(failAdd)).thenThrow(DuplicateKeyException.class);
 
-            Result<Template> actual = service.create(failAdd);
+            Result<PackingList> actual = service.create(failAdd);
 
             assertEquals(expected, actual);
         }

@@ -2,11 +2,10 @@ package learn.data_transfer_objects;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import learn.models.TripType;
 
 import java.util.Objects;
 
-public class IncomingTemplate {
+public class IncomingPackingList {
 //    "templateName": "TestString",
 //    "templateDescription": "TestString",
 //    "templateTripTypeId": 1
@@ -21,10 +20,10 @@ public class IncomingTemplate {
 
     private int templateTripTypeId;
 
-    public IncomingTemplate() {
+    public IncomingPackingList() {
     }
 
-    public IncomingTemplate(String templateName, String templateDescription, boolean reusable, int templateTripTypeId) {
+    public IncomingPackingList(String templateName, String templateDescription, boolean reusable, int templateTripTypeId) {
         this.templateName = templateName;
         this.templateDescription = templateDescription;
         this.reusable = reusable;
@@ -66,7 +65,7 @@ public class IncomingTemplate {
     @Override
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
-        IncomingTemplate that = (IncomingTemplate) object;
+        IncomingPackingList that = (IncomingPackingList) object;
         return isReusable() == that.isReusable() && getTemplateTripTypeId() == that.getTemplateTripTypeId() && Objects.equals(getTemplateName(), that.getTemplateName()) && Objects.equals(getTemplateDescription(), that.getTemplateDescription());
     }
 

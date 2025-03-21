@@ -1,7 +1,7 @@
 package learn.data;
 
-import learn.data.mappers.TemplateMapper;
-import learn.models.Template;
+import learn.data.mappers.PackingListMapper;
+import learn.models.PackingList;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class TemplateJdbcClientRepository implements TemplateRepository{
+public class PackingListJdbcClientRepository implements PackingListRepository {
     private final String SELECT = """
             select
                 t.template_id,
@@ -35,39 +35,39 @@ public class TemplateJdbcClientRepository implements TemplateRepository{
 
     private JdbcClient jdbcClient;
 
-    public TemplateJdbcClientRepository(JdbcClient jdbcClient) {
+    public PackingListJdbcClientRepository(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
     }
 
     @Override
-    public Template findByName(String templateName) {
+    public PackingList findByName(String templateName) {
         final String sql = SELECT + " where t.template_name = ?;";
         return jdbcClient.sql(sql)
                 .param(templateName)
-                .query(new TemplateMapper())
+                .query(new PackingListMapper())
                 .optional().orElse(null);
     }
 
     @Override
-    public List<Template> findAllListsByUserId(int userId) {
+    public List<PackingList> findAllListsByUserId(int userId) {
             final String sql = SELECT + " where t.template_user_id = ?;";
             return jdbcClient.sql(sql)
                     .param(userId)
-                    .query(new TemplateMapper())
+                    .query(new PackingListMapper())
                     .list();
         }
 
     @Override
-    public List<Template> findAllTemplatesByUserId(int userId) {
+    public List<PackingList> findAllTemplatesByUserId(int userId) {
         final String sql = SELECT + " where t.template_user_id = ? and t.template_reusable = true;";
         return jdbcClient.sql(sql)
                 .param(userId)
-                .query(new TemplateMapper())
+                .query(new PackingListMapper())
                 .list();
     }
 
     @Override
-    public Template create(Template template) throws DuplicateKeyException{
+    public PackingList create(PackingList packingList) throws DuplicateKeyException{
         int rowsAffected = 0;
         final String sql = """
                 insert into templates(template_name, template_description, template_reusable, template_trip_type_id, template_user_id)
@@ -75,17 +75,17 @@ public class TemplateJdbcClientRepository implements TemplateRepository{
                 """;
         KeyHolder keyHolder = new GeneratedKeyHolder();
             rowsAffected = jdbcClient.sql(sql)
-                    .param("template_name", template.getTemplateName())
-                    .param("template_description", template.getTemplateDescription())
-                    .param("template_reusable", template.isReusable())
-                    .param("template_user_id", template.getTemplateUser().getUserId())
-                    .param("template_trip_type_id", template.getTemplateTripType().getTripTypeId())
+                    .param("template_name", packingList.getTemplateName())
+                    .param("template_description", packingList.getTemplateDescription())
+                    .param("template_reusable", packingList.isReusable())
+                    .param("template_user_id", packingList.getTemplateUser().getUserId())
+                    .param("template_trip_type_id", packingList.getTemplateTripType().getTripTypeId())
                     .update(keyHolder, "template_id");
 
         if (rowsAffected <= 0) {
             return null;
         }
-        template.setTemplateId(keyHolder.getKey().intValue());
-        return template;
+        packingList.setTemplateId(keyHolder.getKey().intValue());
+        return packingList;
     }
 }
