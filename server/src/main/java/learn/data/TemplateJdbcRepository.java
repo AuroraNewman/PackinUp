@@ -8,6 +8,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class TemplateJdbcRepository implements TemplateRepository{
     private final String SELECT = """
@@ -41,6 +43,15 @@ public class TemplateJdbcRepository implements TemplateRepository{
                 .param(templateName)
                 .query(new TemplateMapper())
                 .optional().orElse(null);
+    }
+
+    @Override
+    public List<Template> findByUserId(int userId) {
+        final String sql = SELECT + " where t.template_user_id = ?;";
+        return jdbcClient.sql(sql)
+                .param(userId)
+                .query(new TemplateMapper())
+                .list();
     }
 
     @Override
