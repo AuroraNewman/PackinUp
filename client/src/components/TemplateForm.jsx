@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 
 const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
 
-    let url = "http://localhost:8080/api/packinup/user";
+    let url = "http://localhost:8080/api/packinup/template";
 
     const navigate = useNavigate();
 
@@ -25,7 +25,8 @@ const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
 
     useEffect(() => {
         if (params.templateId) {
-            fetch(`http://localhost:8080/api/packinup/template/${params.templateId}`)
+            url += "/edit${params.templateId}"
+            fetch({url})
                 .then(response => {
                     if (response.status >= 200 && response.status < 300) {
                         return response.json()

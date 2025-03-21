@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 const TemplateTable = ({ templates, loggedInUser}) => {
     return (
@@ -13,7 +14,7 @@ const TemplateTable = ({ templates, loggedInUser}) => {
                 </thead>
                 <tbody>
                     {templates.map(template => {
-                        console.log(template)
+                        // console.log(template)
                         return (
                             <tr key={template.id}>
                                 <td>{template.templateName}</td>
@@ -21,8 +22,9 @@ const TemplateTable = ({ templates, loggedInUser}) => {
                                 <td>{template.templateTripType.tripTypeName}</td>
                                 <td>
                                     {/* todo implement routes for buttons */}
-                                    <button className="btn btn-primary">Edit</button>
-                                    <button className="btn btn-danger">Delete</button>
+                                    <Link to={`/template/${template.id}`} className="btn btn-primary">View</Link>
+                                    <Link to={`/template/edit/${template.id}`} className="btn btn-warning">Edit</Link>
+                                    <Link to={`/template/delete/${template.id}`} className="btn btn-danger">Delete</Link>
                                 </td>
                             </tr>
                         )

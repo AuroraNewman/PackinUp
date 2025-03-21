@@ -5,6 +5,7 @@ import NavBar from './components/NavBar';
 import UserForm from './components/UserForm';
 import TemplateList from './components/TemplateList';
 import NotFound from './components/NotFound';
+import TemplateForm from './components/TemplateForm';
 
 const App = () => {
 
@@ -30,14 +31,25 @@ const App = () => {
           <main>
             {/* todo: only display welcome on landing page */}
             {loggedInUser !== null ? <h1>Welcome, {loggedInUser.username}</h1> : null}
-            <Routes>
+            <Routes>              
               <Route path="/" />
+              
               {/* must be logged out */}
+              
               <Route path="/signup"  element={ loggedInUser !== null ? <Navigate to="/" /> : <UserForm mode="register" setLoggedInUser={setLoggedInUser}/>} />
+              
               <Route path="/login"  element={ loggedInUser !== null ? <Navigate to="/" /> : <UserForm mode="login" setLoggedInUser={setLoggedInUser}/>} />
+
               {/* must be logged in */}
+              
               <Route path="/template"  element={ loggedInUser===null ? <Navigate to="/" /> : <TemplateList loggedInUser={loggedInUser}/>} />
+              
+              <Route path="/template/edit/:templateId"  element={ loggedInUser===null ? <Navigate to="/" /> : <TemplateForm loggedInUser={loggedInUser}/>} />
+              
+              <Route path="/template/delete/:templateId"  element={ loggedInUser===null ? <Navigate to="/" /> : <TemplateList loggedInUser={loggedInUser}/>} />
+              
               <Route path="/logout"  element={ loggedInUser===null ? <Navigate to="/" /> : <UserForm mode="logout" setLoggedInUser={setLoggedInUser}/>} />
+              
               {/* logged in state not necessary */}
               <Route path="/*" element={<NotFound />} />
             </Routes>
