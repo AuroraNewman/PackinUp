@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class TemplateJdbcRepository implements TemplateRepository{
+public class TemplateJdbcClientRepository implements TemplateRepository{
     private final String SELECT = """
             select
                 t.template_id,
@@ -32,7 +32,7 @@ public class TemplateJdbcRepository implements TemplateRepository{
 
     private JdbcClient jdbcClient;
 
-    public TemplateJdbcRepository(JdbcClient jdbcClient) {
+    public TemplateJdbcClientRepository(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
     }
 

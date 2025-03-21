@@ -3,6 +3,7 @@ package learn.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import learn.TestHelper;
+import learn.data_transfer_objects.IncomingTemplate;
 import learn.models.Template;
 import learn.models.User;
 import learn.service.Result;
@@ -44,12 +45,11 @@ class TemplateControllerTest {
 
     private final String PREFIX = "/api/packinup/template";
     private Template testTemplate;
-    private Template testAddTemplate;
+    private IncomingTemplate testAddTemplate;
     @BeforeEach
     void setUp(){
         testTemplate = TestHelper.makeTestTemplate();
-        testAddTemplate = TestHelper.makeTestTemplate();
-        testAddTemplate.setTemplateId(0);
+        testAddTemplate = TestHelper.makeTestAddTemplate();
     }
 
     /**
@@ -68,13 +68,15 @@ class TemplateControllerTest {
             MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(PREFIX)
                     .contentType(MediaType.APPLICATION_JSON);
 
-            Template beforeAdd = testAddTemplate;
+            IncomingTemplate beforeAdd = testAddTemplate;
+            Template serviceAdd = TestHelper.makeTestTemplate();
+            serviceAdd.setTemplateId(0);
             Template afterAdd = TestHelper.makeTestTemplate();
             Result<Template> expectedResult = new Result<>();
             expectedResult.setPayload(afterAdd);
 
             String templateJson = jsonMapper.writeValueAsString(beforeAdd);
-            when(service.create(beforeAdd)).thenReturn(expectedResult);
+            when(service.create(serviceAdd)).thenReturn(expectedResult);
 
             mvc.perform(MockMvcRequestBuilders.post(PREFIX)
                             .contentType(MediaType.APPLICATION_JSON)

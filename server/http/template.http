@@ -1,17 +1,18 @@
 @url = http://localhost:8080/api/packinup/template
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3RlbWFpbEB0ZXN0aW5nLmNvbSIsInVzZXJuYW1lIjoiVGVzdFVzZXIiLCJ1c2VySWQiOjF9.ZbBOgRNJa8KX9sYRC-Mq-73lSk3CYJeVCfZkAdPNnOQ
 
 ###
 get {{url}}
-Authorization: 1
 Content-Type: application/json
+Authorization: {{jwt}}
 
 ### Successful create (201)
 post {{url}}
 Content-Type: application/json
+Authorization: {{jwt}}
 
 {
   "templateName": "TestString",
     "templateDescription": "TestString",
-    "templateTypeId": 1,
-    "templateUserId": 1
+    "templateTripTypeId": 1
     }
