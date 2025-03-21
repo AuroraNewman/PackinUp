@@ -1,0 +1,12 @@
+@url = http://localhost:8080/api/packinup/template
+
+### Successful create (201)
+post {{url}}
+Content-Type: application/json
+
+{
+  "templateName": "TestString",
+    "templateDescription": "TestString",
+    "templateTypeId": 1,
+    "templateUserId": 1
+    }
