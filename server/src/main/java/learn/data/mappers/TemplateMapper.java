@@ -20,7 +20,6 @@ public class TemplateMapper implements RowMapper<Template> {
         template.setTemplateId(rs.getInt("template_id"));
         template.setTemplateName(rs.getString("template_name"));
         template.setTemplateDescription(rs.getString("template_description"));
-        template.setReusable(rs.getBoolean("template_reusable"));
         template.setTemplateTripType(tripType);
         template.setTemplateUser(user);
 

@@ -15,8 +15,6 @@ public class Template {
     @NotBlank(message = "Template description is required.")
     private String templateDescription;
 
-    boolean reusable;
-
     private TripType templateTripType;
 
     @NotNull(message = "User is required.")
@@ -25,19 +23,17 @@ public class Template {
     public Template() {
     }
 
-    public Template(String templateName, String templateDescription, boolean reusable, TripType templateTripType, User templateUser) {
+    public Template(String templateName, String templateDescription, TripType templateTripType, User templateUser) {
         this.templateName = templateName;
         this.templateDescription = templateDescription;
-        this.reusable = reusable;
         this.templateTripType = templateTripType;
         this.templateUser = templateUser;
     }
 
-    public Template(int templateId, String templateName, String templateDescription, boolean reusable, TripType templateTripType, User templateUser) {
+    public Template(int templateId, String templateName, String templateDescription, TripType templateTripType, User templateUser) {
         this.templateId = templateId;
         this.templateName = templateName;
         this.templateDescription = templateDescription;
-        this.reusable = reusable;
         this.templateTripType = templateTripType;
         this.templateUser = templateUser;
     }
@@ -66,14 +62,6 @@ public class Template {
         this.templateDescription = templateDescription;
     }
 
-    public boolean isReusable() {
-        return reusable;
-    }
-
-    public void setReusable(boolean reusable) {
-        this.reusable = reusable;
-    }
-
     public TripType getTemplateTripType() {
         return templateTripType;
     }
@@ -94,11 +82,11 @@ public class Template {
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
         Template template = (Template) object;
-        return getTemplateId() == template.getTemplateId() && isReusable() == template.isReusable() && Objects.equals(getTemplateName(), template.getTemplateName()) && Objects.equals(getTemplateDescription(), template.getTemplateDescription()) && Objects.equals(getTemplateTripType(), template.getTemplateTripType()) && Objects.equals(getTemplateUser(), template.getTemplateUser());
+        return getTemplateId() == template.getTemplateId() && Objects.equals(getTemplateName(), template.getTemplateName()) && Objects.equals(getTemplateDescription(), template.getTemplateDescription()) && Objects.equals(getTemplateTripType(), template.getTemplateTripType()) && Objects.equals(getTemplateUser(), template.getTemplateUser());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTemplateId(), getTemplateName(), getTemplateDescription(), isReusable(), getTemplateTripType(), getTemplateUser());
+        return Objects.hash(getTemplateId(), getTemplateName(), getTemplateDescription(), getTemplateTripType(), getTemplateUser());
     }
 }

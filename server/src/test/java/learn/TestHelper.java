@@ -24,7 +24,7 @@ public class TestHelper {
 
     public static User existingUser = new User(1, "Bernie", "Bernie@rubiber.com", "veryg00dPassword!");
     public static TripType existingTripType = new TripType(1, "General", "Not specified");
-    public static Template existingTemplate = new Template(1, "General", "Not specified", true, existingTripType, existingUser);
+    public static Template existingTemplate = new Template(1, "General", "Not specified", existingTripType, existingUser);
 
     public static User makeTestUser() {
         return new User(goodId, goodUsername, goodEmail, goodPassword);
@@ -33,7 +33,7 @@ public class TestHelper {
         return new TripType(goodId, goodVarCharString, goodVarCharString);
     }
     public static Template makeTestTemplate() {
-        return new Template(goodId, goodVarCharString, goodVarCharString, false, existingTripType, existingUser);
+        return new Template(goodId, goodVarCharString, goodVarCharString, existingTripType, existingUser);
     }
     public static IncomingTemplate makeTestAddTemplate(){
         return new IncomingTemplate(goodVarCharString, goodVarCharString, existingTripType.getTripTypeId());

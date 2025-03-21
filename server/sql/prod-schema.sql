@@ -19,7 +19,6 @@ create table templates (
     template_id int primary key auto_increment,
     template_name varchar(50) unique,
     template_description text,
-    reusable boolean,
     template_trip_type_id int,
     foreign key (template_trip_type_id) references trip_types(trip_type_id) on delete cascade,
     template_user_id int,

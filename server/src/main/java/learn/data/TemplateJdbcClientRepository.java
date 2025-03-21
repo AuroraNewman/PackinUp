@@ -16,7 +16,6 @@ public class TemplateJdbcClientRepository implements TemplateRepository{
             select
                 t.template_id,
                 t.template_name,
-                t.template_reusable,
                 t.template_description,
                 t.template_user_id,
                 tt.trip_type_id,
@@ -59,14 +58,13 @@ public class TemplateJdbcClientRepository implements TemplateRepository{
     public Template create(Template template) throws DuplicateKeyException{
         int rowsAffected = 0;
         final String sql = """
-                insert into templates(template_name, template_description, template_reusable, template_trip_type_id, template_user_id)
-                values(:template_name, :template_description, :template_reusable, :template_trip_type_id, :template_user_id);
+                insert into templates(template_name, template_description, template_trip_type_id, template_user_id)
+                values(:template_name, :template_description, :template_trip_type_id, :template_user_id);
                 """;
         KeyHolder keyHolder = new GeneratedKeyHolder();
             rowsAffected = jdbcClient.sql(sql)
                     .param("template_name", template.getTemplateName())
                     .param("template_description", template.getTemplateDescription())
-                    .param("template_reusable", template.isReusable())
                     .param("template_user_id", template.getTemplateUser().getUserId())
                     .param("template_trip_type_id", template.getTemplateTripType().getTripTypeId())
                     .update(keyHolder, "template_id");
