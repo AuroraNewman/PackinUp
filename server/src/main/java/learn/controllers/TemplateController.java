@@ -4,10 +4,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import jakarta.validation.Valid;
+import learn.data_transfer_objects.IncomingTemplate;
 import learn.models.Template;
+import learn.models.TripType;
 import learn.models.User;
 import learn.service.Result;
 import learn.service.TemplateService;
+import learn.service.TripTypeService;
 import learn.service.UserService;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -26,11 +29,13 @@ public class TemplateController {
     private final TemplateService service;
     private final SecretSigningKey secretSigningKey;
     private final UserService userService;
+    private final TripTypeService tripTypeService;
 
-    public TemplateController(TemplateService service, SecretSigningKey secretSigningKey, UserService userService) {
+    public TemplateController(TemplateService service, SecretSigningKey secretSigningKey, UserService userService, TripTypeService tripTypeService) {
         this.service = service;
         this.secretSigningKey = secretSigningKey;
         this.userService = userService;
+        this.tripTypeService = tripTypeService;
     }
 
     @GetMapping
@@ -49,7 +54,7 @@ public class TemplateController {
     }
 
     @PostMapping
-    ResponseEntity<Object> create(@RequestBody @Valid Template template, @RequestHeader Map<String, String> headers, BindingResult bindingResult) {
+    ResponseEntity<Object> create(@RequestBody @Valid IncomingTemplate incomingTemplate, @RequestHeader Map<String, String> headers, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(extractDefaultMessageFromBindingResult(bindingResult), HttpStatus.BAD_REQUEST);
         }
@@ -57,14 +62,11 @@ public class TemplateController {
         if (userId == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-
         Result<User> foundUserResult = userService.findById(userId);
-
-        if (!foundUserResult.isSuccess()) {
+        Template template = constructTemplate(incomingTemplate, foundUserResult.getPayload());
+        if (!foundUserResult.isSuccess() || template == null) {
             return new ResponseEntity<>(foundUserResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
         }
-
-        template.setTemplateUser(foundUserResult.getPayload());
 
         Result<Template> result = service.create(template);
 
@@ -94,6 +96,30 @@ public class TemplateController {
             return null;
         }
     }
-//    nneds to get the authorization from the header or i\t wn' pss ess
 
-}
+        private Template constructTemplate(IncomingTemplate incomingTemplate, User user) {
+
+        Template template = new Template();
+        template.setTemplateName(incomingTemplate.getTemplateName());
+        template.setTemplateDescription(incomingTemplate.getTemplateDescription());
+        template.setTemplateUser(user);
+        TripType templateTripType = findTripTypeFromIncomingTemplate(incomingTemplate);
+        if (templateTripType == null) {
+            return null;
+        } else {
+            template.setTemplateTripType(templateTripType);
+        }
+
+        return template;
+        }
+
+        private TripType findTripTypeFromIncomingTemplate(IncomingTemplate incomingTemplate) {
+            Result<TripType> tripType = tripTypeService.findById(incomingTemplate.getTemplateTripTypeId());
+            if (!tripType.isSuccess()) {
+                return null;
+            } else {
+                return tripType.getPayload();
+            }
+        }
+
+    }
