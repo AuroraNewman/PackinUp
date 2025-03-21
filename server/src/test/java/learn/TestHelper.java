@@ -36,6 +36,6 @@ public class TestHelper {
         return new Template(goodId, goodVarCharString, goodVarCharString, false, existingTripType, existingUser);
     }
     public static IncomingTemplate makeTestAddTemplate(){
-        return new IncomingTemplate(goodVarCharString, goodVarCharString, existingTripType.getTripTypeId());
+        return new IncomingTemplate(goodVarCharString, goodVarCharString, true, existingTripType.getTripTypeId());
     }
 }

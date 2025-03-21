@@ -10,21 +10,24 @@ public class IncomingTemplate {
 //    "templateName": "TestString",
 //    "templateDescription": "TestString",
 //    "templateTripTypeId": 1
-@Size(min = 1, max = 50, message = "Template name must be between 1 and 50 characters.")
-@NotBlank(message = "Template name is required.")
-private String templateName;
+    @Size(min = 1, max = 50, message = "Template name must be between 1 and 50 characters.")
+    @NotBlank(message = "Template name is required.")
+    private String templateName;
 
     @NotBlank(message = "Template description is required.")
     private String templateDescription;
+
+    private boolean reusable;
 
     private int templateTripTypeId;
 
     public IncomingTemplate() {
     }
 
-    public IncomingTemplate(String templateName, String templateDescription, int templateTripTypeId) {
+    public IncomingTemplate(String templateName, String templateDescription, boolean reusable, int templateTripTypeId) {
         this.templateName = templateName;
         this.templateDescription = templateDescription;
+        this.reusable = reusable;
         this.templateTripTypeId = templateTripTypeId;
     }
 
@@ -44,6 +47,14 @@ private String templateName;
         this.templateDescription = templateDescription;
     }
 
+    public boolean isReusable() {
+        return reusable;
+    }
+
+    public void setReusable(boolean reusable) {
+        this.reusable = reusable;
+    }
+
     public int getTemplateTripTypeId() {
         return templateTripTypeId;
     }
@@ -56,11 +67,11 @@ private String templateName;
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
         IncomingTemplate that = (IncomingTemplate) object;
-        return getTemplateTripTypeId() == that.getTemplateTripTypeId() && Objects.equals(getTemplateName(), that.getTemplateName()) && Objects.equals(getTemplateDescription(), that.getTemplateDescription());
+        return isReusable() == that.isReusable() && getTemplateTripTypeId() == that.getTemplateTripTypeId() && Objects.equals(getTemplateName(), that.getTemplateName()) && Objects.equals(getTemplateDescription(), that.getTemplateDescription());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTemplateName(), getTemplateDescription(), getTemplateTripTypeId());
+        return Objects.hash(getTemplateName(), getTemplateDescription(), isReusable(), getTemplateTripTypeId());
     }
 }
