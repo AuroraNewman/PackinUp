@@ -24,3 +24,14 @@ create table templates (
     template_user_id int,
     foreign key (template_user_id) references users(user_id)
 );
+
+insert into users(user_id, username, email, `password`) values
+            (1, 'Bernie', 'Bernie@rubiber.com', 'veryg00dPassword!'),
+            (2, 'Bianca', 'Bianca@rubiber.com', 'veryg00dPassword!'),
+            (3, 'Rufus', 'rufus@rubiber.com', 'veryg00dPassword!');
+
+
+insert into trip_types(trip_type_id, trip_type_name, trip_type_description) values
+            (1, 'General', 'Not specified'),
+            (2, 'Vacation', 'A trip for vacation purposes.'),
+            (3, 'Family', 'A trip for family purposes.');
