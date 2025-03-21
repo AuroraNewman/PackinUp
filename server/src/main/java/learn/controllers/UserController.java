@@ -23,9 +23,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/packinup/user")
 public class UserController {
+    private final SecretSigningKey secretSigningKey;
     private UserService service;
 
-    public UserController(UserService service) {
+    public UserController(SecretSigningKey secretSigningKey, UserService service) {
+        this.secretSigningKey = secretSigningKey;
         this.service = service;
     }
 
@@ -82,7 +84,7 @@ public class UserController {
                 .claim("email", user.getEmail())
                 .claim("username", user.getUsername())
                 .claim("userId", user.getUserId())
-                .signWith(Keys.secretKeyFor(SignatureAlgorithm.HS256))
+                .signWith(secretSigningKey.getKey())
                 .compact();
         return Map.of("jwt", jwt);
     }
