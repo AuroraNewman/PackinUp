@@ -14,7 +14,7 @@ const NavBar = ({ loggedInUser, setLoggedInUser }) => {
                         {loggedInUser === null ? null :
                             <>
                                 <NavLink to='/' className={(arg) => { return (arg.isActive) ? 'nav-link active' : 'nav-link' }} >My Items</NavLink>
-                                <NavLink to='/' className={(arg) => { return (arg.isActive) ? 'nav-link active' : 'nav-link' }} >My Templates</NavLink>
+                                <NavLink to='/template' className={(arg) => { return (arg.isActive) ? 'nav-link active' : 'nav-link' }} >My Templates</NavLink>
                                 <NavLink to='/' className={(arg) => { return (arg.isActive) ? 'nav-link active' : 'nav-link' }} >My Lists</NavLink>
                             </>
                         }

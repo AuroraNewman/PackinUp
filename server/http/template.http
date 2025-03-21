@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/packinup/template
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3RlbWFpbEB0ZXN0aW5nLmNvbSIsInVzZXJuYW1lIjoiVGVzdFVzZXIiLCJ1c2VySWQiOjF9.ZbBOgRNJa8KX9sYRC-Mq-73lSk3CYJeVCfZkAdPNnOQ
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.Qbjgsam5GJx8atXK4xFlKYzfWYPbfGgMcb-SavjPDAw
 
 ###
 get {{url}}

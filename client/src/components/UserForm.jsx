@@ -48,10 +48,7 @@ const UserForm = ({ mode, setLoggedInUser }) => {
                 return;
             }
         }
-
-        // if (mode === 'login') {
-        //     url = url + "/login";
-        // }
+        
         mode === 'login' && (url = url + "/login");
         fetch(url, {
             method: 'POST',
