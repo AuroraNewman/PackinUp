@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import TemplateList from "./TemplateList";
+import TemplateForm from "./TemplateForm";
 
 const UserForm = ({ mode, setLoggedInUser }) => {
 
@@ -65,7 +67,14 @@ const UserForm = ({ mode, setLoggedInUser }) => {
                         user.jwt = fetchedUser.jwt;
                         setLoggedInUser(user)
                         localStorage.setItem("loggedInUser", JSON.stringify(user))
-                        navigate('/');
+                        // navigate('/');
+                        console.log('hi from '`${mode}`);
+                        if (mode === 'login') {
+                            
+                            <NavLink to="/template/" element = {<TemplateList loggedInUser={user} setLoggedInUser={setLoggedInUser} />} />
+                        } else {
+                            <NavLink to="/template/create" element = {<TemplateForm loggedInUser={user} setLoggedInUser={setLoggedInUser} />} />
+                        }
                     });
 
                 } else {

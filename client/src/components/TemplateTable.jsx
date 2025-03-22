@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 const TemplateTable = ({ templates }) => {
     return (
         <>
-    <div class="row">
-    <Link to={`/template/create`} className="btn btn-primary me-2 mb-2">Add Template</Link>
-    </div>
+    
             <table className="table table-striped">
                 <thead>
                     <tr>
