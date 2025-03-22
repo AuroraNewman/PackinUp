@@ -46,6 +46,15 @@ public class TemplateJdbcClientRepository implements TemplateRepository{
     }
 
     @Override
+    public Template findById(int templateId) {
+        final String sql = SELECT + " where t.template_id = ?;";
+        return jdbcClient.sql(sql)
+                .param(templateId)
+                .query(new TemplateMapper())
+                .optional().orElse(null);
+    }
+
+    @Override
     public List<Template> findByUserId(int userId) {
         final String sql = SELECT + " where t.template_user_id = ?;";
         return jdbcClient.sql(sql)

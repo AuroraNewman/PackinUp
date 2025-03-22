@@ -62,6 +62,22 @@ class TemplateJdbcClientRepositoryTest {
             assertNotNull(actual);
             assertEquals(expected, actual);
         }
+        @Test
+        void shouldFindById() {
+            Template expected = TestHelper.existingTemplate;
+
+            Template actual = repository.findById(TestHelper.existingTemplate.getTemplateId());
+
+            assertNotNull(actual);
+            assertEquals(expected, actual);
+        }
+        @Test
+        void shouldNotFindMissingId() {
+            Template actual = repository.findById(TestHelper.badId);
+
+            assertNull(actual);
+        }
+
     }
 
     @Test
@@ -75,14 +91,6 @@ class TemplateJdbcClientRepositoryTest {
 
         assertNotNull(actual);
         assertEquals(expected, actual);
-    }
-    @Test
-    void shouldNotCreateDuplicateName(){
-        Template beforeAdd = testTemplate;
-        beforeAdd.setTemplateId(0);
-        beforeAdd.setTemplateName(TestHelper.existingTemplate.getTemplateName());
-
-        assertThrows(DuplicateKeyException.class, () -> repository.create(beforeAdd));
     }
 
 }

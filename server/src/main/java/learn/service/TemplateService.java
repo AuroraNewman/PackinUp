@@ -25,6 +25,15 @@ public class TemplateService {
         result.setPayload(repository.findByUserId(userId));
         return result;
     }
+    public Result<Template> findById(int templateId) {
+        Result<Template> result = new Result<>();
+        if (result.isSuccess()) {
+            result.setPayload(repository.findById(templateId));
+        } else {
+            result.addErrorMessage("Template could not be found.", ResultType.NOT_FOUND);
+        }
+        return result;
+    }
     public Result<Template> create(Template template){
         Result<Template> result = validate(template);
        if (template != null && repository.findByName(template.getTemplateName()) != null){

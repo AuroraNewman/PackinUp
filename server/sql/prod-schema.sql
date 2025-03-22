@@ -35,3 +35,5 @@ insert into trip_types(trip_type_id, trip_type_name, trip_type_description) valu
             (1, 'General', 'Not specified'),
             (2, 'Vacation', 'A trip for vacation purposes.'),
             (3, 'Family', 'A trip for family purposes.');
+insert into templates(template_id, template_name, template_description, template_trip_type_id, template_user_id) values
+            (1, 'General', 'Not specified', 1, 1);

@@ -8,10 +8,7 @@ import learn.data_transfer_objects.IncomingTemplate;
 import learn.models.Template;
 import learn.models.TripType;
 import learn.models.User;
-import learn.service.Result;
-import learn.service.TemplateService;
-import learn.service.TripTypeService;
-import learn.service.UserService;
+import learn.service.*;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +47,25 @@ public class TemplateController {
             return new ResponseEntity<>(templatesResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>(templatesResult.getPayload(), HttpStatus.OK);
+        }
+    }
+    @GetMapping("/{templateId}")
+    ResponseEntity<Object> findById(@PathVariable int templateId, @RequestHeader Map<String, String> headers) {
+        System.out.println("findById() hit with templateId=" + templateId);
+
+        Integer userId = getUserIdFromHeaders(headers);
+        if (userId == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        Result<Template> templateResult = service.findById(templateId);
+
+        if (templateResult.getResultType() == ResultType.NOT_FOUND) {
+            return new ResponseEntity<>(templateResult.getErrorMessages(), HttpStatus.NOT_FOUND);
+        } else if (!templateResult.isSuccess()){
+            return new ResponseEntity<>(templateResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(templateResult.getPayload(), HttpStatus.OK);
         }
     }
 
@@ -123,3 +139,4 @@ public class TemplateController {
         }
 
     }
+//find template by id

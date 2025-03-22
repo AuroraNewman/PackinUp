@@ -4,6 +4,8 @@ import learn.data.TripTypeRepository;
 import learn.models.TripType;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TripTypeService {
     private final TripTypeRepository repository;
@@ -20,5 +22,8 @@ public class TripTypeService {
             result.setPayload(tripType);
         }
         return result;
+    }
+    public List<TripType> findAllByUserId(int userId) {
+        return repository.findAllByUserId(userId);
     }
 }

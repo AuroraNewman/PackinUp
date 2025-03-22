@@ -1,10 +1,16 @@
 @url = http://localhost:8080/api/packinup/template
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.Qbjgsam5GJx8atXK4xFlKYzfWYPbfGgMcb-SavjPDAw
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.VT4ZIvLMjYi_2x_RO-BJ6iqe7a6yu-cGlJJRYApi7go
 
 ###
 get {{url}}
 Content-Type: application/json
 Authorization: {{jwt}}
+
+###
+get {{url}}/2
+Content-Type: application/json
+Authorization: {{jwt}}
+
 
 ### Successful create (201)
 post {{url}}
@@ -14,5 +20,16 @@ Authorization: {{jwt}}
 {
   "templateName": "TestString",
     "templateDescription": "TestString",
+    "templateTripTypeId": 1
+    }
+
+### put happy path
+put {{url}}/2
+Content-Type: application/json
+Authorization: {{jwt}}
+
+{
+  "templateName": "Test Edit",
+    "templateDescription": "Test Edit",
     "templateTripTypeId": 1
     }
