@@ -24,7 +24,7 @@ public class TestHelper {
     public static TripType existingTripType = new TripType(1, "General", "Not specified");
     public static Template existingTemplate = new Template(1, "General", "Not specified", existingTripType, existingUser);
     public static Category existingCategory = new Category(1, "Weather", "Blue");
-    public static Item existingItem = new Item(goodId, "Weather", existingUser, existingCategory);
+    public static Item existingItem = new Item(goodId, "Gloves", existingUser, existingCategory);
 
     public static User makeTestUser() {
         return new User(goodId, goodUsername, goodEmail, goodPassword);

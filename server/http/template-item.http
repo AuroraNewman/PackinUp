@@ -1,0 +1,49 @@
+@url = http://localhost:8080/api/packinup/template/item
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.cBsHuLivtBohMAVwE_6AN4w6ZW0X3xAbjm077uV_jrM
+
+post {{url}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{jwt}}
+
+{
+    "quantity": 2,
+    "isChecked": false,
+    "templateId": 1,
+    "itemId": 1
+}
+
+### unhappy path nonpositive quantity
+post {{url}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{jwt}}
+
+{
+    "quantity": 0,
+    "isChecked": false,
+    "templateId": 1,
+    "itemId": 1
+}
+
+### unhappy path template does no exist
+post {{url}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{jwt}}
+
+{
+    "quantity": 1,
+    "isChecked": false,
+    "templateId": 10,
+    "itemId": 16
+}
+
+### unhappy path item does not exist
+post {{url}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{jwt}}
+
+{
+    "quantity": 1,
+    "isChecked": false,
+    "templateId": 1,
+    "itemId": 10
+}
