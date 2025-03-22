@@ -25,6 +25,31 @@ create table templates (
     foreign key (template_user_id) references users(user_id) on delete cascade
 );
 
+create table categories (
+    category_id int primary key auto_increment,
+    category_name varchar(50),
+    category_color text
+);
+
+create table items (
+    item_id int primary key auto_increment,
+    item_name varchar(50),
+    item_user_id int,
+    item_category_id int,
+    foreign key (item_category_id) references categories(category_id) on delete cascade,
+    foreign key (item_user_id) references users(user_id) on delete cascade
+);
+
+create table template_items (
+    template_item_id int primary key auto_increment,
+    template_item_quantity int,
+    template_item_is_checked boolean,
+    template_item_template_id int,
+    foreign key (template_item_template_id) references templates(template_id) on delete cascade,
+    template_item_item_id int,
+    foreign key (template_item_item_id) references items(item_id) on delete cascade
+);
+
 insert into users(user_id, username, email, `password`) values
             (1, 'Bernie', 'Bernie@rubiber.com', 'veryg00dPassword!'),
             (2, 'Bianca', 'Bianca@rubiber.com', 'veryg00dPassword!'),

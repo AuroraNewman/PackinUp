@@ -40,8 +40,10 @@ create table items (
     foreign key (item_user_id) references users(user_id) on delete cascade
 );
 
-create table templates_items (
+create table template_items (
     template_item_id int primary key auto_increment,
+    template_item_quantity int,
+    template_item_is_checked boolean,
     template_item_template_id int,
     foreign key (template_item_template_id) references templates(template_id) on delete cascade,
     template_item_item_id int,
@@ -53,8 +55,8 @@ create procedure set_known_good_state()
 begin
     delete from categories;
     alter table categories auto_increment = 1;
-    delete from templates_items;
-    alter table templates_items auto_increment = 1;
+    delete from template_items;
+    alter table template_items auto_increment = 1;
     delete from items;
     alter table items auto_increment = 1;
 	delete from templates;
