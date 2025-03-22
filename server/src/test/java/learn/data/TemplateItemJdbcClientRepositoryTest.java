@@ -29,4 +29,9 @@ class TemplateItemJdbcClientRepositoryTest {
 
         assertTrue(actual);
     }
+    @Test
+    void shouldFindAllByTemplateId(){
+        int templateId = 1;
+        assertEquals(1, repository.findAllByTemplateId(templateId).size());
+    }
 }

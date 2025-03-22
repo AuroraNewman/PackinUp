@@ -5,6 +5,8 @@ import learn.models.TemplateItem;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class TemplateItemJdbcClientRepository implements TemplateItemRepository{
     private final JdbcClient jdbcClient;
@@ -43,5 +45,14 @@ public class TemplateItemJdbcClientRepository implements TemplateItemRepository{
                 .param("template_item_template_id", item.getTemplateId())
                 .param("template_item_item_id", item.getItemId())
                 .update() > 0;
+    }
+
+    @Override
+    public List<TemplateItem> findAllByTemplateId(int templateId) {
+        final String sql = SELECT + " where template_item_template_id = ?;";
+        return jdbcClient.sql(sql)
+                .param(templateId)
+                .query(new TemplateItemMapper())
+                .list();
     }
 }

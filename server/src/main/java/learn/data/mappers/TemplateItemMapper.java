@@ -13,10 +13,10 @@ public class TemplateItemMapper implements RowMapper<TemplateItem> {
         TemplateItem templateItem = new TemplateItem();
         templateItem.setTemplateItemId(rs.getInt("template_item_id"));
         templateItem.setQuantity(rs.getInt("template_item_quantity"));
-        templateItem.setChecked(rs.getBoolean("template_item_checked"));
-        templateItem.setTemplateId(rs.getInt("template_id"));
-        templateItem.setItemId(rs.getInt("item_id"));
-
+        templateItem.setChecked(rs.getBoolean("template_item_is_checked"));
+        templateItem.setTemplateId(rs.getInt("template_item_template_id"));
+        templateItem.setItemId(rs.getInt("template_item_item_id"));
+        
         return templateItem;
     }
 }

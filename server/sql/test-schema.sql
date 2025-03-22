@@ -88,6 +88,8 @@ insert into categories(category_id, category_name, category_color) values
 insert into items(item_id, item_name, item_user_id, item_category_id) values
 	(1, 'Gloves', 1, 1);
 
+insert into template_items (template_item_id, template_item_quantity, template_item_is_checked, template_item_template_id, template_item_item_id) values
+	(1, 1, false, 1, 1);
 
 end //
 delimiter ;
