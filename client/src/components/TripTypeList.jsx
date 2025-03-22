@@ -1,6 +1,15 @@
 import { useState, useEffect } from "react";
+import TemplateForm from "./TemplateForm"; // assuming this import is present
+
 const TripTypeList = ({ loggedInUser, setLoggedInUser }) => {
+    console.log("TripTypeList component");
+    const [triptypes, setTripTypes] = useState([]);
+    const [hasFinishedFetching, setHasFinishedFetching] = useState(false);
+
     useEffect(() => {
+        // if (!loggedInUser || !loggedInUser.jwt) return;
+
+        console.log("Fetching triptypes");
         fetch("http://localhost:8080/api/packinup/triptype", {
             headers: {
                 Authorization: loggedInUser.jwt
@@ -15,27 +24,23 @@ const TripTypeList = ({ loggedInUser, setLoggedInUser }) => {
             console.error("Error fetching triptypes: ", error);
             setHasFinishedFetching(true);
         });
-    }, []);
-    
+    }, [loggedInUser]);
 
-    const [triptypes, setTripTypes] = useState([])
-    const [hasFinishedFetching, setHasFinishedFetching] = useState(false)
-        
-    if(triptypes.length === 0) {
+    if (triptypes.length === 0) {
         if (hasFinishedFetching) {
-            return (<h1>No triptypes found</h1>)
+            return <h1>No triptypes found</h1>;
         } else {
-            return (
-                null
-            )
+            return null; // still loading
         }
     }
+
     return (
-        <TemplateForm 
-          triptypes={triptypes} 
-          loggedInUser={loggedInUser} 
-          setLoggedInUser={setLoggedInUser} 
+        <TemplateForm
+            triptypes={triptypes}
+            loggedInUser={loggedInUser}
+            setLoggedInUser={setLoggedInUser}
         />
-    )
-}
-    export default TripTypeList;
+    );
+};
+
+export default TripTypeList;

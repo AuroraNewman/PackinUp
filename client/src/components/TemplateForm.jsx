@@ -1,95 +1,174 @@
-import { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-const TemplateForm = ({ loggedInUser, setLoggedInUser, triptypes = [] }) => {
+const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
+  const baseUrl = "http://localhost:8080/api/packinup/template";
+  const navigate = useNavigate();
+  const params = useParams();
 
-    const baseUrl = "http://localhost:8080/api/packinup/template";
+  const [error, setError] = useState([]);
 
-    const navigate = useNavigate();
+  const INITIAL_TEMPLATE = {
+    templateName: "",
+    templateDescription: "",
+    templateTripTypeId: "",
+  };
 
-    const params = useParams()
+  const [template, setTemplate] = useState(INITIAL_TEMPLATE);
 
-    const [error, setError] = useState([]);
-
-    const INITIAL_TEMPLATE = {
-        templateName: '',
-        templateDescription: '',
-        templateTripType: {
-            tripTypeId: "",
-            tripTypeName: "",
-            tripTypeDescription: ""
-          }
-    }
-
-    const [template, setTemplate] = useState(INITIAL_TEMPLATE);
-
-    const[triptype, setTripType] = useState('')
-
-    const handleTripTypeChange = (event) => {
-        const selectedTripType = triptypes.find(
-          (t) => t.id.toString() === event.target.value
-        );
-        setTemplate({
-          ...template,
-          templateTripType: selectedTripType || INITIAL_TEMPLATE.templateTripType
-        });
-      };
-      
-
-    useEffect(() => {
-        if (params.templateId) {
-            const fetchUrl = `${baseUrl}/${params.templateId}`
-            fetch(fetchUrl, {
-                headers: {
-                    Authorization: loggedInUser.jwt
-                }
-            })
-                .then(response => {
-                    if (response.status >= 200 && response.status < 300) {
-                        response.json().then(template => setTemplate(template))
-                    } else {
-                        response.json().then((x) => {
-                            debugger
-
-                        })
-                        // setErrors(["Could not find that solar panel"])
-                        navigate("/notFound")
-                    }
-                })
+  useEffect(() => {
+    if (params.templateId) {
+      const fetchUrl = `${baseUrl}/${params.templateId}`;
+      fetch(fetchUrl, {
+        headers: {
+          Authorization: loggedInUser.jwt,
+        },
+      }).then((response) => {
+        if (response.status >= 200 && response.status < 300) {
+          response.json().then((fetchedTemplate) => {
+            // Map fetched data to expected structure
+            setTemplate({
+              templateName: fetchedTemplate.templateName,
+              templateDescription: fetchedTemplate.templateDescription,
+              templateTripTypeId: fetchedTemplate.templateTripType?.tripTypeId || "",
+            });
+          });
+        } else {
+          navigate("/notFound");
         }
-    }, [params.templateId, baseUrl, loggedInUser.jwt, navigate])
+      });
+    }
+  }, [params.templateId, baseUrl, loggedInUser.jwt, navigate]);
 
-    const handleChange = (event) => {
-        setTemplate({ ...template, [event.target.name]: event.target.value })
-    };
-    console.log(params)
+  const handleChange = (event) => {
+    setTemplate({ ...template, [event.target.name]: event.target.value });
+  };
 
-    const handleSubmit = (event) => {
-        event.preventDefault()
-        const method = params.templateId ? "PUT" : "POST";
-        const submitUrl = params.templateId ? `${baseUrl}/${params.templateId}`
+  const handleTripTypeChange = (event) => {
+    setTemplate({
+      ...template,
+      templateTripTypeId: parseInt(event.target.value) || "",
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const method = params.templateId ? "PUT" : "POST";
+    const submitUrl = params.templateId
+      ? `${baseUrl}/${params.templateId}`
       : baseUrl;
 
-        fetch(submitUrl, {
-            method,
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: loggedInUser.jwt
-            },
-            body: JSON.stringify(template)
-        })
-            .then(response => {
-                if (response.status >= 200 && response.status < 300) {
-                    navigate("/") //todo implement this
-                } else if (response.status === 401) {
-                    setLoggedInUser(null)
-                    localStorage.clear("loggedInUser")
-                    alert("You have been logged out")
-                } else {
-                    response.json().then(fetchedErrors => setError(fetchedErrors))
-                }
-            })
-    }
+    fetch(submitUrl, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: loggedInUser.jwt,
+      },
+      body: JSON.stringify(template),
+    }).then((response) => {
+      if (response.status >= 200 && response.status < 300) {
+        navigate("/");
+      } else if (response.status === 401) {
+        setLoggedInUser(null);
+        localStorage.clear("loggedInUser");
+        alert("You have been logged out");
+      } else {
+        response.json().then((fetchedErrors) => setError(fetchedErrors));
+      }
+    });
+  };
+
+  return (
+    <>
+      <div className="row">
+        {error.length > 0 && (
+          <ul id="errors">
+            {error.map((err, index) => (
+              <li key={index}>{err}</li>
+            ))}
+          </ul>
+        )}
+
+        <h2>
+          {params.templateId
+            ? `Editing template: ${template.templateName}`
+            : "Add a new template"}
+        </h2>
+
+        <div className="col-3"></div>
+        <form onSubmit={handleSubmit} className="col-6">
+          <div className="form-group">
+            <label htmlFor="templateName">Name:</label>
+            <input
+              name="templateName"
+              className="form-control"
+              id="templateName-input"
+              type="text"
+              value={template.templateName}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="templateDescription">Description:</label>
+            <input
+              name="templateDescription"
+              className="form-control"
+              id="templateDescription-input"
+              type="text"
+              value={template.templateDescription}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="templateTripTypeId">Trip Type:</label>
+            <select
+              name="templateTripTypeId"
+              id="templateTripTypeId-input"
+              value={template.templateTripTypeId}
+              onChange={handleTripTypeChange}
+              className="form-control"
+            >
+              <option value="" disabled>
+                Select a trip type
+              </option>
+              <option value="1">Beach</option>
+              <option value="2">Mountain</option>
+              <option value="3">City</option>
+            </select>
+          </div>
+
+          <button type="submit">
+            {params.templateId ? "Save Changes" : "Add Template"}
+          </button>
+        </form>
+        <div className="col-3"></div>
+      </div>
+    </>
+  );
+};
+
+export default TemplateForm;
+
+
+// const INITIAL_TEMPLATE = {
+    //     templateName: '',
+    //     templateDescription: '',
+    //     templateTripType: {
+    //         tripTypeId: "",
+    //         tripTypeName: "",
+    //         tripTypeDescription: ""
+    //       }
+    // }
+    {/* {triptypes.map((triptype) => (
+                                <option key={triptype.tripTypeId} value={triptype.tripTypeId}>
+                                    {triptype.tripTypeName}
+                                </option>
+                            ))} */}
+
+
+
 
     // const setTripTypes = ({ triptypes }) => {
     //     let optionsString = '<option value="">Select a trip type</option>'
@@ -98,55 +177,12 @@ const TemplateForm = ({ loggedInUser, setLoggedInUser, triptypes = [] }) => {
     //         optionsString += singleOptionString
     //     }
     // }
-
-
-
-    return (
-        <>
-            <div className="row">
-                {error.length > 0 && <ul id="errors">
-                    {error.map(error => <li key={error}>{error}</li>)}
-                </ul>}
-
-                <h2>{params.templateId ? `Editing template ${template.templateName}` : "Add a new template"}</h2>
-
-                <div className="col-3"></div>
-                <form onSubmit={handleSubmit} className="col-6">
-                    <div className="form-group">
-                        <label htmlFor="templateName">Name: </label>
-                        <input name="templateName" className="form-control" id="templateName-input" type="text" value={template.templateName} onChange={handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="templateDescription">Description: </label>
-                        <input name="templateDescription" className="form-control" id="templateDescription-input" type="text" value={template.templateDescription} onChange={handleChange} />
-                    </div>
-                    
-                    <div className="form-group">
-                        <label htmlFor="templateTripType">Trip Type: </label>
-                        <select
-  id="templateTripType"
-  name="templateTripType"
-  value={template.templateTripType.tripTypeId || ""}
-  onChange={handleTripTypeChange}
-  className="form-control"
->
-  <option value="">Select a trip type</option>
-  {triptypes.map((triptype) => (
-    <option key={triptype.id} value={triptype.id}>
-      {triptype.name}
-    </option>
-  ))}
-</select>
-
-
-
-
-                    </div>
-                    <button type="submit">{params.templateId ? "Edit!" : "Add!"}</button>
-                </form>
-                <div className="col-3"></div>
-            </div>
-        </>
-    )
-}
-export default TemplateForm;
+    // const handleTripTypeChange = (event) => {
+    //     const selectedTripType = triptypes.find(
+    //       (t) => t.id.toString() === event.target.value
+    //     );
+    //     setTemplate({
+    //       ...template,
+    //       templateTripType: selectedTripType || INITIAL_TEMPLATE.templateTripType
+    //     });
+    //   };
