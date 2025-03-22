@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
-const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
+const TemplateForm = ({ loggedInUser, setLoggedInUser, triptypes = [] }) => {
 
-    let url = "http://localhost:8080/api/packinup/template";
+    const baseUrl = "http://localhost:8080/api/packinup/template";
 
     const navigate = useNavigate();
 
@@ -11,43 +11,66 @@ const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
 
     const [error, setError] = useState([]);
 
-    const [template, setTemplate] = useState({ INITIAL_TEMPLATE })
-
     const INITIAL_TEMPLATE = {
         templateName: '',
         templateDescription: '',
-        templateCategoryId: ''
+        templateTripType: {
+            tripTypeId: "",
+            tripTypeName: "",
+            tripTypeDescription: ""
+          }
     }
+
+    const [template, setTemplate] = useState(INITIAL_TEMPLATE);
+
+    const[triptype, setTripType] = useState('')
+
+    const handleTripTypeChange = (event) => {
+        const selectedTripType = triptypes.find(
+          (t) => t.id.toString() === event.target.value
+        );
+        setTemplate({
+          ...template,
+          templateTripType: selectedTripType || INITIAL_TEMPLATE.templateTripType
+        });
+      };
+      
+
+    useEffect(() => {
+        if (params.templateId) {
+            const fetchUrl = `${baseUrl}/${params.templateId}`
+            fetch(fetchUrl, {
+                headers: {
+                    Authorization: loggedInUser.jwt
+                }
+            })
+                .then(response => {
+                    if (response.status >= 200 && response.status < 300) {
+                        response.json().then(template => setTemplate(template))
+                    } else {
+                        response.json().then((x) => {
+                            debugger
+
+                        })
+                        // setErrors(["Could not find that solar panel"])
+                        navigate("/notFound")
+                    }
+                })
+        }
+    }, [params.templateId, baseUrl, loggedInUser.jwt, navigate])
 
     const handleChange = (event) => {
         setTemplate({ ...template, [event.target.name]: event.target.value })
     };
-
-    useEffect(() => {
-        if (params.templateId) {
-            url += "/edit${params.templateId}"
-            fetch({url})
-                .then(response => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json()
-                    } else {
-                        throw new Error("Template not found");
-                    }
-                })
-                .then(fetchedTemplate => setTemplate(fetchedTemplate))
-                .catch(() => navigate("/notFound"));
-        }
-    }, [params.templateId, navigate]);
+    console.log(params)
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        let method = "POST"
-        if (params.templateId !== undefined) {
-            method = "PUT"
-            url += `/${params.templateId}`
-        }
+        const method = params.templateId ? "PUT" : "POST";
+        const submitUrl = params.templateId ? `${baseUrl}/${params.templateId}`
+      : baseUrl;
 
-        fetch(url, {
+        fetch(submitUrl, {
             method,
             headers: {
                 "Content-Type": "application/json",
@@ -66,8 +89,15 @@ const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
                     response.json().then(fetchedErrors => setError(fetchedErrors))
                 }
             })
-            .catch(err => console.error("Submit failed", err));
     }
+
+    // const setTripTypes = ({ triptypes }) => {
+    //     let optionsString = '<option value="">Select a trip type</option>'
+    //     for (const triptype of triptypes) {
+    //         const singleOptionString = `<triptype value="${triptype.name}">${triptype.name}</option>`
+    //         optionsString += singleOptionString
+    //     }
+    // }
 
 
 
@@ -90,19 +120,28 @@ const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
                         <label htmlFor="templateDescription">Description: </label>
                         <input name="templateDescription" className="form-control" id="templateDescription-input" type="text" value={template.templateDescription} onChange={handleChange} />
                     </div>
-                    {/* //todo implement getting the trip types */}
+                    
                     <div className="form-group">
-                        <label htmlFor="tripType">Trip Type: </label>
-                        <select name="templateTripType" className="form-control" id="tripType-input" value={template.material} onChange={handleChange}>
-                            <option value="">Pick a material...</option>
-                            <option value="POLY_SI">Multicrystalline Silicon</option>
-                            <option value="MONO_SI">Monocrystalline Silicon</option>
-                            <option value="A_SI">Amorphous Silicon</option>
-                            <option value="CD_TE">Cadmium Telluride</option>
-                            <option value="CIGS">Copper Indium Gallium Selenide</option>
-                        </select>
-                    </div>
+                        <label htmlFor="templateTripType">Trip Type: </label>
+                        <select
+  id="templateTripType"
+  name="templateTripType"
+  value={template.templateTripType.tripTypeId || ""}
+  onChange={handleTripTypeChange}
+  className="form-control"
+>
+  <option value="">Select a trip type</option>
+  {triptypes.map((triptype) => (
+    <option key={triptype.id} value={triptype.id}>
+      {triptype.name}
+    </option>
+  ))}
+</select>
 
+
+
+
+                    </div>
                     <button type="submit">{params.templateId ? "Edit!" : "Add!"}</button>
                 </form>
                 <div className="col-3"></div>

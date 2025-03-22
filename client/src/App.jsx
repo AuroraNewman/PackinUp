@@ -43,8 +43,10 @@ const App = () => {
               {/* must be logged in */}
               
               <Route path="/template"  element={ loggedInUser===null ? <Navigate to="/" /> : <TemplateList loggedInUser={loggedInUser}/>} />
+
+              <Route path="/template/create"  element={ loggedInUser===null ? <Navigate to="/" /> : <TemplateForm loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
               
-              <Route path="/template/edit/:templateId"  element={ loggedInUser===null ? <Navigate to="/" /> : <TemplateForm loggedInUser={loggedInUser}/>} />
+              <Route path="/template/edit/:templateId"  element={ loggedInUser===null ? <Navigate to="/" /> : <TemplateForm loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
               
               <Route path="/template/delete/:templateId"  element={ loggedInUser===null ? <Navigate to="/" /> : <TemplateList loggedInUser={loggedInUser}/>} />
               
