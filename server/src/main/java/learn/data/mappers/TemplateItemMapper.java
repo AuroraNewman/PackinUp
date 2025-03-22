@@ -16,7 +16,7 @@ public class TemplateItemMapper implements RowMapper<TemplateItem> {
         templateItem.setChecked(rs.getBoolean("template_item_is_checked"));
         templateItem.setTemplateId(rs.getInt("template_item_template_id"));
         templateItem.setItemId(rs.getInt("template_item_item_id"));
-        
+
         return templateItem;
     }
 }

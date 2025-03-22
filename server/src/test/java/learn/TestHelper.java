@@ -38,6 +38,13 @@ public class TestHelper {
     public static IncomingTemplate makeTestAddTemplate(){
         return new IncomingTemplate(goodVarCharString, goodVarCharString, existingTripType.getTripTypeId());
     }
+    public static Item makeTestItem() {
+        return new Item(goodId, goodVarCharString, existingUser, existingCategory);
+    }
+    public static Category makeTestCategory() {
+        return new Category(goodId, goodVarCharString, goodVarCharString);
+    }
+
     public static TemplateItem makeTestTemplateItem() {
         return new TemplateItem(goodId, goodId, false, goodId, goodId);
     }

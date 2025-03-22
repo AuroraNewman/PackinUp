@@ -12,13 +12,13 @@ public class Item {
     private int itemId;
 
     @Size(min = 1, max = 50, message = "Item name must be between 1 and 50 characters.")
-    @NotBlank
+    @NotBlank(message = "Item name is required.")
     private String itemName;
 
-    @NotNull
+    @NotNull(message = "User is required.")
     private User user;
 
-    @NotNull
+    @NotNull(message = "Category is required.")
     private Category category;
 
     public Item() {
