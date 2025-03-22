@@ -133,9 +133,9 @@ const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
               <option value="" disabled>
                 Select a trip type
               </option>
-              <option value="1">Beach</option>
-              <option value="2">Mountain</option>
-              <option value="3">City</option>
+              <option value="1">General</option>
+              <option value="2">Vacation</option>
+              <option value="3">Business Trip</option>
             </select>
           </div>
 
