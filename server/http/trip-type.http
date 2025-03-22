@@ -1,0 +1,7 @@
+@url = http://localhost:8080/api/packinup/triptype
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.vHxDC8S9fBy-pT-hokzbk1Dc0Inw0B5adRf_ZrSSmrc
+
+###
+get {{url}}
+Content-Type: application/json
+Authorization: {{jwt}}

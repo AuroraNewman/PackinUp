@@ -1,14 +1,15 @@
 package learn.service;
 
 import learn.TestHelper;
-import learn.data.DuplicateEmailException;
 import learn.data.UserRepository;
 import learn.models.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DuplicateKeyException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -20,6 +21,16 @@ class UserServiceTest {
 
     @MockBean
     UserRepository repository;
+
+    private User testUser;
+    private User testAddUser;
+    @BeforeEach
+    void setUp(){
+        testUser = TestHelper.makeTestUser();
+        testAddUser = TestHelper.makeTestUser();
+        testAddUser.setUserId(0);
+    }
+
     @Nested
     public class FindTests {
         @Test
@@ -83,16 +94,8 @@ class UserServiceTest {
     public class CreateTests {
         @Test
         void create() {
-            User toCreate = new User(
-                    TestHelper.goodUser.getUsername(),
-                    TestHelper.goodUser.getEmail(),
-                    TestHelper.goodUser.getPassword()
-            );
-            User expectedUser = new User(1,
-                    TestHelper.goodUser.getUsername(),
-                    TestHelper.goodUser.getEmail(),
-                    TestHelper.goodUser.getPassword()
-            );
+            User toCreate = testAddUser;
+            User expectedUser = TestHelper.makeTestUser();
             Result<User> expected = new Result<>();
             expected.setPayload(expectedUser);
             when(repository.create(toCreate)).thenReturn(expectedUser);
@@ -111,84 +114,65 @@ class UserServiceTest {
         }
         @Test
         void shouldNotCreateLongUsername(){
-            User toCreate = new User(
-                    TestHelper.tooLongUsername,
-                    TestHelper.goodUser.getEmail(),
-                    TestHelper.goodUser.getPassword()
-            );
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setUsername(TestHelper.tooLongVarCharString);
+
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Username must be fewer than 50 characters."));
         }
         @Test
         void shouldNotCreateBlankUsername(){
-            User toCreate = new User(
-                    "",
-                    TestHelper.goodUser.getEmail(),
-                    TestHelper.goodUser.getPassword()
-            );
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setUsername("");
+
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Username is required."));
         }
         @Test
         void shouldNotCreateNullUsername(){
-            User toCreate = new User(
-                    null,
-                    TestHelper.goodUser.getEmail(),
-                    TestHelper.goodUser.getPassword()
-            );
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setUsername(null);
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Username is required."));
         }
         @Test
         void shouldNotCreateLongEmail(){
-            User toCreate = new User(
-                    TestHelper.goodUser.getUsername(),
-                    TestHelper.tooLongEmail,
-                    TestHelper.goodUser.getPassword()
-            );
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setEmail(TestHelper.tooLongEmail);
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Email must be fewer than 100 characters."));
         }
         @Test
         void shouldNotCreateBlankEmail(){
-            User toCreate = new User(
-                    TestHelper.goodUser.getUsername(),
-                    "",
-                    TestHelper.goodUser.getPassword()
-            );
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setEmail("");
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Email is required."));
         }
         @Test
         void shouldNotCreateNullEmail(){
-            User toCreate = new User(
-                    TestHelper.goodUser.getUsername(),
-                    null,
-                    TestHelper.goodUser.getPassword()
-            );
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setEmail(null);
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Email is required."));
         }
         @Test
         void shouldNotCreateInvalidEmailFormat(){
-            User toCreate = new User(
-                    TestHelper.goodUser.getUsername(),
-                    TestHelper.badFormatEmail,
-                    TestHelper.goodUser.getPassword()
-            );
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setEmail(TestHelper.badFormatEmail);
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Email must be a valid email address."));
@@ -196,97 +180,73 @@ class UserServiceTest {
 
         @Test
         void shouldNotCreateBlankPassword(){
-            User toCreate = new User(
-                    TestHelper.goodUser.getUsername(),
-                    TestHelper.goodUser.getEmail(),
-                    ""
-            );
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setPassword("");
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Password is required."));
         }
         @Test
         void shouldNotCreateNullPassword(){
-            User toCreate = new User(
-                    TestHelper.goodUser.getUsername(),
-                    TestHelper.goodUser.getEmail(),
-                    null
-            );
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setPassword(null);
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Password is required."));
         }
         @Test
         void shouldNotCreateBadPasswordNoCaps(){
-            User toCreate = new User(
-                    TestHelper.goodUser.getUsername(),
-                    TestHelper.goodUser.getEmail(),
-                    TestHelper.badFormatPasswordNoCaps
-            );
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setPassword(TestHelper.badFormatPasswordNoCaps);
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Password must contain at least one uppercase letter, one lowercase letter, one special character, and one number."));
         }
         @Test
         void shouldNotCreateBadPasswordNoSpecial(){
-            User toCreate = new User(
-                    TestHelper.goodUser.getUsername(),
-                    TestHelper.goodUser.getEmail(),
-                    TestHelper.badFormatPasswordNoSpecial
-            );
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setPassword(TestHelper.badFormatPasswordNoSpecial);
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Password must contain at least one uppercase letter, one lowercase letter, one special character, and one number."));
         }
         @Test
         void shouldNotCreateBadPasswordNoNumber(){
-            User toCreate = new User(
-                    TestHelper.goodUser.getUsername(),
-                    TestHelper.goodUser.getEmail(),
-                    TestHelper.badFormatPasswordNoNumber
-            );
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setPassword(TestHelper.badFormatPasswordNoNumber);
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Password must contain at least one uppercase letter, one lowercase letter, one special character, and one number."));
         }
         @Test
         void shouldNotCreateBadPasswordNoLowers(){
-            User toCreate = new User(
-                    TestHelper.goodUser.getUsername(),
-                    TestHelper.goodUser.getEmail(),
-                    TestHelper.badFormatPasswordNoLowers
-            );
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setPassword(TestHelper.badFormatPasswordNoLowers);
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Password must contain at least one uppercase letter, one lowercase letter, one special character, and one number."));
         }
         @Test
         void shouldNotCreateShortPassword(){
-            User toCreate = new User(
-                    TestHelper.goodUser.getUsername(),
-                    TestHelper.goodUser.getEmail(),
-                    TestHelper.badFormatPasswordShort
-            );
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setPassword(TestHelper.badFormatPasswordShort);
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Password must be at least 8 characters long."));
         }
         @Test
         void shouldNotCreateDuplicateEmailUserUseError(){
-            User toCreate = new User(
-                    TestHelper.goodUser.getUsername(),
-                    TestHelper.existingUser.getEmail(),
-                    TestHelper.goodUser.getPassword()
-            );
-            when(repository.create(toCreate)).thenThrow(DuplicateEmailException.class);
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setEmail(TestHelper.existingUser.getEmail());
+            when(repository.create(failCreate)).thenThrow(DuplicateKeyException.class);
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Email already exists."));
@@ -294,13 +254,10 @@ class UserServiceTest {
         }
         @Test
         void shouldNotCreateDuplicateEmailUserUseRepoCheck(){
-            User toCreate = new User(
-                    TestHelper.goodUser.getUsername(),
-                    TestHelper.existingUser.getEmail(),
-                    TestHelper.goodUser.getPassword()
-            );
-            when(repository.findByEmail(toCreate.getEmail())).thenReturn(TestHelper.existingUser);
-            Result<User> actual = service.create(toCreate);
+            User failCreate = testAddUser;
+            failCreate.setEmail(TestHelper.existingUser.getEmail());
+            when(repository.findByEmail(failCreate.getEmail())).thenReturn(TestHelper.existingUser);
+            Result<User> actual = service.create(failCreate);
 
             assertFalse(actual.isSuccess());
             assertTrue(actual.getErrorMessages().contains("Email already exists."));
@@ -337,7 +294,7 @@ class UserServiceTest {
         void shouldNotUpdateLongUsername(){
             User toUpdate = new User(
                     TestHelper.existingUser.getUserId(),
-                    TestHelper.tooLongUsername,
+                    TestHelper.tooLongVarCharString,
                     TestHelper.existingUser.getEmail(),
                     TestHelper.existingUser.getPassword()
             );

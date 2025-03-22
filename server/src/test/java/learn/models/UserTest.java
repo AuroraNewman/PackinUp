@@ -11,6 +11,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ class UserTest {
     @Test
     void longUsernameShouldFail() {
         User user = testUser;
-        testUser.setUsername(TestHelper.tooLongUsername);
+        testUser.setUsername(TestHelper.tooLongVarCharString);
         String expectedErrorMessage = "Username must be fewer than 50 characters.";
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);List<String> errorMessages = new ArrayList<>();

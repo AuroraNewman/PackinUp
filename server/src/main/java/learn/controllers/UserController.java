@@ -23,9 +23,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/packinup/user")
 public class UserController {
+    private final SecretSigningKey secretSigningKey;
     private UserService service;
 
-    public UserController(UserService service) {
+    public UserController(SecretSigningKey secretSigningKey, UserService service) {
+        this.secretSigningKey = secretSigningKey;
         this.service = service;
     }
 
@@ -70,10 +72,7 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<Object> delete(@PathVariable int userId) {
         Result<Void> result = service.delete(userId);
-        if (result.isSuccess()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.NOT_FOUND);
+        return null;
     }
     private List<String> extractDefaultMessageFromBindingResult(BindingResult bindingResult) {
         return bindingResult.getAllErrors().stream()
@@ -85,7 +84,7 @@ public class UserController {
                 .claim("email", user.getEmail())
                 .claim("username", user.getUsername())
                 .claim("userId", user.getUserId())
-                .signWith(Keys.secretKeyFor(SignatureAlgorithm.HS256))
+                .signWith(secretSigningKey.getKey())
                 .compact();
         return Map.of("jwt", jwt);
     }

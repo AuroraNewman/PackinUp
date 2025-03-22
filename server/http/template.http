@@ -1,0 +1,35 @@
+@url = http://localhost:8080/api/packinup/template
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.vHxDC8S9fBy-pT-hokzbk1Dc0Inw0B5adRf_ZrSSmrc
+
+###
+get {{url}}
+Content-Type: application/json
+Authorization: {{jwt}}
+
+###
+get {{url}}/2
+Content-Type: application/json
+Authorization: {{jwt}}
+
+
+### Successful create (201)
+post {{url}}
+Content-Type: application/json
+Authorization: {{jwt}}
+
+{
+  "templateName": "TestString",
+    "templateDescription": "TestString",
+    "templateTripTypeId": 1
+    }
+
+### put happy path
+put {{url}}/2
+Content-Type: application/json
+Authorization: {{jwt}}
+
+{
+  "templateName": "Test Edit",
+    "templateDescription": "Test Edit",
+    "templateTripTypeId": 1
+    }

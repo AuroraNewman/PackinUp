@@ -42,8 +42,9 @@ class UserControllerTest {
     private User testAddUser;
     @BeforeEach
     void setUp(){
-        testUser = new User(1, TestHelper.goodUsername, TestHelper.goodEmail, TestHelper.goodPassword);
-        testAddUser = new User(TestHelper.goodUsername, TestHelper.goodEmail, TestHelper.goodPassword);
+        testUser = TestHelper.makeTestUser();
+        testAddUser = TestHelper.makeTestUser();
+        testAddUser.setUserId(0);
     }
 
     /**
@@ -116,7 +117,7 @@ class UserControllerTest {
         void shouldReturn400OnLongUsername() throws Exception {
             User failAdd = new User();
             failAdd.setUserId(0);
-            failAdd.setUsername(TestHelper.tooLongUsername);
+            failAdd.setUsername(TestHelper.tooLongVarCharString);
             failAdd.setEmail(TestHelper.goodEmail);
             failAdd.setPassword(TestHelper.goodPassword);
 

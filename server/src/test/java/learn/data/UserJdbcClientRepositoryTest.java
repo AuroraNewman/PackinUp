@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,9 +16,11 @@ class UserJdbcClientRepositoryTest {
     JdbcClient client;
     @Autowired
     UserJdbcClientRepository repository;
+    private User testUser;
     @BeforeEach
     void setup() {
         client.sql("call set_known_good_state();").update();
+        testUser = new User(TestHelper.goodId, TestHelper.goodUsername, TestHelper.goodEmail, TestHelper.goodPassword);
     }
     @Test
     void findById() {
@@ -53,10 +56,19 @@ class UserJdbcClientRepositoryTest {
 
     @Test
     void create() {
-       User actual = repository.create(TestHelper.goodUser);
+       User actual = repository.create(testUser);
 
         assertNotNull(actual);
         assertEquals(4, actual.getUserId());
+    }
+    @Test
+    void failToCreateDuplicateEmail(){
+        User failAdd = testUser;
+        failAdd.setEmail(TestHelper.existingUser.getEmail());
+
+        assertThrows(DuplicateKeyException.class, () -> {
+            repository.create(failAdd);
+        });
     }
 
     @Test
