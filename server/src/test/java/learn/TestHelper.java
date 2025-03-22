@@ -1,9 +1,7 @@
 package learn;
 
 import learn.data_transfer_objects.IncomingTemplate;
-import learn.models.Template;
-import learn.models.TripType;
-import learn.models.User;
+import learn.models.*;
 
 public class TestHelper {
     public static int badId = -999;
@@ -25,6 +23,8 @@ public class TestHelper {
     public static User existingUser = new User(1, "Bernie", "Bernie@rubiber.com", "veryg00dPassword!");
     public static TripType existingTripType = new TripType(1, "General", "Not specified");
     public static Template existingTemplate = new Template(1, "General", "Not specified", existingTripType, existingUser);
+    public static Category existingCategory = new Category(1, "Weather", "Blue");
+    public static Item existingItem = new Item(goodId, "Weather", existingUser, existingCategory);
 
     public static User makeTestUser() {
         return new User(goodId, goodUsername, goodEmail, goodPassword);
@@ -37,5 +37,8 @@ public class TestHelper {
     }
     public static IncomingTemplate makeTestAddTemplate(){
         return new IncomingTemplate(goodVarCharString, goodVarCharString, existingTripType.getTripTypeId());
+    }
+    public static TemplateItem makeTestTemplateItem() {
+        return new TemplateItem(goodId, goodId, false, goodId, goodId);
     }
 }

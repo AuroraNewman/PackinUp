@@ -62,3 +62,7 @@ insert into trip_types(trip_type_id, trip_type_name, trip_type_description) valu
             (3, 'Business Trip', 'It''s business time.');
 insert into templates(template_id, template_name, template_description, template_trip_type_id, template_user_id) values
             (1, 'General', 'Not specified', 1, 1);
+
+insert into categories(category_id, category_name, category_color) values
+	(1, 'Weather', 'Blue');
+    
