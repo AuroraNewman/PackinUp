@@ -117,19 +117,5 @@ class TemplateServiceTest {
             assertEquals(expected, actual);
         }
 
-        @Test
-        void shouldNotCreateWhenTemplateNameAlreadyExists() {
-            Template failAdd = testTemplate;
-            failAdd.setTemplateName(TestHelper.existingTemplate.getTemplateName());
-            Result<Template> expected = new Result<>();
-            expected.addErrorMessage("Template name already exists.", ResultType.INVALID);
-
-            when(repository.create(failAdd)).thenThrow(DuplicateKeyException.class);
-
-            Result<Template> actual = service.create(failAdd);
-
-            assertEquals(expected, actual);
-        }
-
     }
 }

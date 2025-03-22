@@ -22,12 +22,13 @@ class TemplateItemJdbcClientRepositoryTest {
     }
     @Test
     void create() {
+        TemplateItem expected = TestHelper.makeTestTemplateItem();
         TemplateItem beforeAdd = TestHelper.makeTestTemplateItem();
         beforeAdd.setTemplateItemId(0);
 
-        boolean actual = repository.create(beforeAdd);
+        TemplateItem actual = repository.create(beforeAdd);
 
-        assertTrue(actual);
+        assertEquals(expected, actual);
     }
     @Test
     void shouldFindAllByTemplateId(){

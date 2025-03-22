@@ -65,13 +65,12 @@ public class TemplateJdbcClientRepository implements TemplateRepository{
 
     @Override
     public Template create(Template template) throws DuplicateKeyException{
-        int rowsAffected = 0;
         final String sql = """
                 insert into templates(template_name, template_description, template_trip_type_id, template_user_id)
                 values(:template_name, :template_description, :template_trip_type_id, :template_user_id);
                 """;
         KeyHolder keyHolder = new GeneratedKeyHolder();
-            rowsAffected = jdbcClient.sql(sql)
+        int rowsAffected = jdbcClient.sql(sql)
                     .param("template_name", template.getTemplateName())
                     .param("template_description", template.getTemplateDescription())
                     .param("template_user_id", template.getTemplateUser().getUserId())

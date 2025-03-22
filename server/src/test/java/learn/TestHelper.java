@@ -46,6 +46,6 @@ public class TestHelper {
     }
 
     public static TemplateItem makeTestTemplateItem() {
-        return new TemplateItem(goodId, goodId, false, goodId, goodId);
+        return new TemplateItem(2, goodId, false, goodId, goodId);
     }
 }

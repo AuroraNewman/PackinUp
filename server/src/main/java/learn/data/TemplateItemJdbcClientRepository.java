@@ -3,6 +3,8 @@ package learn.data;
 import learn.data.mappers.TemplateItemMapper;
 import learn.models.TemplateItem;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,7 +27,15 @@ public class TemplateItemJdbcClientRepository implements TemplateItemRepository{
             """;
 
     @Override
-    public boolean create(TemplateItem item) {
+    public List<TemplateItem> findAllByTemplateId(int templateId) {
+        final String sql = SELECT + " where template_item_template_id = ?;";
+        return jdbcClient.sql(sql)
+                .param(templateId)
+                .query(new TemplateItemMapper())
+                .list();
+    }
+    @Override
+    public TemplateItem create(TemplateItem templateItem) {
         final String sql = """
                 insert into template_items (
                     template_item_quantity,
@@ -39,20 +49,20 @@ public class TemplateItemJdbcClientRepository implements TemplateItemRepository{
                     :template_item_item_id
                 )
                 """;
-        return jdbcClient.sql(sql)
-                .param("template_item_quantity", item.getQuantity())
-                .param("template_item_is_checked", item.isChecked())
-                .param("template_item_template_id", item.getTemplateId())
-                .param("template_item_item_id", item.getItemId())
-                .update() > 0;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        int rowsAffected= jdbcClient.sql(sql)
+                .param("template_item_quantity", templateItem.getQuantity())
+                .param("template_item_is_checked", templateItem.isChecked())
+                .param("template_item_template_id", templateItem.getTemplateId())
+                .param("template_item_item_id", templateItem.getItemId())
+                .update(keyHolder, "template_item_id");
+
+        if (rowsAffected <= 0) {
+            return null;
+        }
+        templateItem.setTemplateItemId(keyHolder.getKey().intValue());
+        return templateItem;
     }
 
-    @Override
-    public List<TemplateItem> findAllByTemplateId(int templateId) {
-        final String sql = SELECT + " where template_item_template_id = ?;";
-        return jdbcClient.sql(sql)
-                .param(templateId)
-                .query(new TemplateItemMapper())
-                .list();
-    }
+
 }
