@@ -43,7 +43,7 @@ const TemplateList = ({ loggedInUser }) => {
     }
     return (
         <>
-            <div class="row">
+            <div className="row">
                 <Link to={`/template/create`} className="btn btn-primary me-2 mb-2">Add Template</Link>
             </div>
             <TemplateTable templates={templates} />

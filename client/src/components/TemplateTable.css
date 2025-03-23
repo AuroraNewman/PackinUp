@@ -1,3 +1,4 @@
+/* style adapted from codepen: https://codepen.io/vikassingh1111/pen/xBPmbL */
 body {
 	background: #262a2b;
 }
@@ -12,6 +13,7 @@ body {
 	width: 20%;
 	min-width: 200px;
 	max-width: 230px;
+	height: 300px;
 	padding: 80px 20px 40px;
 	position: relative;
 	vertical-align: top;
@@ -21,6 +23,7 @@ body {
 	background: #262a2b;
 	border: 1px solid #252727;
 	text-align: left;
+	z-index: 0;
 }
 .tilesWrap li h2 {
 	font-size: 114px;
@@ -46,7 +49,8 @@ body {
 	background: transparent;
 	border: 1px solid #b7b7b7;
 	padding: 10px 20px;
-	color: #b7b7b7;
+	color: #000;
+	background-color: #ebd7fc;
 	border-radius: 3px;
 	position: relative;
 	transition: all 0.3s ease-in-out;
@@ -55,12 +59,13 @@ body {
 	cursor: pointer;
 	overflow: hidden;
 }
-.tilesWrap li button:before {
+button:before {
 	content: '';
 	position: absolute;
 	height: 100%;
 	width: 120%;
-	background: #b7b7b7;
+	color: #f1f1f1;
+	background-color: #a2bff4;
 	top: 0;
 	opacity: 0;
 	left: -140px;
@@ -73,8 +78,8 @@ body {
 	transform: translateY(5px);
 	opacity: 1;
 }
-.tilesWrap li button:hover {
-	color: #262a2b;
+button:hover {
+	color: #f1f1f1;
 }
 .tilesWrap li button:hover:before {
 	left: 0;
@@ -93,7 +98,8 @@ body {
 	right: -2px;
 	bottom: -2px;
 	z-index: -1;
-	background: #fff;
+	background-color: aliceblue; /* For browsers that do not support gradients */
+  	background-image: linear-gradient(#a2bff4, #9b35f2);
 	transform: skew(2deg, 2deg);
 }
 .tilesWrap li:after {
@@ -105,23 +111,24 @@ body {
 	top: 0;
 	background: rgba(255, 255, 255, 0.02);
 }
-.tilesWrap li:nth-child(1):before {
-	background: #C9FFBF;
-background: -webkit-linear-gradient(to right, #FFAFBD, #C9FFBF);
-background: linear-gradient(to right, #FFAFBD, #C9FFBF);
+.tilesWrap li:hover p {
+	color: #000;
 }
-.tilesWrap li:nth-child(2):before {
-	background: #f2709c;
-background: -webkit-linear-gradient(to right, #ff9472, #f2709c);
-background: linear-gradient(to right, #ff9472, #f2709c);
+
+.tilesWrap li:hover h3 {
+	color: #000;
 }
-.tilesWrap li:nth-child(3):before {
-	background: #c21500;
-background: -webkit-linear-gradient(to right, #ffc500, #c21500);
-background: linear-gradient(to right, #ffc500, #c21500);
+.tilesWrap p:after {
+	color: #000;
 }
-.tilesWrap li:nth-child(4):before {
-	background: #FC354C;
-background: -webkit-linear-gradient(to right, #0ABFBC, #FC354C);
-background: linear-gradient(to right, #0ABFBC, #FC354C);
-}
+
+:global(.tilesWrap li:before) {
+	content: '';
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	right: -2px;
+	bottom: -2px;
+	z-index: -1;
+	transform: skew(2deg, 2deg);
+  }

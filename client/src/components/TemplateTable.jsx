@@ -1,23 +1,36 @@
-import { Link } from "react-router-dom";
-
+// format adapted from codepen: https://codepen.io/vikassingh1111/pen/xBPmbL
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import './TemplateTable.css';
 
 const TemplateTable = ({ templates }) => {
-    
+    const navigate = useNavigate();
+  
+    function handleClick(templateId) {
+      navigate(`/template/${templateId}`);
+    }
+  
     return (
-        <ul className="tilesWrap">
-          {templates.map((template) => (
-            <li key={template.templateId}>
-              <h2>{template.templateId}</h2>
-              <h3>{template.templateName}</h3>
-              <p>{template.templateDescription}</p>
-              <button>Read More</button>
-            </li>
-          ))}
-        </ul>
-      );
-    };
+      <ul className="tilesWrap">
+        {templates.map((template) => (
+          <li key={template.templateId}>
+            <h2>{template.templateId}</h2>
+            <h3>{template.templateName}</h3>
+            <p>{template.templateDescription}</p>
+            <button
+              className="readMore"
+              onClick={() => handleClick(template.templateId)}
+            >
+              Read More
+            </button>
+          </li>
+        ))}
+      </ul>
+    );
+  };
     
     {/*
+// standard styling
+        
             <table className="table table-striped">
                 <thead>
                     <tr>
