@@ -25,6 +25,31 @@ create table templates (
     foreign key (template_user_id) references users(user_id) on delete cascade
 );
 
+create table categories (
+    category_id int primary key auto_increment,
+    category_name varchar(50),
+    category_color text
+);
+
+create table items (
+    item_id int primary key auto_increment,
+    item_name varchar(50),
+    item_user_id int,
+    item_category_id int,
+    foreign key (item_category_id) references categories(category_id) on delete cascade,
+    foreign key (item_user_id) references users(user_id) on delete cascade
+);
+
+create table template_items (
+    template_item_id int primary key auto_increment,
+    template_item_quantity int,
+    template_item_is_checked boolean,
+    template_item_template_id int,
+    foreign key (template_item_template_id) references templates(template_id) on delete cascade,
+    template_item_item_id int,
+    foreign key (template_item_item_id) references items(item_id) on delete cascade
+);
+
 insert into users(user_id, username, email, `password`) values
             (1, 'Bernie', 'Bernie@rubiber.com', 'veryg00dPassword!'),
             (2, 'Bianca', 'Bianca@rubiber.com', 'veryg00dPassword!'),
@@ -36,4 +61,16 @@ insert into trip_types(trip_type_id, trip_type_name, trip_type_description) valu
             (2, 'Vacation', 'A trip for vacation purposes.'),
             (3, 'Business Trip', 'It''s business time.');
 insert into templates(template_id, template_name, template_description, template_trip_type_id, template_user_id) values
-            (1, 'General', 'Not specified', 1, 1);
+            (1, 'General', 'General template off of which to base all the other lists', 1, 1),
+            (2, 'Beach', 'Just the essentials for going to the beach in summer', 2, 1),
+            (3, 'Camping', 'Use this for camping and I have to carry everything in and out', 2, 1),
+            (4, 'Family', 'Kid friendly? no problem. Just bring all the items on this list and it''ll be perfect', 2, 1),
+            (5, 'Picnic', 'for picnics in the park', 2, 1),
+            (6, 'Girls Trip', 'just me and the girls out on the town', 2, 1),
+            (7, 'Business', 'For the next insufferably long conference in the Poconos', 3, 1);
+
+insert into categories(category_id, category_name, category_color) values
+	(1, 'Weather', 'Blue');
+    
+insert into items(item_id, item_name, item_user_id, item_category_id) values
+	(1, 'Gloves', 1, 1);

@@ -67,8 +67,6 @@ const UserForm = ({ mode, setLoggedInUser }) => {
                         user.jwt = fetchedUser.jwt;
                         setLoggedInUser(user)
                         localStorage.setItem("loggedInUser", JSON.stringify(user))
-                        // navigate('/');
-                        console.log('hi from '`${mode}`);
                         if (mode === 'login') {
                             
                             <NavLink to="/template/" element = {<TemplateList loggedInUser={user} setLoggedInUser={setLoggedInUser} />} />

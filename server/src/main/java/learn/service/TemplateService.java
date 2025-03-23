@@ -42,13 +42,8 @@ public class TemplateService {
         if (!result.isSuccess()){
             return result;
         }
-        Template addedTemplate = new Template();
-        try {
-            addedTemplate = repository.create(template);
-        } catch (DuplicateKeyException e) {
-            result.addErrorMessage(DUPLICATE_NAME_ERROR, ResultType.INVALID);
-            return result;
-        }
+        Template addedTemplate = repository.create(template);
+
         if (addedTemplate == null) {
             result.addErrorMessage("Template could not be created.", ResultType.INVALID);
         } else {

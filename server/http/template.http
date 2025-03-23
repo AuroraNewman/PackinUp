@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/packinup/template
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.vHxDC8S9fBy-pT-hokzbk1Dc0Inw0B5adRf_ZrSSmrc
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.NfryuI8ZnXY0PQuNtHpsKUIezOw463pcjd5-5v1JEQI
 
 ###
 get {{url}}
@@ -7,7 +7,7 @@ Content-Type: application/json
 Authorization: {{jwt}}
 
 ###
-get {{url}}/2
+get {{url}}/1
 Content-Type: application/json
 Authorization: {{jwt}}
 
@@ -18,7 +18,7 @@ Content-Type: application/json
 Authorization: {{jwt}}
 
 {
-  "templateName": "TestString",
+  "templateName": "Testaroo",
     "templateDescription": "TestString",
     "templateTripTypeId": 1
     }
@@ -29,7 +29,7 @@ Content-Type: application/json
 Authorization: {{jwt}}
 
 {
-  "templateName": "Test Edit",
+  "templateName": "Testaroo Edit",
     "templateDescription": "Test Edit",
     "templateTripTypeId": 1
     }

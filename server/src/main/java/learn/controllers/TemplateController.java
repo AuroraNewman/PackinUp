@@ -51,8 +51,6 @@ public class TemplateController {
     }
     @GetMapping("/{templateId}")
     ResponseEntity<Object> findById(@PathVariable int templateId, @RequestHeader Map<String, String> headers) {
-        System.out.println("findById() hit with templateId=" + templateId);
-
         Integer userId = getUserIdFromHeaders(headers);
         if (userId == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

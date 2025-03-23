@@ -2,6 +2,8 @@ package learn.models;
 
 import jakarta.validation.constraints.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Template {
@@ -20,15 +22,29 @@ public class Template {
     @NotNull(message = "User is required.")
     private User templateUser;
 
+    private List<TemplateItem> items = new ArrayList<>();
+
     public Template() {
     }
 
-    public Template(String templateName, String templateDescription, TripType templateTripType, User templateUser) {
+    public Template(String templateName, String templateDescription, TripType templateTripType, User templateUser, List<TemplateItem> items) {
         this.templateName = templateName;
         this.templateDescription = templateDescription;
         this.templateTripType = templateTripType;
         this.templateUser = templateUser;
+        this.items = items;
     }
+
+    public Template(int templateId, String templateName, String templateDescription, TripType templateTripType, User templateUser, List<TemplateItem> items) {
+        this.templateId = templateId;
+        this.templateName = templateName;
+        this.templateDescription = templateDescription;
+        this.templateTripType = templateTripType;
+        this.templateUser = templateUser;
+        this.items = items;
+    }
+
+//    todo delete this and fix tests to include items
 
     public Template(int templateId, String templateName, String templateDescription, TripType templateTripType, User templateUser) {
         this.templateId = templateId;
@@ -78,15 +94,23 @@ public class Template {
         this.templateUser = templateUser;
     }
 
+    public List<TemplateItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<TemplateItem> items) {
+        this.items = items;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
         Template template = (Template) object;
-        return getTemplateId() == template.getTemplateId() && Objects.equals(getTemplateName(), template.getTemplateName()) && Objects.equals(getTemplateDescription(), template.getTemplateDescription()) && Objects.equals(getTemplateTripType(), template.getTemplateTripType()) && Objects.equals(getTemplateUser(), template.getTemplateUser());
+        return getTemplateId() == template.getTemplateId() && Objects.equals(getTemplateName(), template.getTemplateName()) && Objects.equals(getTemplateDescription(), template.getTemplateDescription()) && Objects.equals(getTemplateTripType(), template.getTemplateTripType()) && Objects.equals(getTemplateUser(), template.getTemplateUser()) && Objects.equals(getItems(), template.getItems());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTemplateId(), getTemplateName(), getTemplateDescription(), getTemplateTripType(), getTemplateUser());
+        return Objects.hash(getTemplateId(), getTemplateName(), getTemplateDescription(), getTemplateTripType(), getTemplateUser(), getItems());
     }
 }

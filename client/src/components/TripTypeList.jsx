@@ -7,9 +7,6 @@ const TripTypeList = ({ loggedInUser, setLoggedInUser }) => {
     const [hasFinishedFetching, setHasFinishedFetching] = useState(false);
 
     useEffect(() => {
-        // if (!loggedInUser || !loggedInUser.jwt) return;
-
-        console.log("Fetching triptypes");
         fetch("http://localhost:8080/api/packinup/triptype", {
             headers: {
                 Authorization: loggedInUser.jwt
