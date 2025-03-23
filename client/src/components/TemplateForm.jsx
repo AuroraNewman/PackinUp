@@ -78,6 +78,10 @@ const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
     });
   };
 
+  const handleCancel = () => {
+    navigate(`/template/`);
+    }
+
   return (
     <>
       <div className="row">
@@ -142,6 +146,7 @@ const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
           <button type="submit">
             {params.templateId ? "Save Changes" : "Add Template"}
           </button>
+          <button type="submit" onClick={handleCancel}>Cancel</button>
         </form>
         <div className="col-3"></div>
       </div>

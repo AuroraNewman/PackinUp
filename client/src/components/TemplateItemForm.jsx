@@ -71,6 +71,10 @@ const TemplateItemForm = () => {
         });
     }
 
+    const handleCancel = () => {
+        navigate(`/template/${params.templateId}`);
+    }
+
     return (
         <>
       <div className="row">
@@ -133,6 +137,7 @@ const TemplateItemForm = () => {
           <button type="submit">
             {params.templateItemId ? "Save Changes" : "Add Item"}
           </button>
+          <button type="submit" onClick={handleCancel}>Cancel</button>
         </form>
         <div className="col-3"></div>
       </div>
