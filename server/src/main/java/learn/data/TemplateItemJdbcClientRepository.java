@@ -18,17 +18,35 @@ public class TemplateItemJdbcClientRepository implements TemplateItemRepository{
     }
     final String SELECT = """
             select
-                ti.template_item_id,
-                ti.template_item_quantity,
-                ti.template_item_is_checked,
-                ti.template_item_template_id,
-                ti.template_item_item_id
-            from template_items ti
+                            ti.template_item_id,
+                            ti.template_item_quantity,
+                            ti.template_item_is_checked,
+                            t.template_id,
+                            t.template_name,
+                            t.template_description,
+                            tt.trip_type_id,
+                            tt.trip_type_name,
+                            tt.trip_type_description,
+                            u.username,
+                            u.email,
+                            u.password,
+                            i.item_id,
+                            i.item_name,
+                            i.item_user_id as user_id,
+                            c.category_id,
+                            c.category_name,
+                            c.category_color
+                        from template_items ti
+                        join templates t on ti.template_item_template_id = t.template_id
+                        join trip_types tt on t.template_trip_type_id = tt.trip_type_id
+                        join users u on t.template_user_id = u.user_id
+                        join items i on ti.template_item_item_id = i.item_id
+                        join categories c on i.item_category_id = c.category_id
             """;
 
     @Override
     public List<TemplateItem> findAllByTemplateId(int templateId) {
-        final String sql = SELECT + " where template_item_template_id = ?;";
+        final String sql = SELECT + " where ti.template_item_template_id = ?;";
         return jdbcClient.sql(sql)
                 .param(templateId)
                 .query(new TemplateItemMapper())
@@ -53,8 +71,8 @@ public class TemplateItemJdbcClientRepository implements TemplateItemRepository{
         int rowsAffected= jdbcClient.sql(sql)
                 .param("template_item_quantity", templateItem.getQuantity())
                 .param("template_item_is_checked", templateItem.isChecked())
-                .param("template_item_template_id", templateItem.getTemplateId())
-                .param("template_item_item_id", templateItem.getItemId())
+                .param("template_item_template_id", templateItem.getTemplate().getTemplateId())
+                .param("template_item_item_id", templateItem.getItem().getItemId())
                 .update(keyHolder, "template_item_id");
 
         if (rowsAffected <= 0) {

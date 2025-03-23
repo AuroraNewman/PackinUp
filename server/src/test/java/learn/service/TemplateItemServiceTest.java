@@ -55,5 +55,29 @@ class TemplateItemServiceTest {
 
             assertEquals(expected, actual);
         }
+        @Test
+        void shouldNotCreateNullTemplate(){
+            TemplateItem beforeAdd = TestHelper.makeTestTemplateItem();
+            beforeAdd.setTemplateItemId(0);
+            beforeAdd.setTemplate(null);
+            Result<TemplateItem> expected = new Result<>();
+            expected.addErrorMessage("Template is required.", ResultType.INVALID);
+
+            Result<TemplateItem> actual = service.create(beforeAdd);
+
+            assertEquals(expected, actual);
+        }
+        @Test
+        void shouldNotCreateNullItem(){
+            TemplateItem beforeAdd = TestHelper.makeTestTemplateItem();
+            beforeAdd.setTemplateItemId(0);
+            beforeAdd.setItem(null);
+            Result<TemplateItem> expected = new Result<>();
+            expected.addErrorMessage("Item is required.", ResultType.INVALID);
+
+            Result<TemplateItem> actual = service.create(beforeAdd);
+
+            assertEquals(expected, actual);
+        }
     }
 }

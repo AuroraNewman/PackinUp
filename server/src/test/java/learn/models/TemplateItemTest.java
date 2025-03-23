@@ -39,6 +39,26 @@ class TemplateItemTest {
         assertEquals(1, errorMessages.size());
         assertTrue(errorMessages.contains(expectedMessage));
     }
+    @Test
+    void shouldNotSetNullTemplate(){
+        testTemplateItem.setTemplate(null);
+        String expectedMessage = "Template is required.";
+
+        List<String> errorMessages = getErrorMessages(testTemplateItem);
+
+        assertEquals(1, errorMessages.size());
+        assertTrue(errorMessages.contains(expectedMessage));
+    }
+    @Test
+    void shouldNotSetNullItem(){
+        testTemplateItem.setItem(null);
+        String expectedMessage = "Item is required.";
+
+        List<String> errorMessages = getErrorMessages(testTemplateItem);
+
+        assertEquals(1, errorMessages.size());
+        assertTrue(errorMessages.contains(expectedMessage));
+    }
 
     private List<String> getErrorMessages(TemplateItem templateItem) {
         return validator.validate(templateItem).stream()

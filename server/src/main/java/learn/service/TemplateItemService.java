@@ -4,11 +4,8 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import learn.data.ItemRepository;
 import learn.data.TemplateItemRepository;
-import learn.data.TemplateRepository;
 import learn.models.TemplateItem;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,13 +15,9 @@ import java.util.Set;
 public class TemplateItemService {
 
     private final TemplateItemRepository repository;
-    private final TemplateRepository templateRepository;
-    private final ItemRepository itemRepository;
 
-    public TemplateItemService(TemplateItemRepository repository, TemplateRepository templateRepository, ItemRepository itemRepository) {
+    public TemplateItemService(TemplateItemRepository repository) {
         this.repository = repository;
-        this.templateRepository = templateRepository;
-        this.itemRepository = itemRepository;
     }
 
     public List<TemplateItem> findAllByTemplateId(int templateId) {
@@ -60,22 +53,7 @@ public class TemplateItemService {
                 result.addErrorMessage(violation.getMessage(), ResultType.INVALID);
             }
         }
-        checkParentsExist(templateItem, result);
-
         return result;
     }
-    private void checkParentsExist(TemplateItem templateItem, Result<TemplateItem> result){
-        checkTemplateExists(templateItem.getTemplateId(), result);
-        checkItemExists(templateItem.getItemId(), result);
-    }
-    private void checkTemplateExists(int templateId, Result<TemplateItem> result){
-        if (templateRepository.findById(templateId) == null){
-            result.addErrorMessage("Template does not exist.", ResultType.INVALID);
-        }
-    }
-    private void checkItemExists(int itemId, Result<TemplateItem> result){
-        if (itemRepository.findById(itemId) == null){
-            result.addErrorMessage("Item does not exist.", ResultType.INVALID);
-        }
-    }
+
 }

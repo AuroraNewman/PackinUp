@@ -61,7 +61,13 @@ insert into trip_types(trip_type_id, trip_type_name, trip_type_description) valu
             (2, 'Vacation', 'A trip for vacation purposes.'),
             (3, 'Business Trip', 'It''s business time.');
 insert into templates(template_id, template_name, template_description, template_trip_type_id, template_user_id) values
-            (1, 'General', 'Not specified', 1, 1);
+            (1, 'General', 'General template off of which to base all the other lists', 1, 1),
+            (2, 'Beach', 'Just the essentials for going to the beach in summer', 2, 1),
+            (3, 'Camping', 'Use this for camping and I have to carry everything in and out', 2, 1),
+            (4, 'Family', 'Kid friendly? no problem. Just bring all the items on this list and it''ll be perfect', 2, 1),
+            (5, 'Picnic', 'for picnics in the park', 2, 1),
+            (6, 'Girls Trip', 'just me and the girls out on the town', 2, 1),
+            (7, 'Business', 'For the next insufferably long conference in the Poconos', 3, 1);
 
 insert into categories(category_id, category_name, category_color) values
 	(1, 'Weather', 'Blue');

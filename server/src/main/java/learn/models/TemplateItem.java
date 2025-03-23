@@ -14,25 +14,27 @@ public class TemplateItem {
 
     private boolean isChecked;
 
-    private int templateId;
-    private int itemId;
+    @NotNull(message = "Template is required.")
+    private Template template;
+    @NotNull(message = "Item is required.")
+    private Item item;
 
     public TemplateItem() {
     }
 
-    public TemplateItem(int quantity, boolean isChecked, int templateId, int itemId) {
+    public TemplateItem(int quantity, boolean isChecked, Template template, Item item) {
         this.quantity = quantity;
         this.isChecked = isChecked;
-        this.templateId = templateId;
-        this.itemId = itemId;
+        this.template = template;
+        this.item = item;
     }
 
-    public TemplateItem(int templateItemId, int quantity, boolean isChecked, int templateId, int itemId) {
+    public TemplateItem(int templateItemId, int quantity, boolean isChecked, Template template, Item item) {
         this.templateItemId = templateItemId;
         this.quantity = quantity;
         this.isChecked = isChecked;
-        this.templateId = templateId;
-        this.itemId = itemId;
+        this.template = template;
+        this.item = item;
     }
 
     public int getTemplateItemId() {
@@ -59,31 +61,31 @@ public class TemplateItem {
         isChecked = checked;
     }
 
-    public int getTemplateId() {
-        return templateId;
+    public Template getTemplate() {
+        return template;
     }
 
-    public void setTemplateId(int templateId) {
-        this.templateId = templateId;
+    public void setTemplate(Template template) {
+        this.template = template;
     }
 
-    public int getItemId() {
-        return itemId;
+    public Item getItem() {
+        return item;
     }
 
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     @Override
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
         TemplateItem that = (TemplateItem) object;
-        return getTemplateItemId() == that.getTemplateItemId() && getQuantity() == that.getQuantity() && isChecked() == that.isChecked() && getTemplateId() == that.getTemplateId() && getItemId() == that.getItemId();
+        return getTemplateItemId() == that.getTemplateItemId() && getQuantity() == that.getQuantity() && isChecked() == that.isChecked() && Objects.equals(getTemplate(), that.getTemplate()) && Objects.equals(getItem(), that.getItem());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTemplateItemId(), getQuantity(), isChecked(), getTemplateId(), getItemId());
+        return Objects.hash(getTemplateItemId(), getQuantity(), isChecked(), getTemplate(), getItem());
     }
 }
