@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 const TemplateItemForm = () => {
-    const baseUrl = "http://localhost:8080/api/packinup/templateitem";
+    const baseUrl = "http://localhost:8080/api/packinup/template/item";
     const location = useLocation();
     const { loggedInUser } = location.state || {};
     const params = useParams();
@@ -10,18 +10,8 @@ const TemplateItemForm = () => {
     const [error, setError] = useState([]);
 
     const INITIAL_ITEM = {
-        templateItemItem: {
-            templateItemId: "",
-            templateItemName: "",
-            templateItemCategory: {
-                templateItemCategoryId: "",
-                templateItemCategoryName: "",
-                templateItemCategoryColor: ""
-            }
-        },
-        templateItemTemplate: {
-
-        },
+        templateItemItemId: "",
+        templateItemTemplateId: "",
         templateItemQuantity: "",
         templateItemIsChecked: ""
     };
