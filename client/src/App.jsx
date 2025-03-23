@@ -6,6 +6,7 @@ import UserForm from './components/UserForm';
 import TemplateList from './components/TemplateList';
 import NotFound from './components/NotFound';
 import TemplateForm from './components/TemplateForm';
+import TemplateCard from './components/TemplateCard';
 
 const App = () => {
 
@@ -43,6 +44,8 @@ const App = () => {
               {/* must be logged in */}
               
               <Route path="/template"  element={ loggedInUser===null ? <Navigate to="/" /> : <TemplateList loggedInUser={loggedInUser}/>} />
+
+              <Route path="/template/:templateId"  element={ loggedInUser===null ? <Navigate to="/" /> : <TemplateCard />} />
 
               <Route path="/template/create"  element={ loggedInUser===null ? <Navigate to="/" /> : <TemplateForm loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
               

@@ -1,26 +1,43 @@
 // format adapted from codepen: https://codepen.io/vikassingh1111/pen/xBPmbL
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import './TemplateTable.css';
+import gsap from 'gsap';
+import { useGSAP} from '@gsap/react';
+import TemplateCard from "./TemplateCard";
 
 const TemplateTable = ({ templates }) => {
     const navigate = useNavigate();
   
-    function handleClick(templateId) {
-      navigate(`/template/${templateId}`);
+    function handleClick(template, loggedInUser) {
+      navigate(`/template/${template.templateId}`,
+      {state: {template, loggedInUser}});
     }
+    function handleCreateClick() {
+        navigate(`/template/create`);
+      }
+    useGSAP(() => {
+        // todo animate the tile expanding out when click view
+    });
   
     return (
       <ul className="tilesWrap">
+        <li key="createNewTemplate">
+            <h2>0</h2>
+            <h3>Create New Template</h3>
+            <p>Plan your next adventure now! Don't forget to pack the essentials!</p>
+            <button
+              onClick={() => handleCreateClick()}
+              >Create a Template</button>
+        </li>
         {templates.map((template) => (
           <li key={template.templateId}>
             <h2>{template.templateId}</h2>
             <h3>{template.templateName}</h3>
             <p>{template.templateDescription}</p>
             <button
-              className="readMore"
-              onClick={() => handleClick(template.templateId)}
+              onClick={() => handleClick(template)}
             >
-              Read More
+              View
             </button>
           </li>
         ))}

@@ -132,3 +132,7 @@ button:hover {
 	z-index: -1;
 	transform: skew(2deg, 2deg);
   }
+
+  .templateItemCard h2 {
+	color: yellow;
+  }
