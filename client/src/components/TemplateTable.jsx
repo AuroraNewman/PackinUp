@@ -5,12 +5,12 @@ import gsap from 'gsap';
 import { useGSAP} from '@gsap/react';
 import TemplateCard from "./TemplateCard";
 
-const TemplateTable = ({ templates }) => {
+const TemplateTable = ({ templates, loggedInUser }) => {
     const navigate = useNavigate();
   
     function handleClick(template, loggedInUser) {
-      navigate(`/template/${template.templateId}`,
-      {state: {template, loggedInUser}});
+        console.log("loggedinuser at click:", loggedInUser);
+        navigate(`/template/${template.templateId}`, { state: { template, loggedInUser } });
     }
     function handleCreateClick() {
         navigate(`/template/create`);
@@ -35,7 +35,7 @@ const TemplateTable = ({ templates }) => {
             <h3>{template.templateName}</h3>
             <p>{template.templateDescription}</p>
             <button
-              onClick={() => handleClick(template)}
+              onClick={() => handleClick(template, loggedInUser)}
             >
               View
             </button>
