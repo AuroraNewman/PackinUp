@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/packinup/triptype
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.cBsHuLivtBohMAVwE_6AN4w6ZW0X3xAbjm077uV_jrM
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.NfryuI8ZnXY0PQuNtHpsKUIezOw463pcjd5-5v1JEQI
 
 ###
 get {{url}}
