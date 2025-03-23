@@ -142,6 +142,39 @@ const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
               <option value="3">Business Trip</option>
             </select>
           </div>
+          
+          <div className="form-group">
+            <label htmlFor="templateLocation">Location:</label>
+            <input
+              name="templateLocation"
+              className="form-control"
+              id="templateLocation-input"
+              type="text"
+              value={template.templateLocation}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="templateStartDate">Start Date:</label>
+            <input
+              name="templateStartDate"
+              className="form-control"
+              id="templateStartDate-input"
+              type="date"
+              value={template.templateStartDate}
+              onChange={handleChange}
+            />
+            </div>
+            <div className="form-group">
+            <label htmlFor="templateEndDate">End Date:</label>
+            <input
+              name="templateEndDate"
+              className="form-control"
+              id="templateEndDate-input"
+              type="date"
+              value={template.templateEndDate}
+              onChange={handleChange}            />
+            </div>
 
           <button type="submit">
             {params.templateId ? "Save Changes" : "Add Template"}
