@@ -1,6 +1,7 @@
 package learn.models;
 
 import jakarta.validation.constraints.*;
+import learn.data_transfer_objects.OutgoingItem;
 
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ public class TemplateItem {
     @NotNull(message = "Template is required.")
     private Template template;
     @NotNull(message = "Item is required.")
-    private Item item;
+    private OutgoingItem outgoingItem;
 
     public TemplateItem() {
     }
@@ -26,7 +27,7 @@ public class TemplateItem {
         this.quantity = quantity;
         this.isChecked = isChecked;
         this.template = template;
-        this.item = item;
+        this.outgoingItem = new OutgoingItem(item);
     }
 
     public TemplateItem(int templateItemId, int quantity, boolean isChecked, Template template, Item item) {
@@ -34,7 +35,7 @@ public class TemplateItem {
         this.quantity = quantity;
         this.isChecked = isChecked;
         this.template = template;
-        this.item = item;
+        this.outgoingItem = new OutgoingItem(item);
     }
 
     public int getTemplateItemId() {
@@ -69,23 +70,23 @@ public class TemplateItem {
         this.template = template;
     }
 
-    public Item getItem() {
-        return item;
+    public OutgoingItem getItem() {
+        return outgoingItem;
     }
 
     public void setItem(Item item) {
-        this.item = item;
+        this.outgoingItem = new OutgoingItem(item);
     }
 
     @Override
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
         TemplateItem that = (TemplateItem) object;
-        return getTemplateItemId() == that.getTemplateItemId() && getQuantity() == that.getQuantity() && isChecked() == that.isChecked() && Objects.equals(getTemplate(), that.getTemplate()) && Objects.equals(getItem(), that.getItem());
+        return getTemplateItemId() == that.getTemplateItemId() && getQuantity() == that.getQuantity() && isChecked() == that.isChecked() && Objects.equals(getTemplate(), that.getTemplate()) && Objects.equals(outgoingItem, that.outgoingItem);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTemplateItemId(), getQuantity(), isChecked(), getTemplate(), getItem());
+        return Objects.hash(getTemplateItemId(), getQuantity(), isChecked(), getTemplate(), outgoingItem);
     }
 }

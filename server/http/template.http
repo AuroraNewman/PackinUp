@@ -1,29 +1,33 @@
 @url = http://localhost:8080/api/packinup/template
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.NfryuI8ZnXY0PQuNtHpsKUIezOw463pcjd5-5v1JEQI
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.yuCa97hFa8ZW5kChWItHJxrU63aXhSX-zdQxYSZqK5Q
 
 ###
+# TODO THIS CRASHED
 get {{url}}
 Content-Type: application/json
 Authorization: {{jwt}}
 
 ###
-get {{url}}/1
+# TODO THIS CRASHED
+get {{url}}/8
 Content-Type: application/json
 Authorization: {{jwt}}
 
 
 ### Successful create (201)
+# TODO THIS CRASHED; it's creating but not able to send back the result
 post {{url}}
 Content-Type: application/json
 Authorization: {{jwt}}
 
 {
-  "templateName": "Testaroo",
+  "templateName": "Testaroni",
     "templateDescription": "TestString",
     "templateTripTypeId": 1
     }
 
 ### put happy path
+# TODO THIS CRASHED
 put {{url}}/2
 Content-Type: application/json
 Authorization: {{jwt}}

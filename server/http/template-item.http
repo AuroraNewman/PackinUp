@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/packinup/template/item
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.NfryuI8ZnXY0PQuNtHpsKUIezOw463pcjd5-5v1JEQI
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.yuCa97hFa8ZW5kChWItHJxrU63aXhSX-zdQxYSZqK5Q
 
 post {{url}} HTTP/1.1
 Content-Type: application/json
@@ -13,6 +13,7 @@ Authorization: {{jwt}}
 }
 
 ### unhappy path nonpositive quantity
+# TODO THIS CRASHED
 post {{url}} HTTP/1.1
 Content-Type: application/json
 Authorization: {{jwt}}
@@ -25,6 +26,7 @@ Authorization: {{jwt}}
 }
 
 ### unhappy path template does no exist
+# TODO THIS CRASHED
 post {{url}} HTTP/1.1
 Content-Type: application/json
 Authorization: {{jwt}}
@@ -37,6 +39,7 @@ Authorization: {{jwt}}
 }
 
 ### unhappy path item does not exist
+# TODO THIS CRASHED
 post {{url}} HTTP/1.1
 Content-Type: application/json
 Authorization: {{jwt}}

@@ -7,18 +7,18 @@ import java.util.Set;
 
 public class WeatherRecommendations {
     private String forecast;
-    private Set<Item> itemsToPack;
+    private Set<OutgoingItem> itemsToPack;
 
     public WeatherRecommendations() {
     }
 
-    public WeatherRecommendations(String forecast, Set<Item> itemsToPack) {
+    public WeatherRecommendations(String forecast, Set<OutgoingItem> itemsToPack) {
         this.forecast = forecast;
         this.itemsToPack = itemsToPack;
     }
 
     public void addItemToPack(Item item) {
-        itemsToPack.add(item);
+        itemsToPack.add(new OutgoingItem(item));
     }
 
     public String getForecast() {
@@ -29,11 +29,11 @@ public class WeatherRecommendations {
         this.forecast = forecast;
     }
 
-    public Set<Item> getItemsToPack() {
+    public Set<OutgoingItem> getItemsToPack() {
         return itemsToPack;
     }
 
-    public void setItemsToPack(Set<Item> itemsToPack) {
+    public void setItemsToPack(Set<OutgoingItem> itemsToPack) {
         this.itemsToPack = itemsToPack;
     }
 

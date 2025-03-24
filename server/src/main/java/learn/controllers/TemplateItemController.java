@@ -60,6 +60,7 @@ public class TemplateItemController {
         if (result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
         } else {
+//            todo convert to outgoing templateitem
             return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
         }
     }

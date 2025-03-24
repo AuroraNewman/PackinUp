@@ -2,6 +2,7 @@ package learn.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import learn.data_transfer_objects.OutgoingItem;
 import learn.data_transfer_objects.WeatherRecommendations;
 import learn.models.Item;
 import learn.service.ItemService;
@@ -55,6 +56,7 @@ public class WeatherAPI {
         JsonNode forecastDays = root.path("forecast").path("forecastday");
 
         for (JsonNode dayNode : forecastDays) {
+            OutgoingItem item = new OutgoingItem();
             LocalDate date = LocalDate.parse(dayNode.path("date").asText());
             JsonNode dayInfo = dayNode.path("day");
 
@@ -78,7 +80,7 @@ public class WeatherAPI {
     }
     private WeatherRecommendations suggestItems(HashMap<LocalDate, List<String>> forecastMap){
         WeatherRecommendations recommendations = new WeatherRecommendations();
-        Set<Item> items = new HashSet<>();
+        Set<OutgoingItem> items = new HashSet<>();
         recommendations.setItemsToPack(items);
         Double tripMaxTemp = WORLD_RECORD_MIN_TEMP;
         Double tripMinTemp = WORLD_RECORD_MAX_TEMP;
