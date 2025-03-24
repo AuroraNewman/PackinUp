@@ -1,9 +1,14 @@
 package learn.models;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Objects;
 
 public class Coordinates {
+    @NotNull(message = "Latitude is required.")
     private double latitude;
+
+    @NotNull(message = "Longitude is required.")
     private double longitude;
 
     public Coordinates() {

@@ -1,5 +1,8 @@
-@url = http://localhost:8080/api/packinup/location
+@url = http://api.weatherapi.com/v1/forecast.json?key=71dc1bdf858744fc873191846252403&q=london&days=14
 
 ###
-get {{url}}/tokyo
+GET {{url}}/london HTTP/1.1
 Content-Type: application/json
+
+###
+GET {{url}} HTTP/1.1
