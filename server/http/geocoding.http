@@ -1,2 +1,5 @@
-@url = https://api.mapbox.com
+@url = http://localhost:8080/api/packinup/location
 
+###
+get {{url}}/tokyo
+Content-Type: application/json
