@@ -43,6 +43,7 @@ public class TemplateItemService {
 
         if (templateItem == null || templateItem.getItem() == null) {
             result.addErrorMessage("Template item is required.", ResultType.INVALID);
+            return result;
         }
         if (templateItem.getTemplate() == null) {
             result.addErrorMessage("Template is required.", ResultType.INVALID);
