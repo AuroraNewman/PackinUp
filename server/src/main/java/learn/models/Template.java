@@ -1,6 +1,8 @@
 package learn.models;
 
 import jakarta.validation.constraints.*;
+import learn.data_transfer_objects.IncomingTemplateItem;
+import learn.data_transfer_objects.OutgoingItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +102,9 @@ public class Template {
 
     public void setItems(List<TemplateItem> items) {
         this.items = items;
+    }
+    public void addItemToPack(TemplateItem item) {
+        items.add(item);
     }
 
     @Override

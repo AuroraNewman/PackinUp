@@ -96,6 +96,7 @@ public class TemplateController {
         if (!result.isSuccess()) {
             return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
         } else {
+            packItems(incomingTemplate, result.getPayload());
             return new ResponseEntity<>(new OutgoingTemplate(result.getPayload()), HttpStatus.CREATED);
         }
     }
@@ -148,6 +149,9 @@ public class TemplateController {
         return items.stream()
                 .map(OutgoingItem::new)
                 .collect(Collectors.toList());
+        }
+        private void packItems(IncomingTemplate incomingTemplate, Template template) {
+            
         }
 
 

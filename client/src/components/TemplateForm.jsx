@@ -52,6 +52,7 @@ const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
   };
 
   const handleSubmit = (event) => {
+    console.log("Submitting template:", template);
     event.preventDefault();
     const method = params.templateId ? "PUT" : "POST";
     const submitUrl = params.templateId

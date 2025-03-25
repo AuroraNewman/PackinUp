@@ -2,6 +2,7 @@ package learn.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
+import learn.data_transfer_objects.IncomingTemplateItem;
 import learn.data_transfer_objects.OutgoingItem;
 
 import java.util.Objects;

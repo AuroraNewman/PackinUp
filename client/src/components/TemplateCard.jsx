@@ -49,9 +49,9 @@ const TemplateCard = () => {
         navigate(`/template/edit/${params.templateId}`),
             { state: { template, loggedInUser } };
     }
-    const handleEditTemplateItemClick = (templateItem) => {
+    const handleEditTemplateItemClick = (item) => {
         console.log("loggedInUser at click:", loggedInUser);
-        navigate(`/templateitem/edit/${templateItem.templateItemId}`, { state: { templateItem, loggedInUser } });
+        navigate(`/templateitem/edit/${item.templateItemId}`, { state: { item, loggedInUser } });
 
     };
 
