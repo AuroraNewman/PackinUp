@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/packinup/template
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.En5Qs7BBQ7rKyuHHQ-xxF3HiBa9FnNBxfvXrq_mIPXU
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.NX2xoAk8URqnEN71C3NpHeCIiHoWhm-AVSIPD5hPlwc
 
 ###
 
@@ -9,7 +9,7 @@ Authorization: {{jwt}}
 
 ###
 # get specific template
-get {{url}}/1
+get {{url}}/8
 Content-Type: application/json
 Authorization: {{jwt}}
 
@@ -20,7 +20,7 @@ Content-Type: application/json
 Authorization: {{jwt}}
 
 {
-  "templateName": "ruffles",
+  "templateName": "ruffler",
     "templateDescription": "TestString",
     "templateTripTypeId": 1
     }
@@ -36,12 +36,12 @@ Authorization: {{jwt}}
 # [
 #   "Something went wrong. Please wait and try again."
 # ]
-put {{url}}/2
+put {{url}}/8
 Content-Type: application/json
 Authorization: {{jwt}}
 
 {
-  "templateName": "Testaroo Edit",
-    "templateDescription": "Test Edit",
+  "templateName": "Testaroo Edits",
+    "templateDescription": "Test Edits",
     "templateTripTypeId": 1
     }

@@ -99,4 +99,23 @@ public class TemplateJdbcClientRepository implements TemplateRepository{
         template.setTemplateId(keyHolder.getKey().intValue());
         return template;
     }
+
+    @Override
+    public boolean update(Template template) {
+        final String sql = """
+                update templates
+                set template_name = :template_name,
+                    template_description = :template_description,
+                    template_trip_type_id = :template_trip_type_id,
+                    template_user_id = :template_user_id
+                where template_id = :template_id;
+                """;
+        return jdbcClient.sql(sql)
+                .param("template_name", template.getTemplateName())
+                .param("template_description", template.getTemplateDescription())
+                .param("template_trip_type_id", template.getTemplateTripType().getTripTypeId())
+                .param("template_user_id", template.getTemplateUser().getUserId())
+                .param("template_id", template.getTemplateId())
+                .update() > 0;
+    }
 }
