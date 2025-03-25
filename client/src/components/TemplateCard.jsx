@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 const TemplateCard = () => {
@@ -7,13 +8,42 @@ const TemplateCard = () => {
     const params = useParams();
     const navigate = useNavigate();
 
-    const templateItems = Array.from({ length: 20 }, (_, i) => ({
-        templateItemId: i + 1,
-        templateItemName: `Item ${i + 1}`,
-        templateItemQuantity: Math.floor(Math.random() * 10) + 1,
-        templateItemIsChecked: false,
-        templateItemCategory: `Category ${((i % 4) + 1)}`
-    }));
+    useEffect(() => {
+        fetch(`http://localhost:8080/api/packinup/template/item/${template.templateId}`, {
+            headers: {
+                Authorization: loggedInUser.jwt
+            }
+        })
+            .then(response => response.json())
+            .then(fetchedItems => {
+                setItems(fetchedItems);
+                setHasFinishedFetching(true);
+            })
+            .catch(error => {
+                console.error("Error fetching items: ", error);
+                setHasFinishedFetching(true);
+            }, [template, loggedInUser]);
+    }, []);
+
+    const [items, setItems] = useState([])
+    const [hasFinishedFetching, setHasFinishedFetching] = useState(false)
+
+    if (items.length === 0) {
+        if (hasFinishedFetching) {
+            return (
+                <>
+                    <div class="row">
+                        <Link to={`/templateitem/create`} className="btn btn-primary me-2 mb-2">Add Item</Link>
+                    </div>
+                    <h1>No items found</h1>
+                </>
+            )
+        } else {
+            return (
+                null
+            )
+        }
+    }
 
     const handleEditTemplateClick = () => {
         navigate(`/template/edit/${params.templateId}`),
@@ -22,10 +52,11 @@ const TemplateCard = () => {
     const handleEditTemplateItemClick = (templateItem) => {
         console.log("loggedInUser at click:", loggedInUser);
         navigate(`/templateitem/edit/${templateItem.templateItemId}`, { state: { templateItem, loggedInUser } });
-        
+
     };
 
 
+    console.log("Fetched items: ", items);
     const buttonRow = () => {
         return (
             <div className="row">
@@ -48,16 +79,17 @@ const TemplateCard = () => {
                 <button className="btn btn-danger btn-sm me-2 mb-2 col-5">Delete</button>
                 {/* todo implement delete */}
             </li>
-            {templateItems.map((item) => (
+            {items.map((item) => (
                 // todo: add category color to this card with className={(arg) => { return (template.templateItemCategory)}}
-                <li key={item.templateItemId} className="templateItemCard" >
-                    <h2>{item.templateItemId}</h2>
-                    <h3>{item.templateItemName}</h3>
-                    <p>Packed? {item.templateItemIsChecked}</p>
-                    <p>Quantity: {item.templateItemQuantity}</p>
-                    <p>Category: {item.templateItemCategory}</p>
+                <li key={item.templateItemId} className={item.item?.color ?? "default-color"}>
+
+                    <h2>{item.item.itemId}</h2>
+                    <h3>{item.item.itemName}</h3>
+                    <p>Packed? {item.checked}</p>
+                    <p>Quantity: {item.quantity}</p>
+                    <p>Category: {item.item.categoryName}</p>
                     <div className="row">
-                        <button className="btn btn-primary btn-sm me-2 mb-2 col-5" onClick={() =>handleEditTemplateItemClick(item)}>Edit</button>
+                        <button className="btn btn-primary btn-sm me-2 mb-2 col-5" onClick={() => handleEditTemplateItemClick(item)}>Edit</button>
                         <button className="btn btn-danger btn-sm me-2 mb-2 col-5">Delete</button>
                         {/* todo implement delete */}
                     </div>

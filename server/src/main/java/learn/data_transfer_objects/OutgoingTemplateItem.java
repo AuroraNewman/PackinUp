@@ -1,6 +1,7 @@
 package learn.data_transfer_objects;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import learn.models.Template;
@@ -13,17 +14,19 @@ public class OutgoingTemplateItem {
     private int templateItemId;
     @Positive(message = "Quantity must be greater than 0.")
     private int quantity;
+    @JsonProperty("isChecked")
     private boolean isChecked;
     @JsonBackReference
     private OutgoingTemplate outgoingTemplate;
-    private OutgoingItem outgoingItem;
+    @JsonProperty("outgoingItem")
+    private OutgoingItem item;
 
     public OutgoingTemplateItem(TemplateItem templateItem) {
         this.templateItemId = templateItem.getTemplateItemId();
         this.quantity = templateItem.getQuantity();
         this.isChecked = templateItem.isChecked();
         this.outgoingTemplate = new OutgoingTemplate(templateItem.getTemplate());
-        this.outgoingItem = templateItem.getItem();
+        this.item = templateItem.getItem();
     }
 
     public OutgoingTemplateItem() {
@@ -45,6 +48,7 @@ public class OutgoingTemplateItem {
         this.quantity = quantity;
     }
 
+    @JsonProperty("checked")
     public boolean isChecked() {
         return isChecked;
     }
@@ -61,12 +65,13 @@ public class OutgoingTemplateItem {
         this.outgoingTemplate = outgoingTemplate;
     }
 
+    @JsonProperty("item")
     public OutgoingItem getOutgoingItem() {
-        return outgoingItem;
+        return item;
     }
 
-    public void setOutgoingItem(OutgoingItem outgoingItem) {
-        this.outgoingItem = outgoingItem;
+    public void setOutgoingItem(OutgoingItem item) {
+        this.item = item;
     }
 
     @Override
