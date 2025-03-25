@@ -19,6 +19,26 @@ const ItemsList = ({ loggedInUser }) => {
             });
     }, []);
 
+    const [items, setItems] = useState([])
+    const [hasFinishedFetching, setHasFinishedFetching] = useState(false)
+
+    if (items.length === 0) {
+        if (hasFinishedFetching) {
+            return (
+                <>
+                    <div class="row">
+                        <Link to={`/templateitem/create`} className="btn btn-primary me-2 mb-2">Add Template</Link>
+                    </div>
+                    <h1>No items found</h1>
+                </>
+            )
+        } else {
+            return (
+                null
+            )
+        }
+    }
+
     return (
         <>
         
