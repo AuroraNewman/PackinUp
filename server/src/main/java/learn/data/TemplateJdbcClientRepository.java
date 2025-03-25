@@ -24,10 +24,15 @@ public class TemplateJdbcClientRepository implements TemplateRepository{
                 u.user_id,
                 u.username,
                 u.email,
-                u.`password`
+                u.`password`,
+                ti.template_item_id,
+                ti.template_item_quantity,
+                ti.template_item_is_checked,
+                ti.template_item_item_id
             from templates t
             inner join trip_types tt on t.template_trip_type_id = tt.trip_type_id
             inner join users u on t.template_user_id = u.user_id
+            join template_items ti on t.template_id = ti.template_item_template_id            
            """;
 
     private JdbcClient jdbcClient;

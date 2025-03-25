@@ -1,6 +1,7 @@
 @url = http://localhost:8080/api/packinup/template/item
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.NfryuI8ZnXY0PQuNtHpsKUIezOw463pcjd5-5v1JEQI
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.q_U-Ru7rZKpvp5pezEGV5RqEupK9oOso00LrthW4viM
 
+# good
 post {{url}} HTTP/1.1
 Content-Type: application/json
 Authorization: {{jwt}}

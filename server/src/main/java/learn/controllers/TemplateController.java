@@ -5,6 +5,9 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import jakarta.validation.Valid;
 import learn.data_transfer_objects.IncomingTemplate;
+import learn.data_transfer_objects.OutgoingItem;
+import learn.data_transfer_objects.OutgoingTemplate;
+import learn.models.Item;
 import learn.models.Template;
 import learn.models.TripType;
 import learn.models.User;
@@ -15,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -46,7 +50,11 @@ public class TemplateController {
         if (!templatesResult.isSuccess()){
             return new ResponseEntity<>(templatesResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>(templatesResult.getPayload(), HttpStatus.OK);
+            List<OutgoingTemplate> outgoingTemplates = templatesResult.getPayload().stream()
+                    .map(OutgoingTemplate::new)
+                    .collect(Collectors.toList());
+//            return new ResponseEntity<>(templates, HttpStatus.OK);
+            return new ResponseEntity<>(outgoingTemplates, HttpStatus.OK);
         }
     }
     @GetMapping("/{templateId}")
@@ -63,7 +71,8 @@ public class TemplateController {
         } else if (!templateResult.isSuccess()){
             return new ResponseEntity<>(templateResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>(templateResult.getPayload(), HttpStatus.OK);
+            OutgoingTemplate outgoingTemplate = new OutgoingTemplate(templateResult.getPayload());
+            return new ResponseEntity<>(outgoingTemplate, HttpStatus.OK);
         }
     }
 
@@ -87,7 +96,7 @@ public class TemplateController {
         if (!result.isSuccess()) {
             return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
+            return new ResponseEntity<>(new OutgoingTemplate(result.getPayload()), HttpStatus.CREATED);
         }
     }
     private List<String> extractDefaultMessageFromBindingResult(BindingResult bindingResult) {
@@ -135,6 +144,11 @@ public class TemplateController {
                 return tripType.getPayload();
             }
         }
+        private List<OutgoingItem> convertItemsToOutgoingItems(List<Item> items){
+        return items.stream()
+                .map(OutgoingItem::new)
+                .collect(Collectors.toList());
+        }
+
 
     }
-//find template by id

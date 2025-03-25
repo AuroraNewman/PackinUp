@@ -1,0 +1,12 @@
+@url = http://localhost:8080/api/packinup/weather
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.oyBmNrgQ1UK_yn6fR3WB-qD6Jh9ZaqOfU600qXGdoIs
+
+post {{url}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{jwt}}
+
+{
+    "query": "manchester",
+    "startDate": "2025-03-27",
+    "endDate": "2025-03-28"
+}

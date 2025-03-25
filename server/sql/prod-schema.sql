@@ -73,4 +73,13 @@ insert into categories(category_id, category_name, category_color) values
 	(1, 'Weather', 'Blue');
     
 insert into items(item_id, item_name, item_user_id, item_category_id) values
-	(1, 'Gloves', 1, 1);
+	(1, 'Summer Clothes', 1, 1),
+    (2, 'Spring/Fall Clothes', 1, 1),
+    (3, 'Winter Clothes', 1, 1),
+    (4, 'Rain gear', 1, 1),
+    (5, 'Snow gear', 1, 1),
+    (6, 'Sunglasses', 1, 1),
+    (7, 'Sunscreen', 1, 1);
+    
+insert into template_items (template_item_id, template_item_quantity, template_item_is_checked, template_item_template_id, template_item_item_id) values
+	(1, 1, false, 1, 1);
