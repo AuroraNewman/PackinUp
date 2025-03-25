@@ -46,14 +46,14 @@ public class Template {
         this.items = items;
     }
 
-//    todo delete this and fix tests to include items
-
     public Template(int templateId, String templateName, String templateDescription, TripType templateTripType, User templateUser) {
         this.templateId = templateId;
         this.templateName = templateName;
         this.templateDescription = templateDescription;
         this.templateTripType = templateTripType;
         this.templateUser = templateUser;
+        ArrayList<TemplateItem> items = new ArrayList<>();
+        this.items = items;
     }
 
     public int getTemplateId() {

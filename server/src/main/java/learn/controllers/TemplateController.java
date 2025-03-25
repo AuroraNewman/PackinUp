@@ -46,6 +46,9 @@ public class TemplateController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         Result<List<Template>> templatesResult = service.findByUserId(userId);
+        for (Template template : templatesResult.getPayload()) {
+            System.out.println(template.getTemplateName());
+        }
 
         if (!templatesResult.isSuccess()){
             return new ResponseEntity<>(templatesResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
@@ -100,6 +103,41 @@ public class TemplateController {
             return new ResponseEntity<>(new OutgoingTemplate(result.getPayload()), HttpStatus.CREATED);
         }
     }
+
+    @PutMapping("/{templateId}")
+    ResponseEntity<Object> update(@PathVariable int templateId, @RequestBody @Valid IncomingTemplate incomingTemplate, @RequestHeader Map<String, String> headers, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(extractDefaultMessageFromBindingResult(bindingResult), HttpStatus.BAD_REQUEST);
+        }
+        Integer userId = getUserIdFromHeaders(headers);
+        if (userId == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        Result<User> foundUserResult = userService.findById(userId);
+        Result<Template> existingTemplateResult = service.findById(templateId);
+        Template existingTemplate = existingTemplateResult.getPayload();
+//        Template template = constructTemplate(incomingTemplate, foundUserResult.getPayload());
+        if (!foundUserResult.isSuccess() || existingTemplate == null) {
+            return new ResponseEntity<>(foundUserResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
+        }
+        Template foundTemplate = existingTemplateResult.getPayload();
+        if (foundTemplate.getTemplateId() != templateId) {
+            return new ResponseEntity<>(List.of("IDs must match"), HttpStatus.CONFLICT);
+        }
+        foundTemplate.setTemplateName(incomingTemplate.getTemplateName());
+        foundTemplate.setTemplateDescription(incomingTemplate.getTemplateDescription());
+        foundTemplate.setTemplateTripType(tripTypeService.findById(incomingTemplate.getTemplateTripTypeId()).getPayload());
+        foundTemplate.setTemplateUser(foundUserResult.getPayload());
+        Result<Template> result = service.update(foundTemplate);
+
+        if (!result.isSuccess()) {
+            return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
+        } else {
+            packItems(incomingTemplate, result.getPayload());
+            return new ResponseEntity<>(new OutgoingTemplate(result.getPayload()), HttpStatus.OK);
+        }
+    }
+
     private List<String> extractDefaultMessageFromBindingResult(BindingResult bindingResult) {
         return bindingResult.getAllErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -129,7 +167,7 @@ public class TemplateController {
         template.setTemplateUser(user);
         TripType templateTripType = findTripTypeFromIncomingTemplate(incomingTemplate);
         if (templateTripType == null) {
-            return null;
+            template.setTemplateTripType(tripTypeService.findById(1).getPayload());
         } else {
             template.setTemplateTripType(templateTripType);
         }

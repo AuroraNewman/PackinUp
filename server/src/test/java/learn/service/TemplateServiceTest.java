@@ -118,4 +118,20 @@ class TemplateServiceTest {
         }
 
     }
+    @Test
+    void shouldUpdate(){
+        Template beforeUpdate = TestHelper.makeTestTemplate();
+        beforeUpdate.setTemplateId(1);
+        Template afterUpdate = testTemplate;
+        Result<Template> expected = new Result<>();
+        expected.setPayload(afterUpdate);
+
+        when(repository.update(beforeUpdate)).thenReturn(true);
+
+        Result<Template> actual = service.update(beforeUpdate);
+
+        assertEquals(expected, actual);
+        assertEquals(afterUpdate, actual.getPayload());
+        assertTrue(actual.getErrorMessages().isEmpty());
+    }
 }

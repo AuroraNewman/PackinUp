@@ -9,4 +9,5 @@ public interface TemplateRepository {
     Template findById(int templateId);
     List<Template> findByUserId(int userId);
     Template create(Template template);
+    boolean update(Template template);
 }

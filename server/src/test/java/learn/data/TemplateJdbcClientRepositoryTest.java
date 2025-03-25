@@ -92,5 +92,20 @@ class TemplateJdbcClientRepositoryTest {
         assertNotNull(actual);
         assertEquals(expected, actual);
     }
+    @Test
+    void shouldUpdate(){
+        Template beforeUpdate = TestHelper.existingTemplate;
+        beforeUpdate.setTemplateId(1);
+        beforeUpdate.setTemplateName("Updated Name");
+        Template expected = TestHelper.existingTemplate;
+        expected.setTemplateName("Updated Name");
+
+        boolean success = repository.update(beforeUpdate);
+        Template actual = repository.findById(beforeUpdate.getTemplateId());
+
+        assertNotNull(actual);
+        assertTrue(success);
+        assertEquals(expected, actual);
+    }
 
 }

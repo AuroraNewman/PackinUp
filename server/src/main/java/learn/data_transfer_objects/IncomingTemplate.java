@@ -10,9 +10,9 @@ import java.util.Objects;
 
 public class IncomingTemplate {
 
-@Size(min = 1, max = 50, message = "Template name must be between 1 and 50 characters.")
-@NotBlank(message = "Template name is required.")
-private String templateName;
+    @Size(min = 1, max = 50, message = "Template name must be between 1 and 50 characters.")
+    @NotBlank(message = "Template name is required.")
+    private String templateName;
 
     @NotBlank(message = "Template description is required.")
     private String templateDescription;

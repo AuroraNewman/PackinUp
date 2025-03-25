@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -61,17 +62,27 @@ public class TemplateJdbcClientRepository implements TemplateRepository{
 
     @Override
     public List<Template> findByUserId(int userId) {
-        final String sql = SELECT + " where t.template_user_id = ?;";
-        return jdbcClient.sql(sql)
+        List<Template> templates = new ArrayList<>();
+        final String sql = """
+                select t.template_id
+                from templates t
+                where t.template_user_id = ?;
+                """;
+        List<Integer> templateIndices = jdbcClient.sql(sql)
                 .param(userId)
-                .query(new TemplateMapper())
+                .query(Integer.class)
                 .list();
+        for (Integer i : templateIndices){
+            templates.add(findById(i));
+        }
+        return templates;
     }
 
     @Override
     public Template create(Template template) throws DuplicateKeyException{
         final String sql = """
-                insert into templates(template_name, template_description, template_trip_type_id, template_user_id)
+                insert into templates(template_name,
+                 template_description, template_trip_type_id, template_user_id)
                 values(:template_name, :template_description, :template_trip_type_id, :template_user_id);
                 """;
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -87,5 +98,24 @@ public class TemplateJdbcClientRepository implements TemplateRepository{
         }
         template.setTemplateId(keyHolder.getKey().intValue());
         return template;
+    }
+
+    @Override
+    public boolean update(Template template) {
+        final String sql = """
+                update templates
+                set template_name = :template_name,
+                    template_description = :template_description,
+                    template_trip_type_id = :template_trip_type_id,
+                    template_user_id = :template_user_id
+                where template_id = :template_id;
+                """;
+        return jdbcClient.sql(sql)
+                .param("template_name", template.getTemplateName())
+                .param("template_description", template.getTemplateDescription())
+                .param("template_trip_type_id", template.getTemplateTripType().getTripTypeId())
+                .param("template_user_id", template.getTemplateUser().getUserId())
+                .param("template_id", template.getTemplateId())
+                .update() > 0;
     }
 }

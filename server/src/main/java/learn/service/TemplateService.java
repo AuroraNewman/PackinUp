@@ -27,8 +27,9 @@ public class TemplateService {
     }
     public Result<Template> findById(int templateId) {
         Result<Template> result = new Result<>();
+        Template foundTemplate = repository.findById(templateId);
         if (result.isSuccess()) {
-            result.setPayload(repository.findById(templateId));
+            result.setPayload(foundTemplate);
         } else {
             result.addErrorMessage("Template could not be found.", ResultType.NOT_FOUND);
         }
@@ -36,7 +37,8 @@ public class TemplateService {
     }
     public Result<Template> create(Template template){
         Result<Template> result = validate(template);
-       if (template != null && repository.findByName(template.getTemplateName()) != null){
+
+       if (template != null && repository.findByName(template.getTemplateName()) != null ){
               result.addErrorMessage(DUPLICATE_NAME_ERROR, ResultType.INVALID);
        }
         if (!result.isSuccess()){
@@ -49,6 +51,26 @@ public class TemplateService {
         } else {
             result.setPayload(addedTemplate);
         }
+        return result;
+    }
+
+    public Result<Template> update(Template template) {
+        Result<Template> result = validate(template);
+        Template existingTemplate = repository.findByName(template.getTemplateName());
+        if (template != null && existingTemplate != null && existingTemplate.getTemplateId() != template.getTemplateId()){
+            result.addErrorMessage(DUPLICATE_NAME_ERROR, ResultType.INVALID);
+        }
+        if (!result.isSuccess()){
+            return result;
+        }
+        try {
+            if (repository.update(template) == false) {
+                result.addErrorMessage("Template could not be updated.", ResultType.NOT_FOUND);
+            }
+        } catch (DuplicateKeyException ex) {
+            result.addErrorMessage(DUPLICATE_NAME_ERROR, ResultType.INVALID);
+        }
+        result.setPayload(template);
         return result;
     }
     private Result<Template> validate(Template template) {
