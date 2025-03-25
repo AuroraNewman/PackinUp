@@ -71,6 +71,7 @@ const UserForm = ({ mode, setLoggedInUser }) => {
                             
                             <NavLink to="/template/" element = {<TemplateList loggedInUser={user} setLoggedInUser={setLoggedInUser} />} />
                         } else {
+                            navigate("/template/create");
                             <NavLink to="/template/create" element = {<TemplateForm loggedInUser={user} setLoggedInUser={setLoggedInUser} />} />
                         }
                     });
