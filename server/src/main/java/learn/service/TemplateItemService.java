@@ -25,8 +25,11 @@ public class TemplateItemService {
     }
 
     public Result<TemplateItem> create(TemplateItem templateItem) {
-        Result<TemplateItem> result = validate(templateItem);
-
+        Result<TemplateItem> result = checkNulls(templateItem);
+        if (!result.isSuccess()) {
+            return result;
+        }
+        validate(templateItem, result);
         if (!result.isSuccess()) {
             return result;
         }
@@ -35,14 +38,20 @@ public class TemplateItemService {
         return result;
     }
 
-    private Result<TemplateItem> validate(TemplateItem templateItem) {
+    private Result<TemplateItem> checkNulls(TemplateItem templateItem) {
         Result<TemplateItem> result = new Result<>();
 
-        if (templateItem == null){
+        if (templateItem == null || templateItem.getItem() == null) {
             result.addErrorMessage("Template item is required.", ResultType.INVALID);
-            return result;
         }
+        if (templateItem.getTemplate() == null) {
+            result.addErrorMessage("Template is required.", ResultType.INVALID);
+        }
+        return result;
+    }
 
+    private Result<TemplateItem> validate(TemplateItem templateItem, Result<TemplateItem> result) {
+//        Result<TemplateItem> result = new Result<>();
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
 

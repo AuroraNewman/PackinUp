@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -49,10 +50,11 @@ public class TemplateController {
         if (!templatesResult.isSuccess()){
             return new ResponseEntity<>(templatesResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
         } else {
-            List<OutgoingTemplate> templates = templatesResult.getPayload().stream()
+            List<OutgoingTemplate> outgoingTemplates = templatesResult.getPayload().stream()
                     .map(OutgoingTemplate::new)
                     .collect(Collectors.toList());
-            return new ResponseEntity<>(templates, HttpStatus.OK);
+//            return new ResponseEntity<>(templates, HttpStatus.OK);
+            return new ResponseEntity<>(outgoingTemplates, HttpStatus.OK);
         }
     }
     @GetMapping("/{templateId}")
@@ -150,4 +152,3 @@ public class TemplateController {
 
 
     }
-//find template by id

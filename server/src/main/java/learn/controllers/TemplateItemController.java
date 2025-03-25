@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import learn.data_transfer_objects.IncomingTemplateItem;
+import learn.data_transfer_objects.OutgoingTemplateItem;
 import learn.models.Item;
 import learn.models.Template;
 import learn.models.TemplateItem;
@@ -11,12 +12,15 @@ import learn.service.ItemService;
 import learn.service.Result;
 import learn.service.TemplateItemService;
 import learn.service.TemplateService;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -50,7 +54,11 @@ public class TemplateItemController {
     }
 
     @PostMapping
-    ResponseEntity<Object> create(@RequestBody IncomingTemplateItem incomingTemplateItem, @RequestHeader Map<String, String> headers) {
+    ResponseEntity<Object> create(@RequestBody IncomingTemplateItem incomingTemplateItem, @RequestHeader Map<String, String> headers, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(extractDefaultMessageFromBindingResult(bindingResult), HttpStatus.BAD_REQUEST);
+        }
+
         Integer userId = getUserIdFromHeaders(headers);
         if (userId == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -58,9 +66,8 @@ public class TemplateItemController {
         Result<TemplateItem> result = service.create(createTemplateItemFromIncoming(incomingTemplateItem));
 
         if (result.isSuccess()) {
-            return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
+            return new ResponseEntity<>(new OutgoingTemplateItem(result.getPayload()), HttpStatus.CREATED);
         } else {
-//            todo convert to outgoing templateitem
             return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -70,7 +77,11 @@ public class TemplateItemController {
         Template template = templateService.findById(incomingTemplateItem.getTemplateItemTemplateId()).getPayload();
         int quantity = incomingTemplateItem.getTemplateItemQuantity();
         boolean isChecked = incomingTemplateItem.isTemplateItemIsChecked();
-        return new TemplateItem(quantity, isChecked, template, item);
+        if (item == null || template == null) {
+            return null;
+        } else {
+            return new TemplateItem(quantity, isChecked, template, item);
+        }
     }
     private Integer getUserIdFromHeaders(Map<String, String> headers) {
         if (headers.get("authorization") == null) {
@@ -85,5 +96,10 @@ public class TemplateItemController {
         } catch (Exception e) {
             return null;
         }
+    }
+    private List<String> extractDefaultMessageFromBindingResult(BindingResult bindingResult) {
+        return bindingResult.getAllErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList());
     }
 }
