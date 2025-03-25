@@ -4,7 +4,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 const TemplateItemForm = () => {
     const baseUrl = "http://localhost:8080/api/packinup/template/item";
     const location = useLocation();
-    const { loggedInUser } = location.state || {};
+    const { item, loggedInUser } = location.state || {};
     const params = useParams();
     const navigate = useNavigate();
     const [error, setError] = useState([]);

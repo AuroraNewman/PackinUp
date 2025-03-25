@@ -1,5 +1,7 @@
 package learn.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -39,7 +41,9 @@ public class TemplateItemController {
     }
 
     @GetMapping("/{templateId}")
-    ResponseEntity<Object> findAllByTemplateId(@PathVariable int templateId, @RequestHeader Map<String, String> headers) {
+    ResponseEntity<Object> findAllByTemplateId(@PathVariable int templateId, @RequestHeader Map<String, String> headers) throws JsonProcessingException {
+
+
         Integer userId = getUserIdFromHeaders(headers);
         if (userId == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -49,6 +53,7 @@ public class TemplateItemController {
         if (items == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
+            System.out.println(new ObjectMapper().writeValueAsString(items));
             return new ResponseEntity<>(items, HttpStatus.OK);
         }
     }

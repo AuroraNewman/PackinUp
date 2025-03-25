@@ -1,6 +1,8 @@
 package learn.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
+import learn.data_transfer_objects.IncomingTemplateItem;
 import learn.data_transfer_objects.OutgoingItem;
 
 import java.util.Objects;
@@ -13,6 +15,7 @@ public class TemplateItem {
     @Positive(message = "Quantity must be greater than 0.")
     private int quantity;
 
+    @JsonProperty("checked")
     private boolean isChecked;
 
     @NotNull(message = "Template is required.")

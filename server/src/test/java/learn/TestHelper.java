@@ -36,6 +36,7 @@ public class TestHelper {
         return new Template(goodId, goodVarCharString, goodVarCharString, existingTripType, existingUser);
     }
     public static IncomingTemplate makeTestAddTemplate(){
+//        todo fix this to include weather query
         return new IncomingTemplate(goodVarCharString, goodVarCharString, existingTripType.getTripTypeId());
     }
     public static Item makeTestItem() {
