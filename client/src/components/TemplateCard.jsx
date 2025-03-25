@@ -42,8 +42,9 @@ const TemplateCard = () => {
                 <h2>{template.templateId}</h2>
                 <h3>{template.templateName}</h3>
                 <p>{template.templateDescription}</p>
-                <button className="btn btn-primary btn-sm me-2 mb-2 col-12">Copy</button>
+                <button className="btn btn-primary btn-sm me-2 mb-2 col-5">Copy</button>
                 <button className="btn btn-primary btn-sm me-2 mb-2 col-5" onClick={handleEditTemplateClick}>Edit</button>
+                <button className="btn btn-primary btn-sm me-2 mb-2 col-5">+Items</button>
                 <button className="btn btn-danger btn-sm me-2 mb-2 col-5">Delete</button>
                 {/* todo implement delete */}
             </li>

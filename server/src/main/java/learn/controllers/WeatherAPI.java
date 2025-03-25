@@ -2,6 +2,7 @@ package learn.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import learn.data_transfer_objects.IncomingWeatherQuery;
 import learn.data_transfer_objects.OutgoingItem;
 import learn.data_transfer_objects.WeatherRecommendations;
 import learn.models.Item;
@@ -10,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.*;
@@ -39,9 +42,9 @@ public class WeatherAPI {
     private final Double WORLD_RECORD_MAX_TEMP = 134.1;
     private final Double WORLD_RECORD_MIN_TEMP = -128.6;
 
-    @GetMapping("/{searchQuery}")
-    public WeatherRecommendations suggestItemsForWeather(@PathVariable String searchQuery) throws IOException, InterruptedException {
-        String uriBase = generateUrl(searchQuery);
+    @PostMapping
+    public WeatherRecommendations suggestItemsForWeather(@RequestBody IncomingWeatherQuery incomingWeatherQuery) throws IOException, InterruptedException {
+        String uriBase = generateUrl(incomingWeatherQuery.getQuery());
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uriBase))
                 .timeout(Duration.ofSeconds(10))
@@ -72,13 +75,14 @@ public class WeatherAPI {
             forecastMap.put(date, dayData);
         }
 
-        return suggestItems(forecastMap);
+        return suggestItems(forecastMap, incomingWeatherQuery);
     }
     private String generateUrl(String searchQuery){
+        String encodedSearchQuery = URLEncoder.encode(searchQuery.trim(), StandardCharsets.UTF_8);
         String url = String.format("http://api.weatherapi.com/v1/forecast.json?key=%s&q=%s&days=14", WEATHER_API_TOKEN, searchQuery);
         return url;
     }
-    private WeatherRecommendations suggestItems(HashMap<LocalDate, List<String>> forecastMap){
+    private WeatherRecommendations suggestItems(HashMap<LocalDate, List<String>> forecastMap, IncomingWeatherQuery incomingWeatherQuery) {
         WeatherRecommendations recommendations = new WeatherRecommendations();
         Set<OutgoingItem> items = new HashSet<>();
         recommendations.setItemsToPack(items);
@@ -88,6 +92,9 @@ public class WeatherAPI {
         int snowyDays = 0;
         int sunnyDays = 0;
         for (Map.Entry<LocalDate, List<String>> entry : forecastMap.entrySet()) {
+            if (entry.getKey().isBefore(incomingWeatherQuery.getStartDate()) || entry.getKey().isAfter(incomingWeatherQuery.getEndDate())) {
+                continue;
+            }
             LocalDate date = entry.getKey();
             List<String> dayData = entry.getValue();
             String maxTemp = dayData.get(0);
