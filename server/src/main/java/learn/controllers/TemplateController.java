@@ -46,6 +46,9 @@ public class TemplateController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         Result<List<Template>> templatesResult = service.findByUserId(userId);
+        for (Template template : templatesResult.getPayload()) {
+            System.out.println(template.getTemplateName());
+        }
 
         if (!templatesResult.isSuccess()){
             return new ResponseEntity<>(templatesResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
@@ -100,6 +103,7 @@ public class TemplateController {
             return new ResponseEntity<>(new OutgoingTemplate(result.getPayload()), HttpStatus.CREATED);
         }
     }
+
     private List<String> extractDefaultMessageFromBindingResult(BindingResult bindingResult) {
         return bindingResult.getAllErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)

@@ -6,11 +6,11 @@ import jakarta.validation.constraints.PositiveOrZero;
 import java.util.Objects;
 
 public class IncomingTemplateItem {
-    @PositiveOrZero
+    @PositiveOrZero(message = "Template ID must be 0 or greater.")
     private int templateItemTemplateId;
-    @PositiveOrZero
+    @PositiveOrZero(message = "Item ID must be 0 or greater.")
     private int templateItemItemId;
-    @Positive
+    @Positive(message = "Quantity must be greater than 0.")
     private int templateItemQuantity;
 
     private boolean templateItemIsChecked;

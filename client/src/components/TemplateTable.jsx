@@ -1,12 +1,50 @@
 // format adapted from codepen: https://codepen.io/vikassingh1111/pen/xBPmbL
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import './TemplateTable.css';
-import gsap from 'gsap';
-import { useGSAP} from '@gsap/react';
 import TemplateCard from "./TemplateCard";
 
-const TemplateTable = ({ templates, loggedInUser }) => {
+const TemplateTable = ({ loggedInUser }) => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+      fetch("http://localhost:8080/api/packinup/template", {
+          headers: {
+              Authorization: loggedInUser.jwt
+          }
+      })
+          .then(response => response.json())
+          .then(fetchedTemplates => {
+              setTemplates(fetchedTemplates);
+              setHasFinishedFetching(true);
+          })
+          .catch(error => {
+              console.error("Error fetching templates: ", error);
+              setHasFinishedFetching(true);
+          });
+  }, []);
+
+
+  const [templates, setTemplates] = useState([])
+  const [hasFinishedFetching, setHasFinishedFetching] = useState(false)
+
+  if (templates.length === 0) {
+      if (hasFinishedFetching) {
+          return (
+              <>
+                  <div class="row">
+                      <Link to={`/template/create`} className="btn btn-primary me-2 mb-2">Add Template</Link>
+                  </div>
+                  <h1>No templates found</h1>
+              </>
+
+          )
+      } else {
+          return (
+              null
+          )
+      }
+  }
   
     function handleClick(template, loggedInUser) {
         console.log("loggedinuser at click:", loggedInUser);
@@ -15,9 +53,6 @@ const TemplateTable = ({ templates, loggedInUser }) => {
     function handleCreateClick() {
         navigate(`/template/create`);
       }
-    useGSAP(() => {
-        // todo animate the tile expanding out when click view
-    });
   
     return (
       <ul className="tilesWrap">
@@ -29,6 +64,7 @@ const TemplateTable = ({ templates, loggedInUser }) => {
               onClick={() => handleCreateClick()}
               >Create a Template</button>
         </li>
+        {console.log("Fetched templates: ", templates)}
         {templates.map((template) => (
           <li key={template.templateId}>
             <h2>{template.templateId}</h2>
@@ -44,40 +80,6 @@ const TemplateTable = ({ templates, loggedInUser }) => {
       </ul>
     );
   };
-    
-    {/*
-// standard styling
-        
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        <th className="col-2">Template Name</th>
-                        <th className="col-2">Template Description</th>
-                        <th className="col-2">Category</th>
-                        <th className="col-4">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {templates.map(template => {
-                        return (
-                            <tr key={template.templateId}>
-                                <td>{template.templateName}</td>
-                                <td>{template.templateDescription}</td>
-                                <td>{template.templateTripType.tripTypeName}</td>
-                                <td>
-                                    <Link to={`/template/${template.templateId}`} className="btn btn-primary me-2 mb-2">View</Link>
-                                    <Link to={`/template/edit/${template.templateId}`} className="btn btn-warning">Edit</Link>
-                                    <Link to={`/template/delete/${template.templateId}`} className="btn btn-danger">Delete</Link>
-                                </td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
-            
-        </>
-    )
-}*/}
 
 
 export default TemplateTable;

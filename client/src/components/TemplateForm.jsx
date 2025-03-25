@@ -12,6 +12,9 @@ const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
     templateName: "",
     templateDescription: "",
     templateTripTypeId: "",
+    templateLocation: "",
+    templateStartDate: "",
+    templateEndDate: "",
   };
 
   const [template, setTemplate] = useState(INITIAL_TEMPLATE);
