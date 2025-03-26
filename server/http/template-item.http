@@ -1,13 +1,13 @@
-@url = http://localhost:8080/api/packinup/template/item
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.ERHA_Wr5QIf13Wj3NJSf5myjPi0VdmJNzUk04tse8BA
+@url = http://localhost:8080/api/packinup/templateitem
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.BWWRpKuGq2QgjinhHcf0lIYVTaWhtwhw2-JfP0_7cMA
 
 # good
-post {{url}} HTTP/1.1
+post {{url}}/2 HTTP/1.1
 Content-Type: application/json
 Authorization: {{jwt}}
 
 {
-    "templateItemItemId": 3,
+    "templateItemItemName": "test",
         "templateItemTemplateId": 1,
         "templateItemQuantity": 2,
         "templateItemIsChecked": false

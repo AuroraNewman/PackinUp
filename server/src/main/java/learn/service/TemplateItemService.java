@@ -41,7 +41,7 @@ public class TemplateItemService {
     private Result<TemplateItem> checkNulls(TemplateItem templateItem) {
         Result<TemplateItem> result = new Result<>();
 
-        if (templateItem == null || templateItem.getItem() == null) {
+        if (templateItem == null || templateItem.getOutgoingItem() == null) {
             result.addErrorMessage("Template item is required.", ResultType.INVALID);
             return result;
         }

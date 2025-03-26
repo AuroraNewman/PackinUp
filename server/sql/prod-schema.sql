@@ -70,7 +70,9 @@ insert into templates(template_id, template_name, template_description, template
             (7, 'Business', 'For the next insufferably long conference in the Poconos', 3, 1);
 
 insert into categories(category_id, category_name, category_color) values
-	(1, 'Weather', 'Blue');
+	(1, 'Weather', 'Blue'),
+    (2, 'Beach', 'Yellow'),
+    (3, 'Business', 'Black');
     
 insert into items(item_id, item_name, item_user_id, item_category_id) values
 	(1, 'Summer Clothes', 1, 1),
@@ -79,7 +81,16 @@ insert into items(item_id, item_name, item_user_id, item_category_id) values
     (4, 'Rain gear', 1, 1),
     (5, 'Snow gear', 1, 1),
     (6, 'Sunglasses', 1, 1),
-    (7, 'Sunscreen', 1, 1);
+    (7, 'Sunscreen', 1, 1),
+    (8, 'Beach Towel', 1, 2),
+    (9, 'Swimsuit', 1, 2),
+    (10, 'Spare laptop charger', 1, 3),
+    (11, '5 hour energy', 1, 3);
     
 insert into template_items (template_item_id, template_item_quantity, template_item_is_checked, template_item_template_id, template_item_item_id) values
-	(1, 1, false, 1, 1);
+	(1, 1, false, 1, 1),
+    (2, 3, false, 1, 4),
+    (3, 10, false, 1, 6),
+    (4, 6, false, 1, 7),
+    (5, 4, false, 1, 8),
+    (6, 4, false, 1, 9);

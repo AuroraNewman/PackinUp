@@ -3,7 +3,6 @@ package learn.data_transfer_objects;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import learn.models.TripType;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -48,6 +47,8 @@ public class IncomingTemplate {
         this.templateDescription = templateDescription;
         this.templateTripTypeId = templateTripTypeId;
     }
+
+
 
     public String getTemplateName() {
         return templateName;

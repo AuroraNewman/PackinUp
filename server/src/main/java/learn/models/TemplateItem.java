@@ -73,23 +73,23 @@ public class TemplateItem {
         this.template = template;
     }
 
-    public OutgoingItem getItem() {
+    public OutgoingItem getOutgoingItem() {
         return outgoingItem;
     }
 
-    public void setItem(Item item) {
-        this.outgoingItem = new OutgoingItem(item);
+    public void setOutgoingItem(OutgoingItem outgoingItem) {
+        this.outgoingItem = outgoingItem;
     }
 
     @Override
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
         TemplateItem that = (TemplateItem) object;
-        return getTemplateItemId() == that.getTemplateItemId() && getQuantity() == that.getQuantity() && isChecked() == that.isChecked() && Objects.equals(getTemplate(), that.getTemplate()) && Objects.equals(outgoingItem, that.outgoingItem);
+        return getTemplateItemId() == that.getTemplateItemId() && getQuantity() == that.getQuantity() && isChecked() == that.isChecked() && Objects.equals(getTemplate(), that.getTemplate()) && Objects.equals(getOutgoingItem(), that.getOutgoingItem());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTemplateItemId(), getQuantity(), isChecked(), getTemplate(), outgoingItem);
+        return Objects.hash(getTemplateItemId(), getQuantity(), isChecked(), getTemplate(), getOutgoingItem());
     }
 }

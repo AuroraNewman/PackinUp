@@ -192,39 +192,3 @@ const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
 };
 
 export default TemplateForm;
-
-
-// const INITIAL_TEMPLATE = {
-    //     templateName: '',
-    //     templateDescription: '',
-    //     templateTripType: {
-    //         tripTypeId: "",
-    //         tripTypeName: "",
-    //         tripTypeDescription: ""
-    //       }
-    // }
-    {/* {triptypes.map((triptype) => (
-                                <option key={triptype.tripTypeId} value={triptype.tripTypeId}>
-                                    {triptype.tripTypeName}
-                                </option>
-                            ))} */}
-
-
-
-
-    // const setTripTypes = ({ triptypes }) => {
-    //     let optionsString = '<option value="">Select a trip type</option>'
-    //     for (const triptype of triptypes) {
-    //         const singleOptionString = `<triptype value="${triptype.name}">${triptype.name}</option>`
-    //         optionsString += singleOptionString
-    //     }
-    // }
-    // const handleTripTypeChange = (event) => {
-    //     const selectedTripType = triptypes.find(
-    //       (t) => t.id.toString() === event.target.value
-    //     );
-    //     setTemplate({
-    //       ...template,
-    //       templateTripType: selectedTripType || INITIAL_TEMPLATE.templateTripType
-    //     });
-    //   };

@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/packinup/template
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.ERHA_Wr5QIf13Wj3NJSf5myjPi0VdmJNzUk04tse8BA
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.KTum-VggH_sOQXAIVXd-vHqPFGZ2sj67cPp-S8UhLqM
 
 ###
 
@@ -9,7 +9,7 @@ Authorization: {{jwt}}
 
 ###
 # get specific template
-get {{url}}/8
+get {{url}}/1
 Content-Type: application/json
 Authorization: {{jwt}}
 
@@ -20,13 +20,13 @@ Content-Type: application/json
 Authorization: {{jwt}}
 
 {
-  "templateName": "rufflex",
+  "templateName": "ruffle me timbers",
     "templateDescription": "TestString",
     "templateTripTypeId": 1
     }
 
 ### put happy path
-put {{url}}/8
+put {{url}}/6
 Content-Type: application/json
 Authorization: {{jwt}}
 
@@ -34,4 +34,17 @@ Authorization: {{jwt}}
   "templateName": "Testaroo Edits",
     "templateDescription": "Test Edits",
     "templateTripTypeId": 1
+    }
+
+### add items to packed list
+
+put {{url}}/1/additem
+Content-Type: application/json
+Authorization: {{jwt}}
+
+{
+  "templateItemTemplateId": 1,
+  "templateItemItemId": 1,
+  "templateItemQuantity": 1,
+    "templateItemIsChecked": false
     }

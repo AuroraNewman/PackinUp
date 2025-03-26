@@ -1,15 +1,20 @@
 import React from 'react';
 import { useState, useEffect } from "react";
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useParams, useLocation, useNavigate, Link } from 'react-router-dom';
 
 const TemplateCard = () => {
     const location = useLocation();
-    const { template, loggedInUser } = location.state || {};
+    const [template, setTemplate] = useState(location.state?.template);
+    const { loggedInUser } = location.state || {};
     const params = useParams();
     const navigate = useNavigate();
 
+    
+    
     useEffect(() => {
-        fetch(`http://localhost:8080/api/packinup/template/item/${template.templateId}`, {
+        console.log("template: " + template);
+        console.log("params" + params.templateId);
+        fetch(`http://localhost:8080/api/packinup/templateitem/${params.templateId}`, {
             headers: {
                 Authorization: loggedInUser.jwt
             }
@@ -23,7 +28,20 @@ const TemplateCard = () => {
                 console.error("Error fetching items: ", error);
                 setHasFinishedFetching(true);
             }, [template, loggedInUser]);
-    }, []);
+            if (!template) {
+                fetch(`http://localhost:8080/api/packinup/template/${params.templateId}`, {
+                    headers: {
+                        Authorization: loggedInUser?.jwt,
+                    },
+                })
+                .then((response) => response.json())
+                .then((fetchedTemplate) => {
+                    setTemplate(fetchedTemplate);
+                })
+                .catch((error) => console.error("Error fetching template:", error));
+            }
+
+        }, [template, params.templateId, loggedInUser]);
 
     const [items, setItems] = useState([])
     const [hasFinishedFetching, setHasFinishedFetching] = useState(false)
@@ -32,8 +50,8 @@ const TemplateCard = () => {
         if (hasFinishedFetching) {
             return (
                 <>
-                    <div class="row">
-                        <Link to={`/templateitem/create`} className="btn btn-primary me-2 mb-2">Add Item</Link>
+                    <div className="row">
+                        <Link to={`/templateitem/create/${params.templateId}`} className="btn btn-primary me-2 mb-2" state={{ loggedInUser }}>Add Item</Link>
                     </div>
                     <h1>No items found</h1>
                 </>
@@ -58,37 +76,33 @@ const TemplateCard = () => {
 
 
     console.log("Fetched items: ", items);
-    const buttonRow = () => {
-        return (
-            <div className="row">
-                <button className="btn btn-primary btn-sm me-2 mb-2 col-5" onClick={handleEditTemplateItemClick}>Edit</button>
-                <button className="btn btn-danger btn-sm me-2 mb-2 col-5">Delete</button>
-                {/* todo implement delete */}
-            </div>
-        )
-    }
-
+    // let itemIndex = 0;
+    
     return (
+        <>
+        {/* {itemIndex++} */}
         <ul className="tilesWrap ">
-            <li key={template.templateId}>
-                <h2>{template.templateId}</h2>
-                <h3>{template.templateName}</h3>
-                <p>{template.templateDescription}</p>
+            <li key={params.templateId}>
+                <h2>{params.templateId}</h2>
+                
+                <h3>{template && template.templateName}</h3>
+                <p>{template && template.templateDescription}</p>
                 <button className="btn btn-primary btn-sm me-2 mb-2 col-5">Copy</button>
                 <button className="btn btn-primary btn-sm me-2 mb-2 col-5" onClick={handleEditTemplateClick}>Edit</button>
-                <button className="btn btn-primary btn-sm me-2 mb-2 col-5">+Items</button>
+                <Link to={`/templateitem/create/${params.templateId}`} className="btn btn-primary me-2 mb-2" state={{ loggedInUser }}>Add Item</Link>
                 <button className="btn btn-danger btn-sm me-2 mb-2 col-5">Delete</button>
                 {/* todo implement delete */}
             </li>
             {items.map((item) => (
+                
                 // todo: add category color to this card with className={(arg) => { return (template.templateItemCategory)}}
-                <li key={item.templateItemId} className={item.item?.color ?? "default-color"}>
+                <li key={item.templateItemId} className={item.outgoingItem?.color ?? "default-color"}>
 
-                    <h2>{item.item.itemId}</h2>
-                    <h3>{item.item.itemName}</h3>
+                    {/* <h2>{itemIndex}</h2> */}
+                    <h3>{item.outgoingItem.itemName}</h3>
                     <p>Packed? {item.checked}</p>
                     <p>Quantity: {item.quantity}</p>
-                    <p>Category: {item.item.categoryName}</p>
+                    <p>Category: {item.outgoingItem.categoryName}</p>
                     <div className="row">
                         <button className="btn btn-primary btn-sm me-2 mb-2 col-5" onClick={() => handleEditTemplateItemClick(item)}>Edit</button>
                         <button className="btn btn-danger btn-sm me-2 mb-2 col-5">Delete</button>
@@ -98,6 +112,7 @@ const TemplateCard = () => {
 
             ))}
         </ul>
+        </>
     )
 }
 export default TemplateCard;

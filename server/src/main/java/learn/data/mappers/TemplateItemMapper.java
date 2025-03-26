@@ -1,5 +1,6 @@
 package learn.data.mappers;
 
+import learn.data_transfer_objects.OutgoingItem;
 import learn.models.Item;
 import learn.models.Template;
 import learn.models.TemplateItem;
@@ -22,7 +23,7 @@ public class TemplateItemMapper implements RowMapper<TemplateItem> {
         templateItem.setQuantity(rs.getInt("template_item_quantity"));
         templateItem.setChecked(rs.getBoolean("template_item_is_checked"));
         templateItem.setTemplate(template);
-        templateItem.setItem(item);
+        templateItem.setOutgoingItem(new OutgoingItem(item));
 
         return templateItem;
     }

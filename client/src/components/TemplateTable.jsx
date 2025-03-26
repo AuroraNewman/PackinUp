@@ -32,7 +32,7 @@ const TemplateTable = ({ loggedInUser }) => {
       if (hasFinishedFetching) {
           return (
               <>
-                  <div class="row">
+                  <div className="row">
                       <Link to={`/template/create`} className="btn btn-primary me-2 mb-2">Add Template</Link>
                   </div>
                   <h1>No templates found</h1>

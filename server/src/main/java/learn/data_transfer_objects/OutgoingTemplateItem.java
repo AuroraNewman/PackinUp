@@ -26,7 +26,7 @@ public class OutgoingTemplateItem {
         this.quantity = templateItem.getQuantity();
         this.isChecked = templateItem.isChecked();
         this.outgoingTemplate = new OutgoingTemplate(templateItem.getTemplate());
-        this.item = templateItem.getItem();
+        this.item = templateItem.getOutgoingItem();
     }
 
     public OutgoingTemplateItem() {
