@@ -24,6 +24,7 @@ public class Template {
     @NotNull(message = "User is required.")
     private User templateUser;
 
+    @OneToMany(mappedBy = "template", cascade = CascadeType.ALL)
     private List<TemplateItem> items = new ArrayList<>();
 
     public Template() {

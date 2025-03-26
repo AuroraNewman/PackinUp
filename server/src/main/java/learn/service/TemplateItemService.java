@@ -5,6 +5,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import learn.data.TemplateItemRepository;
+import learn.models.Template;
 import learn.models.TemplateItem;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,11 @@ public class TemplateItemService {
 
         result.setPayload(repository.create(templateItem));
         return result;
+    }
+    public void addTemplateItemsToTemplate(Template template){
+        for (TemplateItem templateItem : template.getItems()) {
+            TemplateItem createdTemplateItem = repository.create(templateItem);
+        }
     }
 
     private Result<TemplateItem> checkNulls(TemplateItem templateItem) {

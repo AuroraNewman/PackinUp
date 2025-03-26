@@ -74,8 +74,7 @@ public class WeatherAPI {
             forecastMap.put(date, dayData);
         }
 
-        WeatherRecommendations weatherRecommendations = suggestItems(forecastMap, incomingWeatherQuery);
-        return weatherRecommendations;
+        return suggestItems(forecastMap, incomingWeatherQuery);
     }
     private String generateUrl(String searchQuery){
         String encodedSearchQuery = URLEncoder.encode(searchQuery.trim(), StandardCharsets.UTF_8);

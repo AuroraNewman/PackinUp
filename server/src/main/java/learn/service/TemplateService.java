@@ -11,6 +11,7 @@ import learn.models.Template;
 import learn.models.TemplateItem;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,36 +114,42 @@ public class TemplateService {
         return result;
     }
 
+    @Transactional
     public void addWeatherRecommendationsToTemplate(WeatherRecommendations recommendations, Template template){
         addWeatherItemsToTemplate(recommendations, template);
         addWeatherNoteToTemplate(recommendations, template);
     }
-    private void addWeatherItemsToTemplate(WeatherRecommendations recommendations, Template template){
+    private void addWeatherItemsToTemplate(WeatherRecommendations recommendations, Template template) {
         Set<OutgoingItem> weatherItems = recommendations.getItemsToPack();
         List<TemplateItem> itemsToAdd = new ArrayList<>();
         for (OutgoingItem weatherItem : weatherItems) {
             TemplateItem item = new TemplateItem();
-            item.setTemplateItemId(weatherItem.getItemId());
             item.setQuantity(1);
             item.setChecked(false);
             item.setTemplate(template);
             item.setOutgoingItem(weatherItem);
+            itemsToAdd.add(item); // Add to list before saving
+            templateItemRepository.create(item); // Persist in DB
         }
         addItemsToTemplate(itemsToAdd, template);
     }
+
     private void addWeatherNoteToTemplate (WeatherRecommendations recommendations, Template template){
         String description = template.getTemplateDescription();
         description += "\n" + recommendations.getForecast();
         template.setTemplateDescription(description);
+        repository.update(template);
     }
 
     public void addItemsToTemplate(List<TemplateItem> items, Template template) {
         List<TemplateItem> existingItems = template.getItems();
-        for (TemplateItem item : items) {
-            existingItems.add(item);
+        if (existingItems == null) {
+            existingItems = new ArrayList<>();
         }
-        template.setItems(items);
+        existingItems.addAll(items); // Merge items
+        template.setItems(existingItems);
     }
+
 
     private void addItemsToTemplateFromDB(Template template) {
         addItemsToTemplate(templateItemRepository.findAllByTemplateId(template.getTemplateId()), template);
