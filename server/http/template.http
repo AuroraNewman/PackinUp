@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/packinup/template
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.xnKWiesnFTKnxubGz2vIGBryocLlPN_DMmhw9pnZhU8
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.KTum-VggH_sOQXAIVXd-vHqPFGZ2sj67cPp-S8UhLqM
 
 ###
 
@@ -20,13 +20,13 @@ Content-Type: application/json
 Authorization: {{jwt}}
 
 {
-  "templateName": "rufflex",
+  "templateName": "ruffle me timbers",
     "templateDescription": "TestString",
     "templateTripTypeId": 1
     }
 
 ### put happy path
-put {{url}}/8
+put {{url}}/6
 Content-Type: application/json
 Authorization: {{jwt}}
 

@@ -1,7 +1,7 @@
 @url = http://localhost:8080/api/packinup/triptype
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.xnKWiesnFTKnxubGz2vIGBryocLlPN_DMmhw9pnZhU8
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.KTum-VggH_sOQXAIVXd-vHqPFGZ2sj67cPp-S8UhLqM
 
 ###
 get {{url}}
 Content-Type: application/json
-Authorization: {{jwt}}02:04
+Authorization: {{jwt}}

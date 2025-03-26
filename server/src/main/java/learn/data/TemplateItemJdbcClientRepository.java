@@ -52,6 +52,16 @@ public class TemplateItemJdbcClientRepository implements TemplateItemRepository{
                 .query(new TemplateItemMapper())
                 .list();
     }
+
+    @Override
+    public List<TemplateItem> findAllByTripTypeId(int tripTypeId) {
+        final String sql = SELECT + " where tt.trip_type_id = ?;";
+        return jdbcClient.sql(sql)
+                .param(tripTypeId)
+                .query(new TemplateItemMapper())
+                .list();
+    }
+
     @Override
     public TemplateItem create(TemplateItem templateItem) {
         final String sql = """
