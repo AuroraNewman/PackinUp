@@ -147,9 +147,12 @@ public class TemplateController {
         if (templateItem == null) {
             return new ResponseEntity<>(List.of("Template item not found"), HttpStatus.NOT_FOUND);
         }
-        template.addItemToPack(templateItem);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        Result<TemplateItem> result = templateItemService.create(templateItem);
+        if (!result.isSuccess()) {
+            return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
     }
 
     private List<String> extractDefaultMessageFromBindingResult(BindingResult bindingResult) {
@@ -210,10 +213,13 @@ public class TemplateController {
         templateItem.setChecked(incomingTemplateItem.isTemplateItemIsChecked());
 
         Template foundTemplate = convertIncomingTemplateToTemplate(incomingTemplateItem.getTemplateItemItemId());
-        OutgoingItem foundOutgoingItem = convertIncomingItemToOutgoingItem(incomingTemplateItem.getTemplateItemItemId());
+        Item foundItem = convertIncomingItemToItem(incomingTemplateItem.getTemplateItemItemId());
+        OutgoingItem foundOutgoingItem = new OutgoingItem(foundItem);
 
-        if (foundTemplate == null || foundOutgoingItem == null) {
+        if (foundTemplate == null) {
             return null;
+        }else if (foundOutgoingItem == null) {
+            itemService.create(convertIncomingItemToItem(incomingTemplateItem.getTemplateItemItemId()));
         } else {
             templateItem.setOutgoingItem(foundOutgoingItem);
             templateItem.setTemplate(foundTemplate);
@@ -231,12 +237,12 @@ public class TemplateController {
             }
         }
 
-        private OutgoingItem convertIncomingItemToOutgoingItem(int incomingItemId){
+        private Item convertIncomingItemToItem(int incomingItemId){
         Item foundItem = itemService.findById(incomingItemId);
         if (foundItem == null) {
             return null;
         } else {
-            return new OutgoingItem(foundItem);
+            return foundItem;
         }
             }
     }

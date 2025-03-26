@@ -3,6 +3,8 @@ package learn.data;
 import learn.data.mappers.ItemMapper;
 import learn.models.Item;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -36,5 +38,19 @@ public class ItemJdbcClientRepository implements ItemRepository{
                 .param(id)
                 .query(new ItemMapper())
                 .optional().orElse(null);
+    }
+
+    @Override
+    public boolean create(Item item) {
+        final String sql = """
+                insert into items (item_name, item_user_id, item_category_id)
+                values (:item_name, :item_user_id, :item_category_id);
+                """;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        return jdbcClient.sql(sql)
+                .param("item_name", item.getItemName())
+                .param("item_user_id", item.getUser().getUserId())
+                .param("item_category_id", item.getCategory().getCategoryId())
+                .update(keyHolder, "item_id") == 1;
     }
 }
