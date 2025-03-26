@@ -146,8 +146,12 @@ public class TemplateService {
         if (existingItems == null) {
             existingItems = new ArrayList<>();
         }
-        existingItems.addAll(items); // Merge items
-        template.setItems(existingItems);
+        for (TemplateItem item : items) {
+            if (!existingItems.contains(item)) {
+                existingItems.add(item);
+                templateItemRepository.create(item);
+            }
+        }
     }
 
 
