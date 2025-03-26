@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/packinup/template
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.ERHA_Wr5QIf13Wj3NJSf5myjPi0VdmJNzUk04tse8BA
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.xi1Csl-TcE0kY40yEPwhVYvUffFLqCH4Z105I2VWq1s
 
 ###
 
@@ -34,4 +34,17 @@ Authorization: {{jwt}}
   "templateName": "Testaroo Edits",
     "templateDescription": "Test Edits",
     "templateTripTypeId": 1
+    }
+
+### add items to packed list
+
+put {{url}}/1/additem
+Content-Type: application/json
+Authorization: {{jwt}}
+
+{
+  "templateItemTemplateId": 1,
+  "templateItemItemId": 1,
+  "templateItemQuantity": 1,
+    "templateItemIsChecked": false
     }

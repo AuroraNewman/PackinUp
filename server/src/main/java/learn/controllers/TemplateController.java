@@ -4,13 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import jakarta.validation.Valid;
-import learn.data_transfer_objects.IncomingTemplate;
-import learn.data_transfer_objects.OutgoingItem;
-import learn.data_transfer_objects.OutgoingTemplate;
-import learn.models.Item;
-import learn.models.Template;
-import learn.models.TripType;
-import learn.models.User;
+import learn.data_transfer_objects.*;
+import learn.models.*;
 import learn.service.*;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -31,12 +26,16 @@ public class TemplateController {
     private final SecretSigningKey secretSigningKey;
     private final UserService userService;
     private final TripTypeService tripTypeService;
+    private final ItemService itemService;
+    private final TemplateItemService templateItemService;
 
-    public TemplateController(TemplateService service, SecretSigningKey secretSigningKey, UserService userService, TripTypeService tripTypeService) {
+    public TemplateController(TemplateService service, SecretSigningKey secretSigningKey, UserService userService, TripTypeService tripTypeService, ItemService itemService, TemplateItemService templateItemService) {
         this.service = service;
         this.secretSigningKey = secretSigningKey;
         this.userService = userService;
         this.tripTypeService = tripTypeService;
+        this.itemService = itemService;
+        this.templateItemService = templateItemService;
     }
 
     @GetMapping
@@ -99,7 +98,6 @@ public class TemplateController {
         if (!result.isSuccess()) {
             return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
         } else {
-            packItems(incomingTemplate, result.getPayload());
             return new ResponseEntity<>(new OutgoingTemplate(result.getPayload()), HttpStatus.CREATED);
         }
     }
@@ -133,9 +131,25 @@ public class TemplateController {
         if (!result.isSuccess()) {
             return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
         } else {
-            packItems(incomingTemplate, result.getPayload());
             return new ResponseEntity<>(new OutgoingTemplate(result.getPayload()), HttpStatus.OK);
         }
+    }
+    @PutMapping("/{templateId}/additem")
+    ResponseEntity<Object> addTemplateItem(@PathVariable int templateId, @RequestBody IncomingTemplateItem incomingTemplateItem){
+        Result<Template> templateResult = service.findById(templateId);
+        if (templateResult.getResultType() == ResultType.NOT_FOUND) {
+            return new ResponseEntity<>(templateResult.getErrorMessages(), HttpStatus.NOT_FOUND);
+        } else if (!templateResult.isSuccess()){
+            return new ResponseEntity<>(templateResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
+        }
+        Template template = templateResult.getPayload();
+        TemplateItem templateItem = convertIncomingTIToTI(incomingTemplateItem);
+        if (templateItem == null) {
+            return new ResponseEntity<>(List.of("Template item not found"), HttpStatus.NOT_FOUND);
+        }
+        template.addItemToPack(templateItem);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private List<String> extractDefaultMessageFromBindingResult(BindingResult bindingResult) {
@@ -188,9 +202,41 @@ public class TemplateController {
                 .map(OutgoingItem::new)
                 .collect(Collectors.toList());
         }
-        private void packItems(IncomingTemplate incomingTemplate, Template template) {
-            
+
+        private TemplateItem convertIncomingTIToTI(IncomingTemplateItem incomingTemplateItem){
+        TemplateItem templateItem = new TemplateItem();
+        templateItem.setTemplateItemId(incomingTemplateItem.getTemplateItemItemId());
+        templateItem.setQuantity(incomingTemplateItem.getTemplateItemQuantity());
+        templateItem.setChecked(incomingTemplateItem.isTemplateItemIsChecked());
+
+        Template foundTemplate = convertIncomingTemplateToTemplate(incomingTemplateItem.getTemplateItemItemId());
+        OutgoingItem foundOutgoingItem = convertIncomingItemToOutgoingItem(incomingTemplateItem.getTemplateItemItemId());
+
+        if (foundTemplate == null || foundOutgoingItem == null) {
+            return null;
+        } else {
+            templateItem.setOutgoingItem(foundOutgoingItem);
+            templateItem.setTemplate(foundTemplate);
         }
 
+            return templateItem;
+        }
 
+        private Template convertIncomingTemplateToTemplate(int incomingTemplateId) {
+            Result<Template> foundTemplate = service.findById(incomingTemplateId);
+            if (!foundTemplate.isSuccess()) {
+                return null;
+            } else {
+                return foundTemplate.getPayload();
+            }
+        }
+
+        private OutgoingItem convertIncomingItemToOutgoingItem(int incomingItemId){
+        Item foundItem = itemService.findById(incomingItemId);
+        if (foundItem == null) {
+            return null;
+        } else {
+            return new OutgoingItem(foundItem);
+        }
+            }
     }

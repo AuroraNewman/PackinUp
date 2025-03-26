@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/packinup/weather
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.ERHA_Wr5QIf13Wj3NJSf5myjPi0VdmJNzUk04tse8BA
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.xi1Csl-TcE0kY40yEPwhVYvUffFLqCH4Z105I2VWq1s
 
 post {{url}} HTTP/1.1
 Content-Type: application/json

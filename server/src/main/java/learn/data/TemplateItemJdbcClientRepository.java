@@ -72,7 +72,7 @@ public class TemplateItemJdbcClientRepository implements TemplateItemRepository{
                 .param("template_item_quantity", templateItem.getQuantity())
                 .param("template_item_is_checked", templateItem.isChecked())
                 .param("template_item_template_id", templateItem.getTemplate().getTemplateId())
-                .param("template_item_item_id", templateItem.getItem().getItemId())
+                .param("template_item_item_id", templateItem.getOutgoingItem().getItemId())
                 .update(keyHolder, "template_item_id");
 
         if (rowsAffected <= 0) {
