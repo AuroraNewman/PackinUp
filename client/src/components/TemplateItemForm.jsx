@@ -23,41 +23,12 @@ const baseUrl = `http://localhost:8080/api/packinup/templateitem/${templateId}`;
 
     const [templateItem, setTemplateItem] = useState(INITIAL_ITEM);
     
-    // useEffect(() => {
-    //     if (params.templateItemTemplateId) {
-    //         const fetchUrl = `${baseUrl}/${params.templateItemTemplateId}`;
-    //         fetch(fetchUrl, {
-    //             headers: {
-    //                 Authorization: loggedInUser.jwt,
-    //             },
-    //         }).then((response) => {
-    //             if (response.status >= 200 && response.status < 300) {
-    //                 response.json().then((fetchedTemplateItem) => {
-    //                     // Map fetched data to expected structure
-    //                     setTemplateItem({
-    //                         templateItemItemName: fetchedTemplateItem.templateItemItemName,
-    //                         templateItemQuantity: fetchedTemplateItem.templateItemQuantity,
-    //                         templateItemCategory: fetchedTemplateItem.templateItemCategory,
-    //                     });
-    //                 });
-    //             } else {
-    //                 navigate("/notFound");
-    //             }
-    //         });
-    //     }}, [params.templateItemId, baseUrl, loggedInUser.jwt, navigate]
-    // );
-
     const handleChange = (event) => {
         setTemplateItem({ ...templateItem, [event.target.name]: event.target.value });
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        // const method = params.templateItemId ? "PUT" : "POST";
-        // const submitUrl = params.templateItemId
-        //     ? `${baseUrl}/${params.templateItemId}`
-        //     : baseUrl;
-        
         fetch(baseUrl, {
             method: "POST",
             headers: {
@@ -68,8 +39,8 @@ const baseUrl = `http://localhost:8080/api/packinup/templateitem/${templateId}`;
               ...templateItem,
             templateId: templateId}),
         }).then((response) => {
-            if (response.status >= 200 && response.status < 300) {
-                navigate(`/template/${templateId}`,);
+            if (response.status >= 200 && response.status < 300) {  
+              navigate(`/template/${templateId}`, { state: { templateId, loggedInUser } });
             } else {
                 response.json().then((data) => {
                     setError(data.errors);
@@ -79,7 +50,7 @@ const baseUrl = `http://localhost:8080/api/packinup/templateitem/${templateId}`;
     }
 
     const handleCancel = () => {
-        navigate(`/template/${params.templateId}`);
+        navigate(`/template/${templateId}`, { state: { templateId, loggedInUser } });
     }
 
     return (
@@ -143,7 +114,7 @@ const baseUrl = `http://localhost:8080/api/packinup/templateitem/${templateId}`;
             </select>
             </div>
           <button type="submit">
-            {params.templateItemId ? "Save Changes" : "Add Item"}
+            {templateId ? "Save Changes" : "Add Item"}
           </button>
           <button type="submit" onClick={handleCancel}>Cancel</button>
         </form>

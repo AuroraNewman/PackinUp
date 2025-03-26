@@ -78,7 +78,7 @@ public class TemplateController {
         }
     }
 
-    @PostMapping("/{templateId}")
+    @PostMapping
     ResponseEntity<Object> create(@RequestBody @Valid IncomingTemplate incomingTemplate, @RequestHeader Map<String, String> headers, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(extractDefaultMessageFromBindingResult(bindingResult), HttpStatus.BAD_REQUEST);

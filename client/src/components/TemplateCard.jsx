@@ -4,12 +4,17 @@ import { useParams, useLocation, useNavigate, Link } from 'react-router-dom';
 
 const TemplateCard = () => {
     const location = useLocation();
-    const { template, loggedInUser } = location.state || {};
+    const [template, setTemplate] = useState(location.state?.template);
+    const { loggedInUser } = location.state || {};
     const params = useParams();
     const navigate = useNavigate();
 
+    
+    
     useEffect(() => {
-        fetch(`http://localhost:8080/api/packinup/templateitem/${template.templateId}`, {
+        console.log("template: " + template);
+        console.log("params" + params.templateId);
+        fetch(`http://localhost:8080/api/packinup/templateitem/${params.templateId}`, {
             headers: {
                 Authorization: loggedInUser.jwt
             }
@@ -23,7 +28,20 @@ const TemplateCard = () => {
                 console.error("Error fetching items: ", error);
                 setHasFinishedFetching(true);
             }, [template, loggedInUser]);
-    }, []);
+            if (!template) {
+                fetch(`http://localhost:8080/api/packinup/template/${params.templateId}`, {
+                    headers: {
+                        Authorization: loggedInUser?.jwt,
+                    },
+                })
+                .then((response) => response.json())
+                .then((fetchedTemplate) => {
+                    setTemplate(fetchedTemplate);
+                })
+                .catch((error) => console.error("Error fetching template:", error));
+            }
+
+        }, [template, params.templateId, loggedInUser]);
 
     const [items, setItems] = useState([])
     const [hasFinishedFetching, setHasFinishedFetching] = useState(false)
@@ -33,7 +51,7 @@ const TemplateCard = () => {
             return (
                 <>
                     <div className="row">
-                        <Link to={`/templateitem/create/${template.templateId}`} className="btn btn-primary me-2 mb-2" state={{ loggedInUser }}>Add Item</Link>
+                        <Link to={`/templateitem/create/${params.templateId}`} className="btn btn-primary me-2 mb-2" state={{ loggedInUser }}>Add Item</Link>
                     </div>
                     <h1>No items found</h1>
                 </>
@@ -64,13 +82,13 @@ const TemplateCard = () => {
         <>
         {/* {itemIndex++} */}
         <ul className="tilesWrap ">
-            <li key={template.templateId}>
-                <h2>{template.templateId}</h2>
+            <li key={params.templateId}>
+                <h2>{params.templateId}</h2>
                 <h3>{template.templateName}</h3>
                 <p>{template.templateDescription}</p>
                 <button className="btn btn-primary btn-sm me-2 mb-2 col-5">Copy</button>
                 <button className="btn btn-primary btn-sm me-2 mb-2 col-5" onClick={handleEditTemplateClick}>Edit</button>
-                <button className="btn btn-primary btn-sm me-2 mb-2 col-5">+Items</button>
+                <Link to={`/templateitem/create/${params.templateId}`} className="btn btn-primary me-2 mb-2" state={{ loggedInUser }}>Add Item</Link>
                 <button className="btn btn-danger btn-sm me-2 mb-2 col-5">Delete</button>
                 {/* todo implement delete */}
             </li>
