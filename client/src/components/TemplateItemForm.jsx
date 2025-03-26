@@ -2,45 +2,50 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 const TemplateItemForm = () => {
-    const baseUrl = "http://localhost:8080/api/packinup/template/item";
     const location = useLocation();
     const { item, loggedInUser } = location.state || {};
     const params = useParams();
     const navigate = useNavigate();
     const [error, setError] = useState([]);
-
+    const {templateId} = useParams();
+    
     const INITIAL_ITEM = {
-        templateItemItemId: "",
-        templateItemTemplateId: "",
-        templateItemQuantity: "",
-        templateItemIsChecked: ""
-    };
+      templateItemItemName: "",
+      templateItemTemplateId: templateId,
+      templateItemQuantity: "",
+      templateItemCategory: "",
+      templateItemIsChecked: false,
+
+  };
+  
+  
+const baseUrl = `http://localhost:8080/api/packinup/templateitem/${templateId}`;
 
     const [templateItem, setTemplateItem] = useState(INITIAL_ITEM);
-
-    useEffect(() => {
-        if (params.templateItemId) {
-            const fetchUrl = `${baseUrl}/${params.templateItemId}`;
-            fetch(fetchUrl, {
-                headers: {
-                    Authorization: loggedInUser.jwt,
-                },
-            }).then((response) => {
-                if (response.status >= 200 && response.status < 300) {
-                    response.json().then((fetchedTemplateItem) => {
-                        // Map fetched data to expected structure
-                        setTemplateItem({
-                            templateItemName: fetchedTemplateItem.templateItemName,
-                            templateItemQuantity: fetchedTemplateItem.templateItemQuantity,
-                            templateItemCategory: fetchedTemplateItem.templateItemCategory,
-                        });
-                    });
-                } else {
-                    navigate("/notFound");
-                }
-            });
-        }}, [params.templateItemId, baseUrl, loggedInUser.jwt, navigate]
-    );
+    
+    // useEffect(() => {
+    //     if (params.templateItemTemplateId) {
+    //         const fetchUrl = `${baseUrl}/${params.templateItemTemplateId}`;
+    //         fetch(fetchUrl, {
+    //             headers: {
+    //                 Authorization: loggedInUser.jwt,
+    //             },
+    //         }).then((response) => {
+    //             if (response.status >= 200 && response.status < 300) {
+    //                 response.json().then((fetchedTemplateItem) => {
+    //                     // Map fetched data to expected structure
+    //                     setTemplateItem({
+    //                         templateItemItemName: fetchedTemplateItem.templateItemItemName,
+    //                         templateItemQuantity: fetchedTemplateItem.templateItemQuantity,
+    //                         templateItemCategory: fetchedTemplateItem.templateItemCategory,
+    //                     });
+    //                 });
+    //             } else {
+    //                 navigate("/notFound");
+    //             }
+    //         });
+    //     }}, [params.templateItemId, baseUrl, loggedInUser.jwt, navigate]
+    // );
 
     const handleChange = (event) => {
         setTemplateItem({ ...templateItem, [event.target.name]: event.target.value });
@@ -48,21 +53,23 @@ const TemplateItemForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const method = params.templateItemId ? "PUT" : "POST";
-        const submitUrl = params.templateItemId
-            ? `${baseUrl}/${params.templateItemId}`
-            : baseUrl;
-
-        fetch(submitUrl, {
-            method,
+        // const method = params.templateItemId ? "PUT" : "POST";
+        // const submitUrl = params.templateItemId
+        //     ? `${baseUrl}/${params.templateItemId}`
+        //     : baseUrl;
+        
+        fetch(baseUrl, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: loggedInUser.jwt,
             },
-            body: JSON.stringify(templateItem),
+            body: JSON.stringify({
+              ...templateItem,
+            templateId: templateId}),
         }).then((response) => {
             if (response.status >= 200 && response.status < 300) {
-                navigate(`/template/${params.templateId}`,);
+                navigate(`/template/${templateId}`,);
             } else {
                 response.json().then((data) => {
                     setError(data.errors);
@@ -78,7 +85,7 @@ const TemplateItemForm = () => {
     return (
         <>
       <div className="row">
-        {error.length > 0 && (
+        {error?.length > 0 && (
           <ul id="errors">
             {error.map((err, index) => (
               <li key={index}>{err}</li>
@@ -87,21 +94,22 @@ const TemplateItemForm = () => {
         )}
 
         <h2>
-          {params.templateItemId
-            ? `Editing item: ${templateItem.templateItemName}`
-            : "Add a new item"}
+          Add Item
+          {/* {params.templateItemId
+            ? `Editing item: ${templateItem.templateItemItemName}`
+            : "Add a new item"} */}
         </h2>
 
         <div className="col-3"></div>
         <form onSubmit={handleSubmit} className="col-6">
           <div className="form-group">
-            <label htmlFor="templateItemName">Name:</label>
+            <label htmlFor="templateItemItemName">Name:</label>
             <input
-              name="templateItemName"
+              name="templateItemItemName"
               className="form-control"
-              id="templateItemName-input"
+              id="templateItemItemName-input"
               type="text"
-              value={templateItem.templateItemName}
+              value={templateItem.templateItemItemName}
               onChange={handleChange}
             />
           </div>

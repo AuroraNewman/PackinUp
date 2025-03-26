@@ -47,10 +47,23 @@ public class ItemJdbcClientRepository implements ItemRepository{
                 values (:item_name, :item_user_id, :item_category_id);
                 """;
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        return jdbcClient.sql(sql)
+        int rowsAffected = jdbcClient.sql(sql)
                 .param("item_name", item.getItemName())
                 .param("item_user_id", item.getUser().getUserId())
                 .param("item_category_id", item.getCategory().getCategoryId())
-                .update(keyHolder, "item_id") == 1;
+                .update(keyHolder, "item_id");
+        item.setItemId(keyHolder.getKey().intValue());
+
+        return rowsAffected > 0;
+    }
+
+    @Override
+    public Item findByName(String name) {
+        final String sql = SELECT + " where item_name = ?;";
+        return jdbcClient.sql(sql)
+                .param(name)
+                .query(new ItemMapper())
+                .optional().orElse(null);
+
     }
 }

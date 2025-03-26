@@ -19,11 +19,11 @@ public class GlobalErrorHandler {
     private String appErrorMessage = "Something went wrong on our end. Please wait and try again.";
 
     @ExceptionHandler({HttpMessageNotReadableException.class, JsonProcessingException.class, NullPointerException.class})
-    public ResponseEntity<List<String>> handleUserErrors(HttpMessageNotReadableException e) {
+    public ResponseEntity<List<String>> handleUserErrors(Exception e) {
         return new ResponseEntity<>(List.of(userErrorMessage), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({BadSqlGrammarException.class, InvalidDataAccessApiUsageException.class, SQLIntegrityConstraintViolationException.class, SQLException.class, HttpServerErrorException.InternalServerError.class})
-    public ResponseEntity<List<String>> handleAppError(BadSqlGrammarException e) {
+    public ResponseEntity<List<String>> handleAppError(Exception e) {
         return new ResponseEntity<>(List.of(appErrorMessage), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

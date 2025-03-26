@@ -14,6 +14,9 @@ public class ItemService {
     public Item findById(int itemId) {
         return repository.findById(itemId);
     }
+    public Item findByName(String name) {
+        return repository.findByName(name);
+    }
     public Result<Item> create(Item item) {
         Result<Item> result = new Result<>();
         if (repository.create(item)) {

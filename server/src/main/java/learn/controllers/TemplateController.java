@@ -78,7 +78,7 @@ public class TemplateController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/{templateId}")
     ResponseEntity<Object> create(@RequestBody @Valid IncomingTemplate incomingTemplate, @RequestHeader Map<String, String> headers, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(extractDefaultMessageFromBindingResult(bindingResult), HttpStatus.BAD_REQUEST);
@@ -208,18 +208,20 @@ public class TemplateController {
 
         private TemplateItem convertIncomingTIToTI(IncomingTemplateItem incomingTemplateItem){
         TemplateItem templateItem = new TemplateItem();
-        templateItem.setTemplateItemId(incomingTemplateItem.getTemplateItemItemId());
+        Item foundItem = itemService.findByName(incomingTemplateItem.getTemplateItemItemName());
+
+        templateItem.setTemplateItemId(foundItem.getItemId());
         templateItem.setQuantity(incomingTemplateItem.getTemplateItemQuantity());
         templateItem.setChecked(incomingTemplateItem.isTemplateItemIsChecked());
 
-        Template foundTemplate = convertIncomingTemplateToTemplate(incomingTemplateItem.getTemplateItemItemId());
-        Item foundItem = convertIncomingItemToItem(incomingTemplateItem.getTemplateItemItemId());
+        Template foundTemplate = convertIncomingTemplateToTemplate(incomingTemplateItem.getTemplateItemTemplateId());
+
         OutgoingItem foundOutgoingItem = new OutgoingItem(foundItem);
 
         if (foundTemplate == null) {
             return null;
         }else if (foundOutgoingItem == null) {
-            itemService.create(convertIncomingItemToItem(incomingTemplateItem.getTemplateItemItemId()));
+            itemService.create(convertIncomingItemToItem(incomingTemplateItem.getTemplateItemTemplateId()));
         } else {
             templateItem.setOutgoingItem(foundOutgoingItem);
             templateItem.setTemplate(foundTemplate);

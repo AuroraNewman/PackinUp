@@ -9,7 +9,7 @@ const TemplateCard = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/packinup/template/item/${template.templateId}`, {
+        fetch(`http://localhost:8080/api/packinup/templateitem/${template.templateId}`, {
             headers: {
                 Authorization: loggedInUser.jwt
             }
@@ -33,7 +33,7 @@ const TemplateCard = () => {
             return (
                 <>
                     <div className="row">
-                        <Link to={`/templateitem/create/${template.templateId}`} className="btn btn-primary me-2 mb-2">Add Item</Link>
+                        <Link to={`/templateitem/create/${template.templateId}`} className="btn btn-primary me-2 mb-2" state={{ loggedInUser }}>Add Item</Link>
                     </div>
                     <h1>No items found</h1>
                 </>
