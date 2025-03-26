@@ -1,12 +1,13 @@
-package learn.controllers;
+package learn.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import learn.data.ItemRepository;
 import learn.data_transfer_objects.IncomingWeatherQuery;
 import learn.data_transfer_objects.OutgoingItem;
 import learn.data_transfer_objects.WeatherRecommendations;
-import learn.models.Item;
-import learn.service.ItemService;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -20,16 +21,9 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.*;
 
-@CrossOrigin(origins = "http://localhost:5173")
-@RequestMapping("/api/packinup/weather")
-@RestController
+@Service
 public class WeatherAPI {
     private final HttpClient client = HttpClient.newHttpClient();
-    private final ItemService itemService;
-
-    public WeatherAPI(ItemService itemService) {
-        this.itemService = itemService;
-    }
 
     private final String WEATHER_API_TOKEN =System.getenv("WEATHER");
     private final int SUMMER_CLOTHES_RECORD_NUMBER = 1;
@@ -42,8 +36,13 @@ public class WeatherAPI {
     private final Double WORLD_RECORD_MAX_TEMP = 134.1;
     private final Double WORLD_RECORD_MIN_TEMP = -128.6;
 
-    @PostMapping
-    public WeatherRecommendations suggestItemsForWeather(@RequestBody IncomingWeatherQuery incomingWeatherQuery) throws IOException, InterruptedException {
+    private final ItemRepository repository;
+
+    public WeatherAPI(ItemRepository repository) {
+        this.repository = repository;
+    }
+
+    public WeatherRecommendations suggestItemsForWeather(IncomingWeatherQuery incomingWeatherQuery) throws IOException, InterruptedException {
         String uriBase = generateUrl(incomingWeatherQuery.getQuery());
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uriBase))
@@ -75,7 +74,8 @@ public class WeatherAPI {
             forecastMap.put(date, dayData);
         }
 
-        return suggestItems(forecastMap, incomingWeatherQuery);
+        WeatherRecommendations weatherRecommendations = suggestItems(forecastMap, incomingWeatherQuery);
+        return weatherRecommendations;
     }
     private String generateUrl(String searchQuery){
         String encodedSearchQuery = URLEncoder.encode(searchQuery.trim(), StandardCharsets.UTF_8);
@@ -106,34 +106,34 @@ public class WeatherAPI {
             String uv = dayData.get(6);
 
             if (Double.parseDouble(maxTemp) > 80) {
-                recommendations.addItemToPack(itemService.findById(SUMMER_CLOTHES_RECORD_NUMBER));
+                recommendations.addItemToPack(repository.findById(SUMMER_CLOTHES_RECORD_NUMBER));
             } else if (Double.parseDouble(maxTemp) > 60) {
-                recommendations.addItemToPack(itemService.findById(SPRING_FALL_CLOTHES_RECORD_NUMBER));
+                recommendations.addItemToPack(repository.findById(SPRING_FALL_CLOTHES_RECORD_NUMBER));
             } else {
-                recommendations.addItemToPack(itemService.findById(WINTER_CLOTHES_RECORD_NUMBER));
+                recommendations.addItemToPack(repository.findById(WINTER_CLOTHES_RECORD_NUMBER));
             }
 
             if (Double.parseDouble(precip) > 0.1) {
-                recommendations.addItemToPack(itemService.findById(RAIN_GEAR_RECORD_NUMBER));
+                recommendations.addItemToPack(repository.findById(RAIN_GEAR_RECORD_NUMBER));
             }
 
             if (Integer.parseInt(willRain) == 1) {
-                recommendations.addItemToPack(itemService.findById(RAIN_GEAR_RECORD_NUMBER));
+                recommendations.addItemToPack(repository.findById(RAIN_GEAR_RECORD_NUMBER));
                 rainyDays++;
             }
 
             if (Integer.parseInt(willSnow) == 1) {
-                recommendations.addItemToPack(itemService.findById(SNOW_GEAR_RECORD_NUMBER));
+                recommendations.addItemToPack(repository.findById(SNOW_GEAR_RECORD_NUMBER));
                 snowyDays++;
             }
 
             if (condition.equals("Sunny")) {
-                recommendations.addItemToPack(itemService.findById(SUNGLASSES_RECORD_NUMBER));
+                recommendations.addItemToPack(repository.findById(SUNGLASSES_RECORD_NUMBER));
                 sunnyDays++;
             }
 
             if (Double.parseDouble(uv) > 3) {
-                recommendations.addItemToPack(itemService.findById(SUNSCREEN_RECORD_NUMBER));
+                recommendations.addItemToPack(repository.findById(SUNSCREEN_RECORD_NUMBER));
             }
             if (tripMaxTemp == null || Double.parseDouble(maxTemp) > tripMaxTemp) {
                 tripMaxTemp = Double.parseDouble(maxTemp);
