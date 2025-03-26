@@ -84,8 +84,9 @@ const TemplateCard = () => {
         <ul className="tilesWrap ">
             <li key={params.templateId}>
                 <h2>{params.templateId}</h2>
-                <h3>{template.templateName}</h3>
-                <p>{template.templateDescription}</p>
+                
+                <h3>{template && template.templateName}</h3>
+                <p>{template && template.templateDescription}</p>
                 <button className="btn btn-primary btn-sm me-2 mb-2 col-5">Copy</button>
                 <button className="btn btn-primary btn-sm me-2 mb-2 col-5" onClick={handleEditTemplateClick}>Edit</button>
                 <Link to={`/templateitem/create/${params.templateId}`} className="btn btn-primary me-2 mb-2" state={{ loggedInUser }}>Add Item</Link>
