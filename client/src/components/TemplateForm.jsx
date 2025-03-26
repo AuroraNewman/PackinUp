@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
   const baseUrl = "http://localhost:8080/api/packinup/template";
+  const baseWeatherUrl = "http://localhost:8080/api/packinup/weather";
   const navigate = useNavigate();
   const params = useParams();
 

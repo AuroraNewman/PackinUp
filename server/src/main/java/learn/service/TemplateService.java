@@ -5,11 +5,15 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import learn.data.TemplateItemRepository;
 import learn.data.TemplateRepository;
+import learn.data_transfer_objects.OutgoingItem;
+import learn.data_transfer_objects.WeatherRecommendations;
 import learn.models.Template;
 import learn.models.TemplateItem;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -29,7 +33,7 @@ public class TemplateService {
         Result<List<Template>> result = new Result<>();
         List<Template> templates = repository.findByUserId(userId);
         for (Template template : templates) {
-            addItemsToTemplate(template);
+            addItemsToTemplateFromDB(template);
         }
         result.setPayload(templates);
         return result;
@@ -38,7 +42,7 @@ public class TemplateService {
         Result<Template> result = new Result<>();
         Template foundTemplate = repository.findById(templateId);
         if (result.isSuccess()) {
-            addItemsToTemplate(foundTemplate);
+            addItemsToTemplateFromDB(foundTemplate);
             result.setPayload(foundTemplate);
         } else {
             result.addErrorMessage("Template could not be found.", ResultType.NOT_FOUND);
@@ -109,12 +113,52 @@ public class TemplateService {
         }
         return result;
     }
-    private void addItemsToTemplate(Template template) {
-        List<TemplateItem> items = templateItemRepository.findAllByTemplateId(template.getTemplateId());
-        template.setItems(items);
+
+    @Transactional
+    public void addWeatherRecommendationsToTemplate(WeatherRecommendations recommendations, Template template){
+        addWeatherItemsToTemplate(recommendations, template);
+        addWeatherNoteToTemplate(recommendations, template);
+    }
+    private void addWeatherItemsToTemplate(WeatherRecommendations recommendations, Template template) {
+        Set<OutgoingItem> weatherItems = recommendations.getItemsToPack();
+        List<TemplateItem> itemsToAdd = new ArrayList<>();
+        for (OutgoingItem weatherItem : weatherItems) {
+            TemplateItem item = new TemplateItem();
+            item.setQuantity(1);
+            item.setChecked(false);
+            item.setTemplate(template);
+            item.setOutgoingItem(weatherItem);
+            itemsToAdd.add(item); // Add to list before saving
+            templateItemRepository.create(item); // Persist in DB
+        }
+        addItemsToTemplate(itemsToAdd, template);
+    }
+
+    private void addWeatherNoteToTemplate (WeatherRecommendations recommendations, Template template){
+        String description = template.getTemplateDescription();
+        description += "\n" + recommendations.getForecast();
+        template.setTemplateDescription(description);
+        repository.update(template);
+    }
+
+    public void addItemsToTemplate(List<TemplateItem> items, Template template) {
+        List<TemplateItem> existingItems = template.getItems();
+        if (existingItems == null) {
+            existingItems = new ArrayList<>();
+        }
+        for (TemplateItem item : items) {
+            if (!existingItems.contains(item)) {
+                existingItems.add(item);
+                templateItemRepository.create(item);
+            }
+        }
+    }
+
+
+    private void addItemsToTemplateFromDB(Template template) {
+        addItemsToTemplate(templateItemRepository.findAllByTemplateId(template.getTemplateId()), template);
     }
     private void addItemsBasedOnTripType(Template template) {
-        List<TemplateItem> items = templateItemRepository.findAllByTripTypeId(template.getTemplateTripType().getTripTypeId());
-        template.setItems(items);
+        addItemsToTemplate(templateItemRepository.findAllByTripTypeId(template.getTemplateTripType().getTripTypeId()), template);
     }
 }

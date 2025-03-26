@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,14 +29,16 @@ public class TemplateController {
     private final TripTypeService tripTypeService;
     private final ItemService itemService;
     private final TemplateItemService templateItemService;
+    private final WeatherAPI weatherAPI;
 
-    public TemplateController(TemplateService service, SecretSigningKey secretSigningKey, UserService userService, TripTypeService tripTypeService, ItemService itemService, TemplateItemService templateItemService) {
+    public TemplateController(TemplateService service, SecretSigningKey secretSigningKey, UserService userService, TripTypeService tripTypeService, ItemService itemService, TemplateItemService templateItemService, WeatherAPI weatherAPI) {
         this.service = service;
         this.secretSigningKey = secretSigningKey;
         this.userService = userService;
         this.tripTypeService = tripTypeService;
         this.itemService = itemService;
         this.templateItemService = templateItemService;
+        this.weatherAPI = weatherAPI;
     }
 
     @GetMapping
@@ -45,9 +48,6 @@ public class TemplateController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         Result<List<Template>> templatesResult = service.findByUserId(userId);
-        for (Template template : templatesResult.getPayload()) {
-            System.out.println(template.getTemplateName());
-        }
 
         if (!templatesResult.isSuccess()){
             return new ResponseEntity<>(templatesResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
@@ -79,7 +79,7 @@ public class TemplateController {
     }
 
     @PostMapping
-    ResponseEntity<Object> create(@RequestBody @Valid IncomingTemplate incomingTemplate, @RequestHeader Map<String, String> headers, BindingResult bindingResult) {
+    ResponseEntity<Object> create(@RequestBody @Valid IncomingTemplate incomingTemplate, @RequestHeader Map<String, String> headers, BindingResult bindingResult) throws IOException, InterruptedException {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(extractDefaultMessageFromBindingResult(bindingResult), HttpStatus.BAD_REQUEST);
         }
@@ -93,11 +93,25 @@ public class TemplateController {
             return new ResponseEntity<>(foundUserResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
         }
 
+        IncomingWeatherQuery incomingWeatherQuery = new IncomingWeatherQuery(incomingTemplate.getTemplateLocation(), incomingTemplate.getTemplateStartDate(), incomingTemplate.getTemplateEndDate());
+        WeatherRecommendations weatherRecommendations;
+        try {
+            weatherRecommendations = weatherAPI.suggestItemsForWeather(incomingWeatherQuery);
+        } catch (Exception e){
+            weatherRecommendations = null;
+        }
         Result<Template> result = service.create(template);
+        if (weatherRecommendations != null && result.isSuccess()) {
+            service.addWeatherRecommendationsToTemplate(weatherRecommendations, result.getPayload());
+        }
 
+        for (TemplateItem templateItem : result.getPayload().getItems()) {
+            System.out.println(templateItem.getTemplateItemId());
+        }
         if (!result.isSuccess()) {
             return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
         } else {
+            templateItemService.addTemplateItemsToTemplate(result.getPayload());
             return new ResponseEntity<>(new OutgoingTemplate(result.getPayload()), HttpStatus.CREATED);
         }
     }
