@@ -77,6 +77,10 @@ const TemplateCard = () => {
         navigate(`/templateitem/create/${params.templateId}`, { state: { loggedInUser } });
     };
 
+    const handleDeleteTemplateClick = () => {
+        navigate(`/template/delete/${params.templateId}`, { state: { loggedInUser } });
+    };
+
 
     console.log("Fetched items: ", items);
     // let itemIndex = 0;
@@ -93,7 +97,7 @@ const TemplateCard = () => {
                 <button className="btn btn-primary btn-sm me-2 mb-2 col-5">Copy</button>
                 <button className="btn btn-primary btn-sm me-2 mb-2 col-5" onClick={handleEditTemplateClick}>Edit</button>
                 <button className="btn btn-primary btn-sm me-2 mb-2 col-5" onClick={handleAddItemClick}>+Item</button>
-                <button className="btn btn-danger btn-sm me-2 mb-2 col-5">Delete</button>
+                <button className="btn btn-danger btn-sm me-2 mb-2 col-5" onClick={handleDeleteTemplateClick}>Delete</button>
                 {/* todo implement delete */}
             </li>
             {items.map((item) => (

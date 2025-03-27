@@ -9,7 +9,7 @@ Authorization: {{jwt}}
 
 ###
 # get specific template
-get {{url}}/2
+get {{url}}/3
 Content-Type: application/json
 Authorization: {{jwt}}
 
