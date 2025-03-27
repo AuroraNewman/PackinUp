@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 
-const DeleteItem = ({ loggedInUser, item }) => {
+const DeleteItem = ({ loggedInUser }) => {
     const params = useParams();
     const navigate = useNavigate();
     const [item, setItem] = useState({});
+    const url = `http://localhost:8080/api/packinup/templateitem/${params.templateItemId}`;
 
     useEffect(() => {
         if (!loggedInUser) {
             navigate('/login');
         }
-        fetch(`http://localhost:8080/api/packinup/templateitem/${params.templateItemId}`, {
+        fetch(url, {
             headers: {
                 Authorization: loggedInUser.jwt
             }
@@ -25,7 +26,7 @@ const DeleteItem = ({ loggedInUser, item }) => {
     }, [loggedInUser, navigate]);
 
     const handleDelete = () => {
-        fetch(`http://localhost:8080/api/packinup/templateitem/${params.templateItemId}`, {
+        fetch(url, {
             method: 'DELETE',
             headers: {
                 Authorization: loggedInUser.jwt
@@ -33,7 +34,8 @@ const DeleteItem = ({ loggedInUser, item }) => {
         })
             .then(response => {
                 if (response.ok) {
-                    navigate(`/template/${item.templateId}`);
+                    // navigate(`/template/${item.templateId}`);
+                    navigate(`/template/`);
                 } else {
                     console.error('Error deleting item');
                 }

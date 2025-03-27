@@ -53,7 +53,7 @@ const TemplateCard = () => {
         if (!template) {
             fetch(`http://localhost:8080/api/packinup/template/${params.templateId}`, {
                 headers: {
-                    Authorization: loggedInUser?.jwt,
+                    Authorization: loggedInUser.jwt
                 },
             })
                 .then((response) => response.json())
