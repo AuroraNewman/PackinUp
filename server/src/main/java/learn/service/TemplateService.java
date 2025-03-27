@@ -131,7 +131,6 @@ public class TemplateService {
             itemsToAdd.add(item); // Add to list before saving
             templateItemRepository.create(item); // Persist in DB
         }
-        addItemsToTemplate(itemsToAdd, template);
     }
 
     private void addWeatherNoteToTemplate (WeatherRecommendations recommendations, Template template){

@@ -111,7 +111,7 @@ public class TemplateController {
         if (!result.isSuccess()) {
             return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
         } else {
-            templateItemService.addTemplateItemsToTemplate(result.getPayload());
+//            templateItemService.addTemplateItemsToTemplate(result.getPayload());
             return new ResponseEntity<>(new OutgoingTemplate(result.getPayload()), HttpStatus.CREATED);
         }
     }
