@@ -61,7 +61,9 @@ const App = () => {
           {/* todo: only display welcome on landing page */}
           {/* {loggedInUser !== null ? <h1>Welcome, {loggedInUser.username}</h1> : null} */}
           <Routes>
-            <Route path="/" />
+          <Route 
+    path="/" 
+    element={ loggedInUser ? <Navigate to="/template" /> : <ImageCropper imageSrc={helihike} />} />
 
             {/* must be logged out */}
 
@@ -90,11 +92,6 @@ const App = () => {
             {/* logged in state not necessary */}
             <Route path="/*" element={<NotFound />} />
           </Routes>
-          {console.log("Image Source:", helihike)}
-          <NavLink className='landing-page-photo' to='/template'>
-            <ImageCropper imageSrc={helihike} />
-          </NavLink>
-
         </main>
       </div>
     </Router>

@@ -50,7 +50,7 @@ const DeleteTemplate = ({ loggedInUser, setLoggedInUser}) => {
         <p>Description: {template.description}</p>
         {/* <p>TripType: {template.templateTripType.tripTypeName}</p> */}
         <button onClick={handleDelete} className="btn btn-danger me-2 mb-2">Delete</button> 
-        <Link to="/list" className="btn btn-info me-2 mb-2">Cancel</Link>
+        <Link to="/template" className="btn btn-info me-2 mb-2">Cancel</Link>
         </>
     )
 }
