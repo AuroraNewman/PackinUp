@@ -5,7 +5,7 @@ body {
 .tilesWrap {
 	padding-left: 20%;
 	padding-right: 20%;
-	padding-top: 65px;
+	/* padding-top: 65px; */
 	margin: 50px auto;
 	list-style: none;
 	text-align: center;
@@ -38,13 +38,13 @@ body {
 }
 .tilesWrap li h3 {
 	font-size: 20px;
-	color: #b7b7b7;
+	color: #878787;
 	margin-bottom: 5px;
 }
 .tilesWrap li p {
 	font-size: 16px;
 	line-height: 18px;
-	color: #b7b7b7;
+	color: #878787;
 	margin-top: 5px;
 }
 .tilesWrap li button {
@@ -138,3 +138,4 @@ button:hover {
 h1, h2, h3, h4, h5, h6 {
 	color: #ac2c67;
   }
+

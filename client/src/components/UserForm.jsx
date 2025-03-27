@@ -86,9 +86,8 @@ const UserForm = ({ mode, setLoggedInUser }) => {
     return (
         <>
             <div className="row">
-                <div className="flex d-flex">
-                    <div className="col-3"></div>
-                    <div className="col-6">
+                
+                    <div className="container-box mt-5">
                         <h4>{mode === 'login' ? 'Log in' : 'Register'}</h4>
                         {error && <div className="alert alert-danger" role="alert">{error}</div>}
                         <label htmlFor="user-form"></label>
@@ -116,9 +115,9 @@ const UserForm = ({ mode, setLoggedInUser }) => {
                             <button type="submit" className="btn btn-primary">Submit</button>
                         </form>
                     </div>
-                    <div className="col-3"></div>
+                    
                 </div>
-            </div>
+            
         </>
     )
 }

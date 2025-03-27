@@ -72,7 +72,7 @@ const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
       body: JSON.stringify(template),
     }).then((response) => {
       if (response.status >= 200 && response.status < 300) {
-        navigate("/");
+        navigate("/template");
       } else if (response.status === 401) {
         setLoggedInUser(null);
         localStorage.clear("loggedInUser");
@@ -85,110 +85,112 @@ const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
 
   const handleCancel = () => {
     navigate(`/template/`);
-    }
+  }
 
   return (
     <>
-      <div className="row">
-        {error.length > 0 && (
-          <ul id="errors">
-            {error.map((err, index) => (
-              <li key={index}>{err}</li>
-            ))}
-          </ul>
-        )}
-<div className="row d-flex justify-content-between">
-        
-        <h2>
-          {params.templateId
-            ? `Editing template: ${template.templateName}`
-            : "Add a new template"}
-        </h2>
-        </div>
+      <div className="container-box">
+        <div className="row">
+          {error.length > 0 && (
+            <ul id="errors">
+              {error.map((err, index) => (
+                <li key={index}>{err}</li>
+              ))}
+            </ul>
+          )}
+          <div className="row d-flex justify-content-between">
 
-        <div className="col-3"></div>
-        <form onSubmit={handleSubmit} className="col-6">
-          <div className="form-group">
-            <label htmlFor="templateName">Name:</label>
-            <input
-              name="templateName"
-              className="form-control"
-              id="templateName-input"
-              type="text"
-              value={template.templateName}
-              onChange={handleChange}
-            />
+            <h2>
+              {params.templateId
+                ? `Editing template: ${template.templateName}`
+                : "Add a new template"}
+            </h2>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="templateDescription">Description:</label>
-            <input
-              name="templateDescription"
-              className="form-control"
-              id="templateDescription-input"
-              type="text"
-              value={template.templateDescription}
-              onChange={handleChange}
-            />
-          </div>
+          <div className="col-3"></div>
+          <form onSubmit={handleSubmit} className="col-6">
+            <div className="form-group">
+              <label htmlFor="templateName">Name:</label>
+              <input
+                name="templateName"
+                className="form-control"
+                id="templateName-input"
+                type="text"
+                value={template.templateName}
+                onChange={handleChange}
+              />
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="templateTripTypeId">Trip Type:</label>
-            <select
-              name="templateTripTypeId"
-              id="templateTripTypeId-input"
-              value={template.templateTripTypeId}
-              onChange={handleTripTypeChange}
-              className="form-control"
-            >
-              <option value="" disabled>
-                Select a trip type
-              </option>
-              <option value="1">General</option>
-              <option value="2">Vacation</option>
-              <option value="3">Business Trip</option>
-            </select>
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="templateLocation">Location:</label>
-            <input
-              name="templateLocation"
-              className="form-control"
-              id="templateLocation-input"
-              type="text"
-              value={template.templateLocation}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="templateStartDate">Start Date:</label>
-            <input
-              name="templateStartDate"
-              className="form-control"
-              id="templateStartDate-input"
-              type="date"
-              value={template.templateStartDate}
-              onChange={handleChange}
-            />
+            <div className="form-group">
+              <label htmlFor="templateDescription">Description:</label>
+              <input
+                name="templateDescription"
+                className="form-control"
+                id="templateDescription-input"
+                type="text"
+                value={template.templateDescription}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="templateTripTypeId">Trip Type:</label>
+              <select
+                name="templateTripTypeId"
+                id="templateTripTypeId-input"
+                value={template.templateTripTypeId}
+                onChange={handleTripTypeChange}
+                className="form-control"
+              >
+                <option value="" disabled>
+                  Select a trip type
+                </option>
+                <option value="1">General</option>
+                <option value="2">Vacation</option>
+                <option value="3">Business Trip</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="templateLocation">Location:</label>
+              <input
+                name="templateLocation"
+                className="form-control"
+                id="templateLocation-input"
+                type="text"
+                value={template.templateLocation}
+                onChange={handleChange}
+              />
             </div>
             <div className="form-group">
-            <label htmlFor="templateEndDate">End Date:</label>
-            <input
-              name="templateEndDate"
-              className="form-control"
-              id="templateEndDate-input"
-              type="date"
-              value={template.templateEndDate}
-              onChange={handleChange}            />
+              <label htmlFor="templateStartDate">Start Date:</label>
+              <input
+                name="templateStartDate"
+                className="form-control"
+                id="templateStartDate-input"
+                type="date"
+                value={template.templateStartDate}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="templateEndDate">End Date:</label>
+              <input
+                name="templateEndDate"
+                className="form-control"
+                id="templateEndDate-input"
+                type="date"
+                value={template.templateEndDate}
+                onChange={handleChange} />
             </div>
 
-          <button type="submit">
-            {params.templateId ? "Save Changes" : "Add Template"}
-          </button>
-          <button type="submit" onClick={handleCancel}>Cancel</button>
-        </form>
-        <div className="col-3"></div>
+            <button type="submit">
+              {params.templateId ? "Save Changes" : "Add Template"}
+            </button>
+            <button type="submit" onClick={handleCancel}>Cancel</button>
+          </form>
+          <div className="col-3"></div>
+        </div>
       </div>
     </>
   );

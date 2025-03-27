@@ -53,7 +53,7 @@ const DeleteItem = ({ loggedInUser }) => {
     console.log("item: " + item);
     console.log("itemId" + item.template);
     return (
-        <>
+        <div className="container-box">
         
             <p>Are you sure you want to delete this item?</p>
             <p>Name: {item.outgoingItem.itemName}</p>
@@ -63,7 +63,7 @@ const DeleteItem = ({ loggedInUser }) => {
             <button onClick={() => navigate(-1)} className="btn btn-info me-2 mb-2">Cancel</button>
             {/* <Link to={`/template/${item.template.templateId}`} className="btn btn-info me-2 mb-2">Cancel</Link> */}
 
-            </>
+            </div>
         );
     };
     

@@ -54,7 +54,7 @@ const baseUrl = `http://localhost:8080/api/packinup/templateitem/${templateId}`;
     }
 
     return (
-        <>
+      <div className="container-box">
       <div className="row">
         {error?.length > 0 && (
           <ul id="errors">
@@ -120,7 +120,7 @@ const baseUrl = `http://localhost:8080/api/packinup/templateitem/${templateId}`;
         </form>
         <div className="col-3"></div>
       </div>
-    </>
+    </div>
     );
 };
 

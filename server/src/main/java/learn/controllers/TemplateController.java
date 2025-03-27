@@ -140,8 +140,17 @@ public class TemplateController {
         foundTemplate.setTemplateDescription(incomingTemplate.getTemplateDescription());
         foundTemplate.setTemplateTripType(tripTypeService.findById(incomingTemplate.getTemplateTripTypeId()).getPayload());
         foundTemplate.setTemplateUser(foundUserResult.getPayload());
+        IncomingWeatherQuery incomingWeatherQuery = new IncomingWeatherQuery(incomingTemplate.getTemplateLocation(), incomingTemplate.getTemplateStartDate(), incomingTemplate.getTemplateEndDate());
+        WeatherRecommendations weatherRecommendations;
+        try {
+            weatherRecommendations = weatherAPI.suggestItemsForWeather(incomingWeatherQuery);
+        } catch (Exception e){
+            weatherRecommendations = null;
+        }
         Result<Template> result = service.update(foundTemplate);
-
+        if (weatherRecommendations != null && result.isSuccess()) {
+            service.addWeatherRecommendationsToTemplate(weatherRecommendations, result.getPayload());
+        }
         if (!result.isSuccess()) {
             return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
         } else {
