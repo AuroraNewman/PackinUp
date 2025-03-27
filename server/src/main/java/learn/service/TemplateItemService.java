@@ -25,6 +25,10 @@ public class TemplateItemService {
         return repository.findAllByTemplateId(templateId);
     }
 
+    public TemplateItem findById(int templateItemId) {
+        return repository.findById(templateItemId);
+    }
+
     public Result<TemplateItem> create(TemplateItem templateItem) {
         Result<TemplateItem> result = checkNulls(templateItem);
         if (!result.isSuccess()) {

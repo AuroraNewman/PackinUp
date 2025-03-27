@@ -104,5 +104,15 @@ public class TemplateItemJdbcClientRepository implements TemplateItemRepository{
         return templateItem;
     }
 
+    @Override
+    public TemplateItem findById(int templateItemId) {
+        final String sql = SELECT + " where ti.template_item_id = ?;";
+
+        return jdbcClient.sql(sql)
+                .param(templateItemId)
+                .query(new TemplateItemMapper())
+                .optional().orElse(null);
+    }
+
 
 }

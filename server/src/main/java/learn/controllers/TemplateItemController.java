@@ -59,6 +59,20 @@ public class TemplateItemController {
         }
     }
 
+    @GetMapping("/item/{templateItemId}")
+    ResponseEntity<Object> findById(@PathVariable int templateItemId, @RequestHeader Map<String, String> headers) {
+        Integer userId = getUserIdFromHeaders(headers);
+        if (userId == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        TemplateItem item = service.findById(templateItemId);
+        if (item == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(item, HttpStatus.OK);
+        }
+    }
+
     @PostMapping("/{templateId}")
     ResponseEntity<Object> create(@RequestBody IncomingTemplateItem incomingTemplateItem, @RequestHeader Map<String, String> headers, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
