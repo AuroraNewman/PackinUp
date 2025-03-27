@@ -84,6 +84,15 @@ public class TemplateService {
        result.setPayload(template);
         return result;
     }
+
+    public Result<Void> delete(int templateId) {
+        Result<Void> result = new Result<>();
+        if (repository.deleteById(templateId) == false) {
+            result.addErrorMessage("Template could not be deleted.", ResultType.NOT_FOUND);
+        }
+        return result;
+    }
+
     private Result<Template> validate(Template template) {
         Result<Template> result = new Result<>();
 

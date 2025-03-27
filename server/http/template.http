@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/packinup/template
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.KTum-VggH_sOQXAIVXd-vHqPFGZ2sj67cPp-S8UhLqM
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.XmgZ2KtDWTsDVVVgE_9hf7olajjm1bfYjUwSjuNhbOc
 
 ###
 
@@ -9,7 +9,7 @@ Authorization: {{jwt}}
 
 ###
 # get specific template
-get {{url}}/1
+get {{url}}/2
 Content-Type: application/json
 Authorization: {{jwt}}
 
@@ -48,3 +48,10 @@ Authorization: {{jwt}}
   "templateItemQuantity": 1,
     "templateItemIsChecked": false
     }
+
+
+### delete template
+
+delete {{url}}/2
+Content-Type: application/json
+Authorization: {{jwt}}

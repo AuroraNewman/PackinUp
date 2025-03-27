@@ -169,6 +169,26 @@ public class TemplateController {
         }
     }
 
+    @DeleteMapping("/{templateId}")
+    ResponseEntity<Object> delete(@PathVariable int templateId, @RequestHeader Map<String, String> headers) {
+        Integer userId = getUserIdFromHeaders(headers);
+        if (userId == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        Result<Template> templateResult = service.findById(templateId);
+        if (templateResult.getResultType() == ResultType.NOT_FOUND) {
+            return new ResponseEntity<>(templateResult.getErrorMessages(), HttpStatus.NOT_FOUND);
+        } else if (!templateResult.isSuccess()){
+            return new ResponseEntity<>(templateResult.getErrorMessages(), HttpStatus.BAD_REQUEST);
+        }
+        Result<Void> result = service.delete(templateId);
+        if (!result.isSuccess()) {
+            return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+
     private List<String> extractDefaultMessageFromBindingResult(BindingResult bindingResult) {
         return bindingResult.getAllErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
