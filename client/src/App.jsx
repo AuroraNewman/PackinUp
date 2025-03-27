@@ -59,12 +59,9 @@ const App = () => {
       <div>
         <NavBar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
         <main>
-          {/* todo: only display welcome on landing page */}
           {/* {loggedInUser !== null ? <h1>Welcome, {loggedInUser.username}</h1> : null} */}
           <Routes>
-          <Route 
-    path="/" 
-    element={ loggedInUser ? <Navigate to="/template" /> : <ImageCropper imageSrc={helihike} />} />
+          <Route path="/" element={<ImageCropper imageSrc={helihike} />} />
 
             {/* must be logged out */}
 
