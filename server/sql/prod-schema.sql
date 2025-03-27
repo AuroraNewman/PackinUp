@@ -93,4 +93,8 @@ insert into template_items (template_item_id, template_item_quantity, template_i
     (3, 10, false, 1, 6),
     (4, 6, false, 1, 7),
     (5, 4, false, 1, 8),
-    (6, 4, false, 1, 9);
+    (6, 4, false, 1, 9),
+    (7, 10, false, 2, 6),
+    (8, 6, false, 2, 7),
+    (9, 4, false, 2, 8),
+    (10, 4, false, 2, 9);

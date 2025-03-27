@@ -2,15 +2,6 @@
     text-decoration: underline;
 }
 
-.navbar {
-    background-color: #e0eafb;
-    /* e0eafb
-    c1d5f8
-    b2caf6
-    */
-    /* width: 100vw; */
-}  
-
   body, html {
     margin: 0;
     padding: 0;
@@ -22,4 +13,10 @@
   
   main {
     width: 100vw;
+  }
+
+  .landing-page-photo {
+    width: 100%; /* or specify a fixed size, e.g., width: 300px; */
+    height: auto; /* maintains aspect ratio */
+    object-fit: cover; /* ensures the image fills the container */
   }
