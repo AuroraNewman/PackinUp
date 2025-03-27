@@ -63,6 +63,18 @@ public class TemplateItemJdbcClientRepository implements TemplateItemRepository{
     }
 
     @Override
+    public boolean deleteById(int templateItemId) {
+        final String sql = """
+                delete from template_items
+                where template_item_id = ?
+                """;
+        int rowsAffected = jdbcClient.sql(sql)
+                .param(templateItemId)
+                .update();
+        return rowsAffected > 0;
+    }
+
+    @Override
     public TemplateItem create(TemplateItem templateItem) {
         final String sql = """
                 insert into template_items (

@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate, Link } from 'react-router-dom';
+import DeleteItem from './DeleteItem';
+
 
 const TemplateCard = () => {
     const location = useLocation();
@@ -10,9 +12,9 @@ const TemplateCard = () => {
     const navigate = useNavigate();
 
     const handleEditTemplateClick = () => {
-        navigate(`/template/edit/${params.templateId}`),
-            { state: { template, loggedInUser } };
-    }
+        navigate(`/template/edit/${params.templateId}`, { state: { template, loggedInUser } });
+    };
+    
     const handleEditTemplateItemClick = (item) => {
         console.log("loggedInUser at click:", loggedInUser);
         console.log("item at click:", item);
@@ -21,6 +23,10 @@ const TemplateCard = () => {
     };
     const handleAddItemClick = () => {
         navigate(`/templateitem/create/${params.templateId}`, { state: { loggedInUser } });
+    };
+
+    const handleDeleteTemplateItemClick = (item) => {
+        navigate(`/templateitem/delete/${item.templateItemId}`, { state: { loggedInUser, item } });
     };
 
     const handleDeleteTemplateClick = () => {
@@ -125,7 +131,7 @@ const TemplateCard = () => {
                         <p>Category: {item.outgoingItem.categoryName}</p>
                         <div className="row">
                             <button className="btn btn-primary btn-sm me-2 mb-2 col-5" onClick={() => handleEditTemplateItemClick(item)}>Edit</button>
-                            <button className="btn btn-danger btn-sm me-2 mb-2 col-5">Delete</button>
+                            <button className="btn btn-danger btn-sm me-2 mb-2 col-5" onClick={() => handleDeleteTemplateItemClick(item)}>Delete</button>
                             {/* todo implement delete */}
                         </div>
                     </li>

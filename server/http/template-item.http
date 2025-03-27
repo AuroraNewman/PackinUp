@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/packinup/templateitem
-@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.BWWRpKuGq2QgjinhHcf0lIYVTaWhtwhw2-JfP0_7cMA
+@jwt =eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IkJlcm5pZUBydWJpYmVyLmNvbSIsInVzZXJuYW1lIjoiQmVybmllIiwidXNlcklkIjoxfQ.64P4EUdbTCE5k1Do0nfg3-c3KjkPiUXnWoJsDGVLbO4
 
 # good
 post {{url}}/2 HTTP/1.1
@@ -48,3 +48,9 @@ Authorization: {{jwt}}
     "templateId": 1,
     "itemId": 10
 }
+
+### happy path delete
+
+DELETE {{url}}/1 HTTP/1.1
+Content-Type: application/json
+Authorization: {{jwt}}

@@ -38,6 +38,19 @@ public class TemplateItemService {
         result.setPayload(repository.create(templateItem));
         return result;
     }
+
+    public Result<Void> deleteById(int templateItemId) {
+        Result<Void> result = new Result<>();
+        if (templateItemId <= 0) {
+            result.addErrorMessage("Template item id must be greater than 0.", ResultType.INVALID);
+            return result;
+        }
+        if (!repository.deleteById(templateItemId)) {
+            result.addErrorMessage("Template item not found.", ResultType.NOT_FOUND);
+        }
+        return result;
+    }
+
     public void addTemplateItemsToTemplate(Template template){
         for (TemplateItem templateItem : template.getItems()) {
             TemplateItem createdTemplateItem = repository.create(templateItem);

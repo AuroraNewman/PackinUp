@@ -78,6 +78,20 @@ public class TemplateItemController {
         }
     }
 
+    @DeleteMapping("/{templateItemId}")
+    public ResponseEntity<Object> delete(@PathVariable int templateItemId, @RequestHeader Map<String, String> headers) {
+        Integer userId = getUserIdFromHeaders(headers);
+        if (userId == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        Result<Void> result = service.deleteById(templateItemId);
+        if (result.isSuccess()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     private TemplateItem createTemplateItemFromIncoming(IncomingTemplateItem incomingTemplateItem, int userId) {
         Item item = itemService.findByName(incomingTemplateItem.getTemplateItemItemName());
         Template template = templateService.findById(incomingTemplateItem.getTemplateItemTemplateId()).getPayload();
