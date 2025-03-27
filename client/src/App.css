@@ -2,21 +2,19 @@
     text-decoration: underline;
 }
 
+.navbar {
+  margin-bottom: 25px;  
+  background-color: #b1ebfd;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
   body, html {
     margin: 0;
     padding: 0;
   }
 
-  /* * {
-    border: 1px solid red;
-  } */
-  
   main {
     width: 100vw;
   }
-
-  .landing-page-photo {
-    width: 100%; /* or specify a fixed size, e.g., width: 300px; */
-    height: auto; /* maintains aspect ratio */
-    object-fit: cover; /* ensures the image fills the container */
-  }
+  h2{text-align: center;}

@@ -97,12 +97,14 @@ const TemplateForm = ({ loggedInUser, setLoggedInUser }) => {
             ))}
           </ul>
         )}
-
+<div className="row d-flex justify-content-between">
+        
         <h2>
           {params.templateId
             ? `Editing template: ${template.templateName}`
             : "Add a new template"}
         </h2>
+        </div>
 
         <div className="col-3"></div>
         <form onSubmit={handleSubmit} className="col-6">

@@ -5,7 +5,7 @@ import logo from '../assets/logo.png';
 const NavBar = ({ loggedInUser, setLoggedInUser }) => {
     return (
         <>
-            <nav className="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+            <nav className="navbar fixed-top navbar-expand-sm">
                 <NavLink className='navbar-brand' to='/'>
                     <img src={logo} alt='Packin Up Logo' width='60' />
                 </NavLink>
@@ -19,7 +19,7 @@ const NavBar = ({ loggedInUser, setLoggedInUser }) => {
                         <NavLink to="/template/create" className={(arg) => { return (arg.isActive) ? 'nav-link active' : 'nav-link' }} >Create List</NavLink>
                         
                         <div className='col-4'></div>
-                        <NavLink to='/template' >{loggedInUser !== null ? <p>Hi {loggedInUser.username}</p> : null}</NavLink>
+                        {/* <NavLink to='/template' >{loggedInUser !== null ? <p>Hi {loggedInUser.username}</p> : null}</NavLink> */}
                         <div className='col-4'></div>
                         {loggedInUser === null ?
                             <>
