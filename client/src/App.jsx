@@ -8,6 +8,7 @@ import TemplateForm from './components/TemplateForm';
 import TemplateCard from './components/TemplateCard';
 import TemplateItemForm from './components/TemplateItemForm';
 import TemplateTable from './components/TemplateTable';
+import DeleteTemplate from './components/DeleteTemplate';
 
 const App = () => {
 
@@ -52,7 +53,7 @@ const App = () => {
               
               <Route path="/template/edit/:templateId"  element={ loggedInUser===null ? <Navigate to="/" /> : <TemplateForm loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
               
-              <Route path="/template/delete/:templateId"  element={ loggedInUser===null ? <Navigate to="/" /> : <TemplateTable loggedInUser={loggedInUser}/>} />
+              <Route path="/template/delete/:templateId"  element={ loggedInUser===null ? <Navigate to="/" /> : <DeleteTemplate loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/> } />
 
               <Route path="/templateitem/edit/:templateId"  element={ loggedInUser===null ? <Navigate to="/" /> : <TemplateItemForm loggedInUser={loggedInUser}/>} />
 

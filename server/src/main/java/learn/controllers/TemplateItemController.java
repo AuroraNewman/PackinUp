@@ -86,7 +86,7 @@ public class TemplateItemController {
         //if the item is null, create the item
         if (item == null){
 //            todo change this from hardcoded
-            Category category = new Category(2, "Beach", "Yellow");
+            Category category = new Category(2, "Miscellaneous", "Yellow");
             Item newItem = new Item(incomingTemplateItem.getTemplateItemItemName(), userService.findById(userId).getPayload(), category);
             item = itemService.create(newItem).getPayload();
         }

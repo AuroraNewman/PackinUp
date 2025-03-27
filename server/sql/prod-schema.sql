@@ -71,7 +71,7 @@ insert into templates(template_id, template_name, template_description, template
 
 insert into categories(category_id, category_name, category_color) values
 	(1, 'Weather', 'Blue'),
-    (2, 'Beach', 'Yellow'),
+    (2, 'Miscellaneous', 'Yellow'),
     (3, 'Business', 'Black');
     
 insert into items(item_id, item_name, item_user_id, item_category_id) values

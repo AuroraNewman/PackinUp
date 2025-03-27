@@ -115,4 +115,17 @@ public class TemplateJdbcClientRepository implements TemplateRepository{
                 .update() > 0;
     }
 
+
+    @Override
+    public boolean deleteById(int templateId) {
+        final String sql = """
+                delete from templates
+                where template_id = ?;
+                """;
+        int rowsAffected = jdbcClient.sql(sql)
+                .param(templateId)
+                .update();
+        return rowsAffected > 0;
+    }
+
 }

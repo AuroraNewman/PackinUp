@@ -11,4 +11,5 @@ public interface TemplateRepository {
     List<Template> findByUserId(int userId);
     Template create(Template template);
     boolean update(Template template);
+    boolean deleteById(int templateId);
 }

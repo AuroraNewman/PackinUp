@@ -32,9 +32,6 @@ public class TemplateService {
     public Result<List<Template>> findByUserId(int userId) {
         Result<List<Template>> result = new Result<>();
         List<Template> templates = repository.findByUserId(userId);
-        for (Template template : templates) {
-            addItemsToTemplateFromDB(template);
-        }
         result.setPayload(templates);
         return result;
     }
@@ -42,7 +39,6 @@ public class TemplateService {
         Result<Template> result = new Result<>();
         Template foundTemplate = repository.findById(templateId);
         if (result.isSuccess()) {
-            addItemsToTemplateFromDB(foundTemplate);
             result.setPayload(foundTemplate);
         } else {
             result.addErrorMessage("Template could not be found.", ResultType.NOT_FOUND);
@@ -63,7 +59,6 @@ public class TemplateService {
         if (addedTemplate == null) {
             result.addErrorMessage("Template could not be created.", ResultType.INVALID);
         } else {
-            addItemsBasedOnTripType(addedTemplate);
             result.setPayload(addedTemplate);
         }
         return result;
@@ -86,13 +81,18 @@ public class TemplateService {
             result.addErrorMessage(DUPLICATE_NAME_ERROR, ResultType.INVALID);
         }
 
-        if (template.getTemplateTripType() != null && (!template.getTemplateTripType().equals(existingTemplate.getTemplateTripType()))) {
-            addItemsBasedOnTripType(template);
-        }
-
-        result.setPayload(template);
+       result.setPayload(template);
         return result;
     }
+
+    public Result<Void> delete(int templateId) {
+        Result<Void> result = new Result<>();
+        if (repository.deleteById(templateId) == false) {
+            result.addErrorMessage("Template could not be deleted.", ResultType.NOT_FOUND);
+        }
+        return result;
+    }
+
     private Result<Template> validate(Template template) {
         Result<Template> result = new Result<>();
 
@@ -131,7 +131,6 @@ public class TemplateService {
             itemsToAdd.add(item); // Add to list before saving
             templateItemRepository.create(item); // Persist in DB
         }
-        addItemsToTemplate(itemsToAdd, template);
     }
 
     private void addWeatherNoteToTemplate (WeatherRecommendations recommendations, Template template){
@@ -152,13 +151,5 @@ public class TemplateService {
                 templateItemRepository.create(item);
             }
         }
-    }
-
-
-    private void addItemsToTemplateFromDB(Template template) {
-        addItemsToTemplate(templateItemRepository.findAllByTemplateId(template.getTemplateId()), template);
-    }
-    private void addItemsBasedOnTripType(Template template) {
-        addItemsToTemplate(templateItemRepository.findAllByTripTypeId(template.getTemplateTripType().getTripTypeId()), template);
     }
 }
