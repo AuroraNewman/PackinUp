@@ -1,6 +1,0 @@
-@url =http://api.weatherapi.com/v1/forecast.json?key=%s&q=%s&days=14
-
-@access_token =71dc1bdf858744fc873191846252403
-
-get http://api.weatherapi.com/v1/forecast.json?key=71dc1bdf858744fc873191846252403&q=PARIS&days=14 HTTP/1.1
-Content-Type: application/json  
