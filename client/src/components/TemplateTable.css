@@ -1,9 +1,11 @@
 /* style adapted from codepen: https://codepen.io/vikassingh1111/pen/xBPmbL */
 body {
-	background: #262a2b;
+	background: #fcf8e5;
 }
 .tilesWrap {
-	padding: 0;
+	padding-left: 20%;
+	padding-right: 20%;
+	/* padding-top: 65px; */
 	margin: 50px auto;
 	list-style: none;
 	text-align: center;
@@ -21,7 +23,7 @@ body {
 	font-family: 'helvetica', san-serif;
 	min-height: 25vh;
 	background: #262a2b;
-	border: 1px solid #252727;
+	border: 1px solid #51927a;
 	text-align: left;
 	z-index: 0;
 }
@@ -36,13 +38,13 @@ body {
 }
 .tilesWrap li h3 {
 	font-size: 20px;
-	color: #b7b7b7;
+	color: #878787;
 	margin-bottom: 5px;
 }
 .tilesWrap li p {
 	font-size: 16px;
 	line-height: 18px;
-	color: #b7b7b7;
+	color: #878787;
 	margin-top: 5px;
 }
 .tilesWrap li button {
@@ -99,7 +101,7 @@ button:hover {
 	bottom: -2px;
 	z-index: -1;
 	background-color: aliceblue; /* For browsers that do not support gradients */
-  	background-image: linear-gradient(#a2bff4, #9b35f2);
+  	background-image: linear-gradient(#b1ebfd, #4cb0ba);
 	transform: skew(2deg, 2deg);
 }
 .tilesWrap li:after {
@@ -133,10 +135,7 @@ button:hover {
 	transform: skew(2deg, 2deg);
   }
 
-  .templateItemCard {
-	color: yellow;
+h1, h2, h3, h4, h5, h6 {
+	color: #ac2c67;
   }
 
-  p, h1, h2, h3, h4, h5, h6, label {
-	color: #a2bff4;
-  }

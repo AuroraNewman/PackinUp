@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import './TemplateTable.css'; // Import your CSS file for styling
 
 const DeleteTemplate = ({ loggedInUser, setLoggedInUser}) => {
     const params = useParams();
@@ -43,16 +44,20 @@ const DeleteTemplate = ({ loggedInUser, setLoggedInUser}) => {
             })
             .catch(error => console.error('Error:', error));
     }
-    return (
-        <>
-        <p>Are you sure you want to delete this template?</p>
-        <p>Name: {template.name}</p>
-        <p>Description: {template.description}</p>
-        {/* <p>TripType: {template.templateTripType.tripTypeName}</p> */}
-        <button onClick={handleDelete} className="btn btn-danger me-2 mb-2">Delete</button> 
-        <Link to="/list" className="btn btn-info me-2 mb-2">Cancel</Link>
-        </>
-    )
+    return (       
+        
+            <div>
+                <div className="text-center container-box p-4 mt-5">
+                    <p>Are you sure you want to delete this template?</p>
+                    <p>Name: {template.name}</p>
+                    <p>Description: {template.description}</p>
+                    {/* <p>TripType: {template.templateTripType.tripTypeName}</p> */}
+                    <button onClick={handleDelete} className="btn btn-danger me-2 mb-2">Delete</button> 
+                    <Link to="/template" className="btn btn-info me-2 mb-2">Cancel</Link>
+                </div>
+            </div>
+            
+        );
 }
 
 export default DeleteTemplate;
