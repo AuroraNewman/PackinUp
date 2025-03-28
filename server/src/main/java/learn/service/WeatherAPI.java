@@ -1,6 +1,5 @@
 package learn.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import learn.data.ItemRepository;
@@ -8,7 +7,10 @@ import learn.data_transfer_objects.IncomingWeatherQuery;
 import learn.data_transfer_objects.OutgoingItem;
 import learn.data_transfer_objects.WeatherRecommendations;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.*;
+
 
 import java.io.IOException;
 import java.net.URI;
@@ -17,9 +19,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.util.*;
 
 @Service
 public class WeatherAPI {
@@ -44,6 +43,7 @@ public class WeatherAPI {
 
     public WeatherRecommendations suggestItemsForWeather(IncomingWeatherQuery incomingWeatherQuery) throws IOException, InterruptedException {
         String uriBase = generateUrl(incomingWeatherQuery.getQuery());
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uriBase))
                 .timeout(Duration.ofSeconds(10))
