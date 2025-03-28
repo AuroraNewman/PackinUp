@@ -46,3 +46,8 @@
     height: 300;
     margin-top: -5%;
   }
+
+  .not-found {
+    margin-top: 3%;
+    text-align: center;
+  }

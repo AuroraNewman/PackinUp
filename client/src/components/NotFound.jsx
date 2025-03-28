@@ -1,7 +1,7 @@
 import youre_lost from '../assets/youre_lost.jpg';
 const NotFound = () => {
     return <>
-    <div className='container-fluid centered'>
+    <div className='container-fluid centered not-found'>
         <h1>404 Not Found</h1>
         <h3>Pick another link to get back on the trail.</h3>
         <div className='navbar-brand' to='/'>
